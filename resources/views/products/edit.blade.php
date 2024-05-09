@@ -58,6 +58,7 @@
             <input type="file" id="profile_image" name="profile_image" class="form-control">
         </div> 
 
+
             <div class="form-group">
                 <label for="provider">Proveedor:</label>
                 <input type="text" class="form-control" id="provider" name="provider" value="{{ $product['provider'] }}">

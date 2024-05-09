@@ -90,7 +90,7 @@
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
         </form>
-        @dd($errors->all())
+        {{-- @dd($errors->all()) --}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
