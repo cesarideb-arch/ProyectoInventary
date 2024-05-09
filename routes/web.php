@@ -7,8 +7,13 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\AuthApiMiddleware;
-use App\Http\Controllers\CategoryController;/*
-|--------------------------------------------------------------------------
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EntranceController;
+use App\Http\Controllers\OutputController;
+use App\Http\Controllers\LoanController;
+
+
+/*|--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
@@ -43,5 +48,7 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
     Route::middleware('auth.api')->resource('categories', CategoryController::class);
     Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
     Route::middleware('auth.api')->resource('projects', ProjectController::class);
+    Route::middleware('auth.api')->resource('entrances', EntranceController::class);
+    Route::middleware('auth.api')->resource('outputs', OutputController::class);
+    Route::middleware('auth.api')->resource('loans', LoanController::class);
 
-    

@@ -152,9 +152,9 @@
                 <li><a href="{{ route('categories.index') }}">Categorías</a></li>
                 <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
                 <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
-                <li><a href="#">Lista de Entradas</a></li>
-                <li><a href="#"> Lista de Salidas</a></li>
-                <li><a href="#"> Lista de Prestamo</a></li>
+                <li><a href="{{ route('entrances.index') }}">Lista de Entradas</a></li>
+                <li><a href="{{ route('outputs.index') }}"> Lista de Salidas</a></li>
+                <li><a href="{{ route('loans.index') }}"> Lista de Prestamo</a></li>
 
                 <li class="logout-form">
                     <form action="{{ route('logout') }}" method="POST">
