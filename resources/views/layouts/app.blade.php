@@ -149,10 +149,13 @@
             <ul class="nav-list">
                 <li><a href="{{ route('start.index') }}">Inicio</a></li>
                 <li><a href="{{ route('products.index') }}">Inventario</a></li>
+                <li><a href="{{ route('categories.index') }}">Categorías</a></li>
                 <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
                 <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
-                <li><a href="#">Entradas</a></li>
-                <li><a href="#">Salidas</a></li>
+                <li><a href="#">Lista de Entradas</a></li>
+                <li><a href="#"> Lista de Salidas</a></li>
+                <li><a href="#"> Lista de Prestamo</a></li>
+
                 <li class="logout-form">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf

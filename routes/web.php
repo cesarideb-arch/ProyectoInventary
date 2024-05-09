@@ -7,7 +7,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\AuthApiMiddleware;
-/*
+use App\Http\Controllers\CategoryController;/*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -40,6 +40,7 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
         Route::get('/products/orderbyname', 'orderby')->name('products.orderbyname');
     }); 
 
+    Route::middleware('auth.api')->resource('categories', CategoryController::class);
     Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
     Route::middleware('auth.api')->resource('projects', ProjectController::class);
 
