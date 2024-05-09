@@ -8,10 +8,11 @@
 </head>
 <body>
     <div class="container">
+        <br>
         <h1>Editar Producto</h1>
 
         {{-- Formulario para editar el producto --}}
-        <form method="POST" action="{{ route('products.update', $product['id']) }}">
+        <form method="POST" action="{{ route('products.update', $product['id']) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -29,6 +30,57 @@
             <div class="form-group">
                 <label for="price">Precio:</label>
                 <input type="number" class="form-control" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Modelo:</label>
+                <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="unit_measure">Unidad de medida:</label>
+                <input type="text" class="form-control" id="unit_measure" name="unit_measure" value="{{ $product['unit_measure'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="brand">Marca:</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="{{ $product['brand'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Cantidad:</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required>
+            </div>
+
+                 
+        <div class="form-group">
+            <label for="profile_image">Imagen:</label>
+            <input type="file" id="profile_image" name="profile_image" class="form-control">
+        </div> 
+
+            <div class="form-group">
+                <label for="provider">Proveedor:</label>
+                <input type="text" class="form-control" id="provider" name="provider" value="{{ $product['provider'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="serie">Serie:</label>
+                <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="observations">Observaciones:</label>
+                <input type="text" class="form-control" id="observations" name="observations" value="{{ $product['observations'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Ubicación:</label>
+                <input type="text" class="form-control" id="location" name="location" value="{{ $product['location'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Categoría:</label>
+                <input type="text" class="form-control" id="category" name="category" value="{{ $product['category'] }}">
             </div>
 
             {{-- Botón para enviar el formulario --}}

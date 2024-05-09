@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StartController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\AuthApiMiddleware;
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,10 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
     // Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
     // Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::middleware('auth.api')->resource('products', ProductController::class);
+    
     Route::middleware('auth.api')->controller(ProductController::class)->group(function () {
         Route::get('/products/orderbyname', 'orderby')->name('products.orderbyname');
     }); 
+
+    Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
+    

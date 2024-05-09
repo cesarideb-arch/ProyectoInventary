@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
+    <title>Lista de Proveedores</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -71,38 +71,37 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Inventario General</h1>
-        <div class="mb-3">
-            <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-        </div>
+        <h1 class="mb-4">Lista de Proveedores</h1>
         <div class="table-responsive">
-            @if(isset($products) && count($products) > 0)
+            @if(isset($suppliers) && count($suppliers) > 0)
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
+                    <th>Artículo</th>
                     <th>Precio</th>
-                    <th style="text-align: center;" colspan="3">Acciones</th>
+                    <th>Empresa</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                    <th style="text-align: center;" colspan="2">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($products as $product)
+                @foreach($suppliers as $supplier)
                     <tr>
-                    <td>{{ $product['name'] }}</td>
-                    <td>{{ $product['description'] }}</td>
-                    <td>${{ $product['price'] }}</td>
-                    <td>
-                        <img src="http://localhost:8000/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 20%;">
-                    </td>
-                    
+                    <td>{{ $supplier['article'] }}</td>
+                    <td>${{ $supplier['price'] }}</td>
+                    <td>{{ $supplier['company'] }}</td>
+                    <td>{{ $supplier['phone'] }}</td>
+                    <td>{{ $supplier['email'] }}</td>
+                    <td>{{ $supplier['address'] }}</td>
                     <td>
                         <div class="btn-group btn-group-horizontal text-center" role="group">
-                        <form action="{{ route('products.edit', $product['id']) }}" method="GET">
+                        <form action="" method="GET">
                             @csrf
                             <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
                         </form>
-                        <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form">
+                        <form action="" method="POST" class="delete-form">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
@@ -114,14 +113,12 @@
                 </tbody>
             </table>
             @else
-            <p>No se encontraron productos.</p>
+            <p>No se encontraron proveedores.</p>
             @endif
         </div>
-        </div>
+    </div>
 
-
-
-
+    <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script>
     const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
 
@@ -130,7 +127,7 @@
             event.preventDefault(); // Previene la acción predeterminada del formulario
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Quieres Eliminar?",
+                text: "¿Quieres eliminar este proveedor?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -145,10 +142,10 @@
             });
         });
     });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-        
+    <!-- JavaScript para Bootstrap y dependencias -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

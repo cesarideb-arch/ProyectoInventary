@@ -31,13 +31,18 @@
             display: none;
             flex-direction: column;
             cursor: pointer;
+            justify-content: flex-start;
+            /* Alinea el botón a la izquierda */
+            align-self: flex-start;
+            /* Añade un margen izquierdo para separarlo del borde izquierdo */
+            margin-left: 10px;
         }
 
         .bar {
             background-color: #fff;
             height: 3px;
             width: 25px;
-            margin: 3px auto;
+            margin: 3px 0;
         }
 
         .nav-list {
@@ -45,6 +50,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            align-items: center;
         }
 
         .nav-list li {
@@ -78,49 +84,59 @@
         }
 
         @media (max-width: 768px) {
-    .menu-toggle {
-        display: flex;
-        justify-content: center; /* Centra el ícono del menú */
-    }
+            .menu-toggle {
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+                align-items: center;
+                /* Alinea el botón a la izquierda */
+                align-self: flex-start;
+                /* Quita el margen izquierdo para que no haya espacio adicional */
+                margin-left: 0;
+            }
 
-    .nav-list {
-        position: absolute;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background-color: #333;
-        display: none;
-        flex-direction: column;
-        align-items: center; /* Centra el contenido horizontalmente */
-        width: 100%; /* Asegura que el menú use todo el ancho disponible */
-        z-index: 1000; /* Mantiene el menú por encima de otros elementos */
-        padding: 0; /* Elimina cualquier padding innecesario */
-        margin: 0; /* Elimina cualquier margen innecesario */
-    }
+            .nav-list {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: #333;
+                display: none;
+                flex-direction: column;
+                align-items: flex-start; /* Alinea el menú a la izquierda */
+                width: 100%;
+                z-index: 1000;
+                padding: 0;
+                margin: 0;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
 
-    .nav-list.active {
-        display: flex;
-    }
+            .nav-list.active {
+                display: flex;
+            }
 
-    .nav-list li {
-        width: 100%; /* Establece el ancho de cada elemento del menú al total disponible */
-        text-align: center; /* Alinea el texto al centro */
-        padding: 10px 0; /* Añade padding vertical para mejorar la táctilidad, sin padding horizontal */
-        border-bottom: 1px solid #ffffff; /* Añade un divisor visual entre elementos, si deseado */
-    }
+            .nav-list li {
+                width: 100%;
+                text-align: center;
+                padding: 10px 0;
+                border-bottom: none;
+            }
 
-    .nav-list li:last-child {
-        border-bottom: none; /* Elimina el borde del último elemento para evitar una línea extra al final */
-    }
-
-    .nav-list li a {
-        color: #fff; /* Asegura que el texto sea blanco */
-        text-decoration: none; /* Elimina el subrayado de los enlaces */
-        display: block; /* Hace que el enlace ocupe todo el espacio del 'li' */
-    }
-}
-      
+            .nav-list li a {
+                color: #fff;
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+            }
+        }
     </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <!-- Incluir SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <nav>
@@ -132,25 +148,27 @@
             </div>
             <ul class="nav-list">
                 <li><a href="{{ route('start.index') }}">Inicio</a></li>
-                <li><a href="#">Empleados</a></li>
                 <li><a href="{{ route('products.index') }}">Inventario</a></li>
+                <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
                 <li><a href="#">Proyectos</a></li>
                 <li><a href="#">Entradas</a></li>
                 <li><a href="#">Salidas</a></li>
                 <li class="logout-form">
-                    <li class="logout-form">
-                        <form action="{{route("logout")}}" method="POST">
-                            @csrf
-                            <button type="submit" style="background-color: red;" onclick="return confirm>Cerrar sesión</button>
-                        </form>
-                    </li>
-                
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" style="background-color: transparent; border: none; margin-top: 10px; outline: none;">
+                            <i class="fas fa-sign-out-alt" style="color: red; font-size: 24px; border-radius: 15px; padding: 5px; background-color: rgba(255, 0, 0, 0.1);"></i>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </nav>
     
     <div class="container">
         @yield('content')
     </div>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script>
         const mobileMenu = document.getElementById('mobile-menu');
         const navList = document.querySelector('.nav-list');
@@ -159,41 +177,26 @@
             navList.classList.toggle('active');
         });
 
-   
-    src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
+        const logoutButton = document.querySelector('.logout-form button'); // Selecciona el botón de cerrar sesión
 
-    </script>
-
-<script>
-    const mobileMenu = document.getElementById('mobile-menu');
-    const navList = document.querySelector('.nav-list');
-    
-    mobileMenu.addEventListener('click', () => {
-        navList.classList.toggle('active');
-    });
-
-    const logoutButton = document.querySelector('.logout-form button'); // Selecciona el botón de cerrar sesión
-
-    logoutButton.addEventListener('click', function(event) {
-        event.preventDefault(); // Previene la acción predeterminada del formulario
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: "¿Quieres cerrar sesión?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí, cerrar sesión',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Si confirma, enviar el formulario
-                logoutButton.closest("form").submit();
-            }
+        logoutButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Previene la acción predeterminada del formulario
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Quieres cerrar sesión?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, cerrar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si confirma, enviar el formulario
+                    logoutButton.closest("form").submit();
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
-
-  

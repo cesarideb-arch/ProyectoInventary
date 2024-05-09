@@ -33,36 +33,55 @@ public function create()
 }
 
 
-public function store(Request $request)
+    public function store(Request $request)
     {
         // Validar los datos de la solicitud
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:50',
+            'model' => 'nullable|string|max:50',
+            'unit_measure' => 'nullable|string|max:15',
+            'brand' => 'nullable|string|max:50',
+            'quantity' => 'required|integer',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|between:0,999999.99',
+            'profile_image' => 'nullable|file|max:2048|mimes:jpeg,png,gif,svg',
+            'provider' => 'nullable|string|max:50',
+            'serie' => 'nullable|string|max:40',
+            'observations' => 'nullable|string|max:50',
+            'location' => 'nullable|string|max:20',
+            'category' => 'nullable|string|max:20',
         ]);
-
-        // URL de la API de productos
-        $apiUrl = 'http://127.0.0.1:8000/api/products';
-
-        // Realizar una solicitud HTTP POST a la API con los datos del formulario
-        $response = Http::post($apiUrl, [
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-        ]);
-
+    
+        // URL de tu API para almacenar productos
+        $apiUrl = 'http://localhost:8000/api/products';
+    
+        // Verificar si la solicitud contiene una imagen
+        if ($request->hasFile('profile_image')) {
+            $file = $request->file('profile_image');
+            $imageContents = file_get_contents($file->getPathname());
+            $imageName = $file->getClientOriginalName();
+    
+            // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
+            $response = Http::attach(
+                'profile_image',
+                $imageContents,
+                $imageName
+            )->post($apiUrl, $validatedData);
+        } else {
+            // Si no hay imagen adjunta, simplemente envía los datos sin el campo de imagen
+            $response = Http::post($apiUrl, $validatedData);
+        }
+    
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
-            // Obtener la respuesta de la API
-            $responseData = $response->json();
-
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
             return redirect()->route('products.index')->with('success', 'Producto creado exitosamente.');
-        } 
-
+        } else {
+            // Manejar errores si la solicitud no fue exitosa
+            return back()->withInput()->withErrors('Error al crear el producto. Por favor, inténtalo de nuevo más tarde.');
+        }
     }
-
+    
     public function edit($id)
     {
         // URL de la API para obtener un producto específico
@@ -80,37 +99,56 @@ public function store(Request $request)
             return view('products.edit', compact('product'));
         } 
 }
+
 public function update(Request $request, $id)
 {
-    // Validar los datos de la solicitud
-    $request->validate([
-        'name' => 'required|string',
-        'description' => 'required|string',
-        'price' => 'required|numeric',
+     // Validar los datos de la solicitud
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:50',
+        'model' => 'nullable|string|max:50',
+        'unit_measure' => 'nullable|string|max:15',
+        'brand' => 'nullable|string|max:50',
+        'quantity' => 'required|integer',
+        'description' => 'nullable|string',
+        'price' => 'required|numeric|between:0,999999.99',
+        'profile_image' => 'nullable|file|max:2048|mimes:jpeg,png,gif,svg',
+        'provider' => 'nullable|string|max:50',
+        'serie' => 'nullable|string|max:40',
+        'observations' => 'nullable|string|max:50',
+        'location' => 'nullable|string|max:20',
+        'category' => 'nullable|string|max:20',
     ]);
 
-    // URL de la API para actualizar un producto específico
-    $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+    // URL de tu API para actualizar productos
+    $apiUrl = 'http://localhost:8000/api/products/' . $id;
 
-    // Realizar una solicitud HTTP PUT a la API con los datos del formulario
-    $response = Http::put($apiUrl, [
-        'name' => $request->name,
-        'description' => $request->description,
-        'price' => $request->price,
-    ]);
+    // Verificar si la solicitud contiene una imagen
+    if ($request->hasFile('profile_image')) {
+        $file = $request->file('profile_image');
+        $imageContents = file_get_contents($file->getPathname());
+        $imageName = $file->getClientOriginalName();
+
+        // Realizar una solicitud HTTP PUT a tu API con los datos validados del formulario
+        $response = Http::attach(
+            'profile_image',
+            $imageContents,
+            $imageName
+        )->put($apiUrl, $validatedData);
+    } else {
+        // Si no hay imagen adjunta, simplemente envía los datos sin el campo de imagen
+        $response = Http::put($apiUrl, $validatedData);
+    }
 
     // Verificar si la solicitud fue exitosa
     if ($response->successful()) {
-        // Obtener la respuesta de la API
-        $responseData = $response->json();
-
         // Redirigir a una página de éxito o mostrar un mensaje de éxito
         return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente.');
     } else {
-        // Si la solicitud no fue exitosa, redirigir de vuelta con un mensaje de error
-        return redirect()->back()->with('error', 'No se pudo actualizar el producto. Por favor, inténtalo de nuevo.');
+        // Manejar errores si la solicitud no fue exitosa
+        return back()->withInput()->withErrors('Error al actualizar el producto. Por favor, inténtalo de nuevo más tarde.');
     }
 }
+
 
 public function destroy($id)
 {
