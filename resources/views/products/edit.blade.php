@@ -37,10 +37,11 @@
                 <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}">
             </div>
 
-            <div class="form-group">
-                <label for="unit_measure">Unidad de medida:</label>
-                <input type="text" class="form-control" id="unit_measure" name="unit_measure" value="{{ $product['unit_measure'] }}">
-            </div>
+                        <div class="form-group">
+                            <label for="measurement_unit">Unidad de medida:</label>
+                            <input type="text" class="form-control" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}">
+                        </div>
+
 
             <div class="form-group">
                 <label for="brand">Marca:</label>

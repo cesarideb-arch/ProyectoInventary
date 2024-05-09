@@ -34,7 +34,7 @@ class ProductController extends Controller {
         $validatedData = $request->validate([
             'name' => 'required|string|max:50',
             'model' => 'nullable|string|max:50',
-            'unit_measure' => 'nullable|string|max:15',
+            'measurement_unit' => 'nullable|string|max:15',
             'brand' => 'nullable|string|max:50',
             'quantity' => 'required|integer',
             'description' => 'nullable|string',
@@ -99,7 +99,7 @@ class ProductController extends Controller {
         $validatedData = $request->validate([
             'name' => 'required|string|max:50',
             'model' => 'nullable|string|max:50',
-            'unit_measure' => 'nullable|string|max:15',
+            'measurement_unit' => 'nullable|string|max:15',
             'brand' => 'nullable|string|max:50',
             'quantity' => 'required|integer',
             'description' => 'nullable|string',

@@ -34,8 +34,8 @@
             </div>
 
             <div class="form-group">
-                <label for="unit_measure">Unidad de medida:</label>
-                <input type="text" id="unit_measure" name="unit_measure" value="{{ old('unit_measure') }}" class="form-control">
+                <label for="measurement_unit">Unidad de medida:</label>
+                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ old('measurement_unit') }}" class="form-control">
             </div>
 
             <div class="form-group">
