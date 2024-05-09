@@ -116,4 +116,6 @@ class SupplierController extends Controller {
             return back()->withErrors('Error al eliminar el proveedor. Por favor, inténtalo de nuevo más tarde.');
         }
     }
+
+    
 }

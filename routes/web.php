@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StartController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Middleware\AuthApiMiddleware;
@@ -40,4 +41,6 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
     }); 
 
     Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
+    Route::middleware('auth.api')->resource('projects', ProjectController::class);
+
     

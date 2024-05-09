@@ -150,7 +150,7 @@
                 <li><a href="{{ route('start.index') }}">Inicio</a></li>
                 <li><a href="{{ route('products.index') }}">Inventario</a></li>
                 <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
-                <li><a href="#">Proyectos</a></li>
+                <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
                 <li><a href="#">Entradas</a></li>
                 <li><a href="#">Salidas</a></li>
                 <li class="logout-form">
