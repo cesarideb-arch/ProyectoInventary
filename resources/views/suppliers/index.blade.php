@@ -72,6 +72,9 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Lista de Proveedores</h1>
+        <div class="mb-3">
+            <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+        </div>
         <div class="table-responsive">
             @if(isset($suppliers) && count($suppliers) > 0)
             <table class="table table-striped">
@@ -97,11 +100,11 @@
                     <td>{{ $supplier['address'] }}</td>
                     <td>
                         <div class="btn-group btn-group-horizontal text-center" role="group">
-                        <form action="" method="GET">
+                        <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">
                             @csrf
                             <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
                         </form>
-                        <form action="" method="POST" class="delete-form">
+                        <form action="{{ route('suppliers.destroy', $supplier['id']) }}" method="POST" class="delete-form">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
