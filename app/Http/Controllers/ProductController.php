@@ -24,6 +24,90 @@ class ProductController extends Controller {
         }
     }
 
+
+  public function show($id)
+{
+    // URL de la API para obtener un producto específico
+    $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+
+    // URL de la API para obtener todos los proyectos
+    $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+
+    // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
+    $productResponse = Http::get($productApiUrl);
+
+    // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+    $projectsResponse = Http::get($projectsApiUrl);
+
+    if ($productResponse->successful() && $projectsResponse->successful()) {
+        // Decodifica la respuesta JSON del producto en un array asociativo
+        $product = $productResponse->json();
+
+        // Decodifica la respuesta JSON de los proyectos en un array asociativo
+        $projects = $projectsResponse->json();
+
+        // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+        return view('products.show', compact('product', 'projects'));
+    }
+
+    // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
+    return abort(404, 'Product or projects data not found.');
+}
+
+
+
+public function storeEntrance(Request $request)
+ {
+
+
+    dd($request->all());
+}
+
+
+
+public function storeOutPuts(Request $request)
+ {
+
+
+    dd($request->all());
+}
+
+
+
+public function outPutGet($id)
+{
+    // URL de la API para obtener un producto específico
+    $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+
+    // URL de la API para obtener todos los proyectos
+    $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+
+    // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
+    $productResponse = Http::get($productApiUrl);
+
+    // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+    $projectsResponse = Http::get($projectsApiUrl);
+
+    if ($productResponse->successful() && $projectsResponse->successful()) {
+        // Decodifica la respuesta JSON del producto en un array asociativo
+        $product = $productResponse->json();
+
+        // Decodifica la respuesta JSON de los proyectos en un array asociativo
+        $projects = $projectsResponse->json();
+
+        // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+        return view('products.output', compact('product', 'projects'));
+    }
+
+    // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
+    return abort(404, 'Product or projects data not found.');
+}
+
+
+
+
+
+
     public function create() {
 
         $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
@@ -85,7 +169,7 @@ class ProductController extends Controller {
             $request->file('profile_image')->getClientOriginalName()
         )->post($apiUrl, $validatedData);
 
-        dd($response->json());
+        // dd($response->json());
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -120,7 +204,7 @@ class ProductController extends Controller {
             $product = $response->json();
 
             // Muestra el formulario de edición con los datos del producto
-            return view('products.edit', compact('product'),compact('suppliers', 'categories'));
+            return view('products.edit', compact('product'), compact('suppliers', 'categories'));
         }
     }
 

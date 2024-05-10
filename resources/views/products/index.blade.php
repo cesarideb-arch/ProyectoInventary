@@ -97,18 +97,37 @@
                     </td>
                     
                     <td>
-                        <div class="btn-group btn-group-horizontal text-center" role="group">
-                        <form action="{{ route('products.edit', $product['id']) }}" method="GET">
+                    <div class="btn-group btn-group-horizontal" role="group">
+                        <!-- Botón de Edición -->
+                        <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </form>
+                
+                        <!-- Botón de Eliminación -->
                         <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </form>
-                        </div>
-                    </td>
+                
+                        <!-- Botón adicional, por ejemplo, Entradas -->
+                        <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+
+                        <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+
+
+                    </div>
+                </td>
+                    
                     </tr>
                 @endforeach
                 </tbody>

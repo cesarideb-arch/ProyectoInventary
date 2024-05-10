@@ -45,10 +45,25 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
         Route::get('/products/orderbyname', 'orderby')->name('products.orderbyname');
     }); 
 
+
     Route::middleware('auth.api')->resource('categories', CategoryController::class);
     Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
     Route::middleware('auth.api')->resource('projects', ProjectController::class);
     Route::middleware('auth.api')->resource('entrances', EntranceController::class);
+    Route::post('/entrances', [ProductController::class, 'storeEntrance'])->name('products.entrances.store');
+    Route::post('/products/outputs', [ProductController::class, 'storeOutPuts'])->name('products.outputs.store');
+    Route::get('/products/{id}/output', [ProductController::class, 'outPutGet'])->name('products.output.get');
+
+
+
+    // Route::get('/products/{id}/entrances', [ProductController::class, 'entrancesGet'])->name('products.entrances.get');
+    // Route::post('/products/{id}/entrances', [ProductController::class, 'entrancesPost'])->name('products.entrances.post');
+    // Route::post('/products/{id}/output', [ProductController::class, 'outPutPost'])->name('products.output.post');
+
+
+
+
+
     Route::middleware('auth.api')->resource('outputs', OutputController::class);
     Route::middleware('auth.api')->resource('loans', LoanController::class);
 
