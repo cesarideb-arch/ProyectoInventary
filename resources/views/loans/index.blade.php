@@ -77,7 +77,6 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
@@ -104,18 +103,12 @@
                             @if($loan['status'] == 1)
                                 <div class="btn-group btn-group-horizontal" role="group">
                                     <!-- Botón de Edición -->
-                                    <form action="{{ route('loans.update', $loan['id']) }}" method="POST" style="margin-right: 5px;">
-                                        @csrf
-                                        @method('PUT') <!-- Utilizamos el método PUT para la actualización -->
-                                        <input type="hidden" name="loan_id" value="{{ $loan['id'] }}"> <!-- Campo oculto con el ID del préstamo -->
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            Regresar Producto
-                                        </button>
-                                    </form>
+                                    <button type="button" onclick="confirmReturn({{ $loan['id'] }})" class="btn btn-primary btn-sm">
+                                        Regresar Producto
+                                    </button>
                                 </div>
                             @endif
                         </td>
-                    
                     </tr>
                     @endforeach
                 </tbody>
@@ -126,11 +119,29 @@
         </div>
     </div>
 
-    
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        function confirmReturn(loanId) {
+            if (confirm('¿Estás seguro de que deseas devolver este producto?')) {
+                $.ajax({
+                    url: "{{ route('loans.update', $loan['id']) }}",
+                    type: "PUT",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "loan_id": loanId
+                    },
+                    success: function(response) {
+                        // Actualiza la página con un mensaje
+                        location.reload();
+                        alert('La acción fue completada.');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error al devolver el préstamo: ' + error);
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
 @endsection
