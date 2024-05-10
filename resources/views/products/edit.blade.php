@@ -60,11 +60,7 @@
         </div> 
 
 
-            <div class="form-group">
-                <label for="provider">Proveedor:</label>
-                <input type="text" class="form-control" id="provider" name="provider" value="{{ $product['provider'] }}">
-            </div>
-
+        
             <div class="form-group">
                 <label for="serie">Serie:</label>
                 <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}">
@@ -80,10 +76,7 @@
                 <input type="text" class="form-control" id="location" name="location" value="{{ $product['location'] }}">
             </div>
 
-            <div class="form-group">
-                <label for="category">Categoría:</label>
-                <input type="text" class="form-control" id="category" name="category" value="{{ $product['category'] }}">
-            </div>
+            
 
             {{-- Botón para enviar el formulario --}}
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>

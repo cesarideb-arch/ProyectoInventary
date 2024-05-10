@@ -63,11 +63,7 @@
                 <input type="file" id="profile_image" name="profile_image" class="form-control">
             </div> 
 
-            <div class="form-group">
-                <label for="provider">Proveedor:</label>
-                <input type="text" id="provider" name="provider" value="{{ old('provider') }}" class="form-control">
-            </div>
-
+           
             <div class="form-group">
                 <label for="serie">Serie:</label>
                 <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control">
@@ -84,8 +80,23 @@
             </div>
 
             <div class="form-group">
-                <label for="category">Categoría:</label>
-                <input type="text" id="category" name="category" value="{{ old('category') }}" class="form-control">
+                <label for="supplier_id">Proveedor:</label>
+                <select id="supplier_id" name="supplier_id" class="form-control">
+                    <option value="">Seleccione un proveedor</option>
+                    @foreach ($suppliers as $supplier )
+                        <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category_id">Categoría:</label>
+                <select id="category_id" name="category_id" class="form-control">
+                    <option value="">Seleccione una categoría</option>
+                    @foreach ($categories as $category )
+                        <option value="{{ $category['id']}}">{{ $category['name']}}</option>
+                    @endforeach
+                </select>
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>

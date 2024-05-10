@@ -25,7 +25,16 @@ class ProductController extends Controller {
     }
 
     public function create() {
-        return view('products.create');
+
+        $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
+
+        $response = Http::get($apiUrl)->json();
+
+        $suppliers = $response['suppliers'];
+
+        $categories = $response['categories'];
+
+        return view('products.create', compact('suppliers', 'categories'));
     }
 
 
@@ -40,18 +49,20 @@ class ProductController extends Controller {
             'description' => 'nullable|string',
             'price' => 'required|numeric|between:0,999999.99',
             'profile_image' => 'nullable|file|max:2048|mimes:jpeg,png,gif,svg',
-            'provider' => 'nullable|string|max:50',
             'serie' => 'nullable|string|max:40',
             'observations' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:20',
-            'category' => 'nullable|string|max:20',
+            'category_id' => 'required|integer',
+            'supplier_id' => 'required|integer',
         ]);
 
         // URL de tu API para almacenar productos
         $apiUrl = 'http://localhost:8000/api/products';
 
+        // dd($request->hasFile('profile_image'));
+
         // Verificar si la solicitud contiene una imagen
-        if ($request->hasFile('profile_image')) {
+        /*  if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
@@ -62,10 +73,19 @@ class ProductController extends Controller {
                 $imageContents,
                 $imageName
             )->post($apiUrl, $validatedData);
+
         } else {
             // Si no hay imagen adjunta, simplemente envía los datos sin el campo de imagen
             $response = Http::post($apiUrl, $validatedData);
-        }
+        } */
+
+        $response = Http::attach(
+            'profile_image',
+            file_get_contents($request->file('profile_image')),
+            $request->file('profile_image')->getClientOriginalName()
+        )->post($apiUrl, $validatedData);
+
+        dd($response->json());
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -105,18 +125,18 @@ class ProductController extends Controller {
             'description' => 'nullable|string',
             'price' => 'required|numeric|between:0,999999.99',
             'profile_image' => 'nullable|file|max:2048|mimes:jpeg,png,gif,svg',
-            'provider' => 'nullable|string|max:50',
             'serie' => 'nullable|string|max:40',
             'observations' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:20',
-            'category' => 'nullable|string|max:20',
+            'category_id' => 'required|integer',
+            'supplier_id' => 'required|integer',
         ]);
 
         // URL de tu API para actualizar productos
         $apiUrl = 'http://localhost:8000/api/products/' . $id;
         //  dd($request->all());
         // Verificar si la solicitud contiene una imagen
-         if ($request->hasFile('profile_image')) {
+        if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
