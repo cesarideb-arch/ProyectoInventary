@@ -60,7 +60,29 @@
         </div> 
 
 
-        
+            <div class="form-group">
+                <label for="category_id">Categoría:</label>
+                <select class="form-control" id="category_id" name="category_id">
+                    @foreach ($categories as $category)
+                        <option value="{{ $category['id'] }}" {{ $category['id'] == $product['category_id'] ? 'selected' : '' }}>
+                            {{ $category['name'] }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="supplier_id">Proveedor:</label>
+                <select class="form-control" id="supplier_id" name="supplier_id">
+                    @foreach ($suppliers as $supplier)
+                        <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
+                            {{ $supplier['company'] }}
+                        </option>
+                    @endforeach
+                </select>
+
+
             <div class="form-group">
                 <label for="serie">Serie:</label>
                 <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}">

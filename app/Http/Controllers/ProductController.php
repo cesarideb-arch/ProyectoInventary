@@ -98,6 +98,16 @@ class ProductController extends Controller {
     }
 
     public function edit($id) {
+
+
+        $api = 'http://127.0.0.1:8000/api/getCategoryProducts';
+
+        $response = Http::get($api)->json();
+
+        $suppliers = $response['suppliers'];
+
+        $categories = $response['categories'];
+
         // URL de la API para obtener un producto específico
         $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
@@ -110,9 +120,11 @@ class ProductController extends Controller {
             $product = $response->json();
 
             // Muestra el formulario de edición con los datos del producto
-            return view('products.edit', compact('product'));
+            return view('products.edit', compact('product'),compact('suppliers', 'categories'));
         }
     }
+
+
 
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
