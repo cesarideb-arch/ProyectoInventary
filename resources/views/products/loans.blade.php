@@ -11,7 +11,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <h1>Entrada</h1>
+                <h1>Prestamo</h1>
             </div>
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
@@ -21,18 +21,8 @@
         </div>
 
         <div class="mt-4 mb-4">
-            <h1>Proyectos</h1>
-            <form id="entranceForm" action="{{ route('products.entrances.store') }}" method="POST" class="needs-validation" novalidate>
+         <form action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
-                <div class="mb-3">
-                    <label for="project_id" class="form-label">Proyecto:</label>
-                    <select name="project_id" id="project_id" class="form-select" required>
-                        @foreach ($projects as $project)
-                        <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
                 <div class="mb-3">

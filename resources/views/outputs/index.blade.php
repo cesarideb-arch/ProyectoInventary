@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
+    <title>Lista de Salidas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -71,52 +71,42 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Salidas</h1>
+        <h1 class="mb-4">Listado de Salidas</h1>
         <div class="table-responsive">
             @if(isset($outputs) && count($outputs) > 0)
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Proyecto</th>
-                    <th>Producto</th>
-                    <th>Responsable</th>
-                    <th>cantidad</th>
-                    <th>descripcion</th>
-                    <th>fecha</th>
-
-                    <th style="text-align: center;" colspan="3">Acciones</th>
-                </tr>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Producto</th>
+                        <th>Responsable</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach($outputs as $output)
+                    @foreach($outputs as $output)
                     <tr>
-                    {{-- <td>{{ $product['name'] }}</td>
-                    <td>{{ $product['description'] }}</td>
-                    <td>${{ $product['price'] }}</td> --}}
-                    <td>
-        
-                    
-                
-                @endforeach
+                        <td>{{ $output['project']['company_name']}}</td>
+                        <td>{{ $output['product']['name'] }}</td>
+                        <td>{{ $output['responsible'] }}</td>
+                        <td>{{ $output['quantity'] }}</td>
+                        <td>{{ $output['description'] }}</td>
+                        <td>{{ $output['date'] }}</td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
             @else
-            <p>No se encontraron productos.</p>
+            <p>No se encontraron salidas.</p>
             @endif
         </div>
-        </div>
+    </div>
 
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-        
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection

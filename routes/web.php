@@ -50,9 +50,17 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
     Route::middleware('auth.api')->resource('suppliers', SupplierController::class);
     Route::middleware('auth.api')->resource('projects', ProjectController::class);
     Route::middleware('auth.api')->resource('entrances', EntranceController::class);
+    Route::middleware('auth.api')->resource('outputs', OutputController::class);
+    Route::middleware('auth.api')->resource('loans', LoanController::class);
+    
     Route::post('/entrances', [ProductController::class, 'storeEntrance'])->name('products.entrances.store');
     Route::post('/products/outputs', [ProductController::class, 'storeOutPuts'])->name('products.outputs.store');
+    Route::post('/products/loans', [ProductController::class, 'storeLoans'])->name('products.loans.store');
+
+    Route::get('/products/{id}/loans', [ProductController::class, 'loansGet'])->name('products.loans.get');
     Route::get('/products/{id}/output', [ProductController::class, 'outPutGet'])->name('products.output.get');
+
+    
 
 
 

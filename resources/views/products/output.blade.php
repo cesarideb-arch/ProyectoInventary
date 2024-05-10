@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <h1>Salidas</h1>
+                <h1>Salida</h1>
             </div>
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
@@ -22,7 +22,7 @@
 
         <div class="mt-4 mb-4">
             <h1>Proyectos</h1>
-            <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
+         <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="mb-3">
                     <label for="project_id" class="form-label">Proyecto:</label>
@@ -61,7 +61,7 @@
             </form>
         </div>
     </div>
-
+    {{-- @dd($errors)  --}}
     <!-- Opcional: Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -69,14 +69,24 @@
     <script>
         window.onload = function() {
             var today = new Date();
-            var dd = today.getDate().toString().padStart(2, '0');
-            var mm = (today.getMonth() + 1).toString().padStart(2, '0'); // Enero es 0!
-            var yyyy = today.getFullYear().toString();
-            var hh = today.getHours().toString().padStart(2, '0');
-            var min = today.getMinutes().toString().padStart(2, '0');
-            var formattedDate = `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+            var yyyy = today.getFullYear();
+            var hh = String(today.getHours()).padStart(2, '0');
+            var min = String(today.getMinutes()).padStart(2, '0');
+            var formattedDate = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
             document.getElementById('date').value = formattedDate;
         }
+
+        // Validación personalizada del lado del cliente
+        document.getElementById('entranceForm').addEventListener('submit', function(event) {
+            var form = event.target;
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
     </script>
 </body>
 </html>

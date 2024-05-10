@@ -25,85 +25,184 @@ class ProductController extends Controller {
     }
 
 
-  public function show($id)
-{
-    // URL de la API para obtener un producto específico
-    $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+    public function show($id) {
+        // URL de la API para obtener un producto específico
+        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
-    // URL de la API para obtener todos los proyectos
-    $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+        // URL de la API para obtener todos los proyectos
+        $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
 
-    // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-    $productResponse = Http::get($productApiUrl);
+        // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
+        $productResponse = Http::get($productApiUrl);
 
-    // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-    $projectsResponse = Http::get($projectsApiUrl);
+        // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+        $projectsResponse = Http::get($projectsApiUrl);
 
-    if ($productResponse->successful() && $projectsResponse->successful()) {
-        // Decodifica la respuesta JSON del producto en un array asociativo
-        $product = $productResponse->json();
+        if ($productResponse->successful() && $projectsResponse->successful()) {
+            // Decodifica la respuesta JSON del producto en un array asociativo
+            $product = $productResponse->json();
 
-        // Decodifica la respuesta JSON de los proyectos en un array asociativo
-        $projects = $projectsResponse->json();
+            // Decodifica la respuesta JSON de los proyectos en un array asociativo
+            $projects = $projectsResponse->json();
 
-        // Muestra la vista de detalles del producto con los datos del producto y los proyectos
-        return view('products.show', compact('product', 'projects'));
+            // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+            return view('products.show', compact('product', 'projects'));
+        }
+
+        // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
+        return abort(404, 'Product or projects data not found.');
     }
 
-    // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
-    return abort(404, 'Product or projects data not found.');
-}
 
 
+    public function storeEntrance(Request $request) {
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'project_id' => 'required|integer',
+            'product_id' => 'required|integer',
+            'responsible' => 'required|string|max:100',
+            'quantity' => 'required|integer',
+            'description' => 'nullable|string|max:100',
+            'date' => 'required|date',
+        ]);
 
-public function storeEntrance(Request $request)
- {
+        // URL de tu segunda API para almacenar datos
+        $apiUrl = 'http://127.0.0.1:8000/api/entrances';
 
+        // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
+        $response = Http::post($apiUrl, $validatedData);
 
-    dd($request->all());
-}
+        // dd para ver la respuesta de la API
+        // dd($response->json());
 
+        // Verificar si la solicitud fue exitosa
 
-
-public function storeOutPuts(Request $request)
- {
-
-
-    dd($request->all());
-}
-
-
-
-public function outPutGet($id)
-{
-    // URL de la API para obtener un producto específico
-    $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
-
-    // URL de la API para obtener todos los proyectos
-    $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
-
-    // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-    $productResponse = Http::get($productApiUrl);
-
-    // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-    $projectsResponse = Http::get($projectsApiUrl);
-
-    if ($productResponse->successful() && $projectsResponse->successful()) {
-        // Decodifica la respuesta JSON del producto en un array asociativo
-        $product = $productResponse->json();
-
-        // Decodifica la respuesta JSON de los proyectos en un array asociativo
-        $projects = $projectsResponse->json();
-
-        // Muestra la vista de detalles del producto con los datos del producto y los proyectos
-        return view('products.output', compact('product', 'projects'));
+        // Redirigir a una vista con un mensaje de éxito
+        return redirect()->route('products.index')->with('success', 'Entrada creada exitosamente.');
     }
 
-    // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
-    return abort(404, 'Product or projects data not found.');
-}
 
 
+
+    public function storeOutPuts(Request $request) {
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'project_id' => 'required|integer',
+            'product_id' => 'required|integer',
+            'responsible' => 'required|string|max:100',
+            'quantity' => 'required|integer',
+            'description' => 'nullable|string|max:100',
+            'date' => 'required|date',
+        ]);
+
+        // URL de tu segunda API para almacenar datos
+        $apiUrl = 'http://127.0.0.1:8000/api/outputs';
+
+        // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
+        $response = Http::post($apiUrl, $validatedData);
+
+        // dd para ver la respuesta de la API
+        // dd($response->json());
+
+        // Verificar si la solicitud fue exitosa
+
+        // Redirigir a una vista con un mensaje de éxito
+        return redirect()->route('products.index')->with('success', 'Entrada creada exitosamente.');
+
+        dd($request->all());
+    }
+
+
+
+
+    public function storeLoans(Request $request) {
+        // Validar los datos de la solicitud
+        $validatedData = $request->validate([
+            'product_id' => 'required|integer',
+            'responsible' => 'required|string|max:100',
+            'quantity' => 'required|integer',
+            'description' => 'nullable|string|max:100',
+            'date' => 'required|date',
+        ]);
+
+        // URL de tu segunda API para almacenar datos
+        $apiUrl = 'http://127.0.0.1:8000/api/loans';
+
+        // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
+        $response = Http::post($apiUrl, $validatedData);
+
+        // dd para ver la respuesta de la API
+        //  dd($response->json());
+
+        // Verificar si la solicitud fue exitosa
+
+        // Redirigir a una vista con un mensaje de éxito
+        return redirect()->route('products.index')->with('success', 'Prestamo creada exitosamente.');
+
+        dd($request->all());
+    }
+
+
+
+
+
+    public function loansGet($id) {
+        // URL de la API para obtener un producto específico
+        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+
+        // URL de la API para obtener todos los proyectos
+        // $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+
+        // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
+        $productResponse = Http::get($productApiUrl);
+
+        // // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+        // $projectsResponse = Http::get($projectsApiUrl);
+
+        if ($productResponse->successful()) {
+            // Decodifica la respuesta JSON del producto en un array asociativo
+            $product = $productResponse->json();
+
+            // Decodifica la respuesta JSON de los proyectos en un array asociativo
+            // $projects = $projectsResponse->json();
+
+            // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+            return view('products.loans', compact('product'));
+        }
+
+        // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
+        return abort(404, 'Products data not found.');
+    }
+
+
+
+    public function outPutGet($id) {
+        // URL de la API para obtener un producto específico
+        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+
+        // URL de la API para obtener todos los proyectos
+        $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+
+        // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
+        $productResponse = Http::get($productApiUrl);
+
+        // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+        $projectsResponse = Http::get($projectsApiUrl);
+
+        if ($productResponse->successful() && $projectsResponse->successful()) {
+            // Decodifica la respuesta JSON del producto en un array asociativo
+            $product = $productResponse->json();
+
+            // Decodifica la respuesta JSON de los proyectos en un array asociativo
+            $projects = $projectsResponse->json();
+
+            // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+            return view('products.output', compact('product', 'projects'));
+        }
+
+        // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
+        return abort(404, 'Product or projects data not found.');
+    }
 
 
 

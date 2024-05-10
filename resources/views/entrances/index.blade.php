@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -68,55 +69,44 @@
             margin-right: 5px;
         }
     </style>
-</head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Entradas</h1>
+        <h1 class="mb-4">Listado de Entradas</h1>
         <div class="table-responsive">
             @if(isset($entrances) && count($entrances) > 0)
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Proyecto</th>
-                    <th>Producto</th>
-                    <th>Responsable</th>
-                    <th>cantidad</th>
-                    <th>descripcion</th>
-                    <th>fecha</th>
-
-                    <th style="text-align: center;" colspan="3">Acciones</th>
-                </tr>
+                    <tr>
+                        <th>Proyecto</th>
+                        <th>Producto</th>
+                        <th>Responsable</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Fecha</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach($entrances as $entrance)
+                    @foreach($entrances as $entrance)
                     <tr>
-                    {{-- <td>{{ $product['name'] }}</td>
-                    <td>{{ $product['description'] }}</td>
-                    <td>${{ $product['price'] }}</td> --}}
-                    <td>
-        
-                    
-                
-                @endforeach
+                        <td>{{ $entrance['project']['company_name']}}</td>
+                        <td>{{ $entrance['product']['name'] }}</td>
+                        <td>{{ $entrance['responsible'] }}</td>
+                        <td>{{ $entrance['quantity'] }}</td>
+                        <td>{{ $entrance['description'] }}</td>
+                        <td>{{ $entrance['date'] }}</td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
             @else
-            <p>No se encontraron productos.</p>
+            <p>No se encontraron entradas.</p>
             @endif
         </div>
-        </div>
+    </div>
 
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-        
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection

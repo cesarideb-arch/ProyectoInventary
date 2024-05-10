@@ -124,6 +124,12 @@
                             <i class="fas fa-arrow-circle-right"></i>
                         </a>
 
+                        
+                        <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
+                            <i class="fas fa-arrow-circle-right"></i>
+                        </a>
+
+
 
                     </div>
                 </td>
