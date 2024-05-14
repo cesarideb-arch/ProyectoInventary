@@ -27,7 +27,7 @@
                         <th>Cantidad</th>
                         <th>Fecha</th>
                         <th>Estado</th>
-                        <th>Boton</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

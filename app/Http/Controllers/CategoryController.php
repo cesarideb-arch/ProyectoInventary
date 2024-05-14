@@ -71,21 +71,20 @@ class CategoryController extends Controller {
 
 
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         // Validar los datos de la solicitud
         $request->validate([
             'name' => 'string|max:100',
             'description' => 'nullable|string|max:100'
             // Agrega aquí otras validaciones si es necesario
         ]);
-    
+
         // URL de la API para actualizar una categoría específica
         $apiUrl = 'http://localhost:8000/api/categories/' . $id;
-    
+
         // Realizar una solicitud HTTP PUT para actualizar la categoría
         $response = Http::put($apiUrl, $request->all());
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -96,14 +95,13 @@ class CategoryController extends Controller {
         }
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // URL de la API para eliminar una categoría específica
         $apiUrl = 'http://localhost:8000/api/categories/' . $id;
-    
+
         // Realizar una solicitud HTTP DELETE a la API para eliminar la categoría
         $response = Http::delete($apiUrl);
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -113,12 +111,4 @@ class CategoryController extends Controller {
             return back()->withErrors('Error al eliminar la categoría. Por favor, inténtalo de nuevo más tarde.');
         }
     }
-    
-
-
-    
-
-
-
-
 }
