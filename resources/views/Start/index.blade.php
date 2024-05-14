@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 <!DOCTYPE html>
 <html lang="en">
@@ -10,13 +11,22 @@
 </head>
 <body>
 
-    <h1 class="mb-4">Inicio</h1>
+    <div>
+        <h1 class="mb-4">Inicio</h1>
+        <p>Bienvenido a la página de inicio de la aplicación de inventario.</p>
+        @if(isset($counts['count']))
+            <p>El número de préstamos es: {{ $counts['count'] }}</p>
+        @else
+            <p>No se pudo obtener el número de préstamos.</p>
+        @endif
 
-  
+        @if(isset($products['count']))
+            <p>El número de productos es: {{ $products['count'] }}</p>
+        @else
+            <p>No se pudo obtener el número de productos.</p>
+        @endif
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 @endsection
