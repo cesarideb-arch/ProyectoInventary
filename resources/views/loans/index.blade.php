@@ -36,7 +36,7 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ $loan['quantity'] }}</td>
-                        <td>{{ $loan['date'] }}</td>
+                        <td>{{ \Carbon\Carbon::parse($loan['created_at'])->format('d/m/Y H:i:s') }}</td>
                         <td>
                             @if($loan['status'] == 0)
                                 Producto Regresado

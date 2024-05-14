@@ -205,8 +205,6 @@ class ProductController extends Controller {
     }
 
 
-
-
     public function create() {
 
         $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
