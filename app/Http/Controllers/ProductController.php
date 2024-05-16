@@ -111,24 +111,24 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
             'date' => 'required|date',
         ]);
-
+    
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/outputs';
-
+    
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
         $response = Http::post($apiUrl, $validatedData);
-
-        // dd para ver la respuesta de la API
-        // dd($response->json());
-
+    
         // Verificar si la solicitud fue exitosa
-
-        // Redirigir a una vista con un mensaje de éxito
-        return redirect()->route('products.index')->with('success', 'Entrada creada exitosamente.');
-
-        dd($request->all());
+        if ($response->successful()) {
+            // Redirigir a una vista con un mensaje de éxito
+            return redirect()->route('products.index')->with('success', 'Salida creada exitosamente.');
+        }
+    
+        // Manejar errores de la API
+        $error = $response->json('error', 'Ocurrió un error desconocido.');
+    
+        return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
-
 
 
 
@@ -141,24 +141,25 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
             'date' => 'required|date',
         ]);
-
+    
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/loans';
-
+    
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
         $response = Http::post($apiUrl, $validatedData);
-
-        // dd para ver la respuesta de la API
-        //  dd($response->json());
-
+    
         // Verificar si la solicitud fue exitosa
-
-        // Redirigir a una vista con un mensaje de éxito
-        return redirect()->route('products.index')->with('success', 'Prestamo creada exitosamente.');
-
-        dd($request->all());
+        if ($response->successful()) {
+            // Redirigir a una vista con un mensaje de éxito
+            return redirect()->route('products.index')->with('success', 'Préstamo creado exitosamente.');
+        }
+    
+        // Manejar errores de la API
+        $error = $response->json('error', 'Ocurrió un error desconocido.');
+    
+        return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
-
+    
 
 
 

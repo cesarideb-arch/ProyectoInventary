@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -22,37 +22,61 @@
 
         <div class="mt-4 mb-4">
             <h1>Proyectos</h1>
-         <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="mb-3">
                     <label for="project_id" class="form-label">Proyecto:</label>
-                    <select name="project_id" id="project_id" class="form-select" required>
+                    <select name="project_id" id="project_id" class="form-select @error('project_id') is-invalid @enderror" required>
                         @foreach ($projects as $project)
-                        <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                            <option value="{{ $project['id'] }}" {{ old('project_id') == $project['id'] ? 'selected' : '' }}>{{ $project['name'] }}</option>
                         @endforeach
                     </select>
+                    @error('project_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
-                    <input type="text" name="responsible" id="responsible" class="form-control" required maxlength="100">
+                    <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') }}">
+                    @error('responsible')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" required>
+                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
+                    @error('quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Descripción (Opcional):</label>
-                    <textarea name="description" id="description" class="form-control" maxlength="100"></textarea>
+                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" maxlength="100">{{ old('description') }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>
-                    <input type="datetime-local" name="date" id="date" class="form-control" required>
+                    <input type="datetime-local" name="date" id="date" class="form-control @error('date') is-invalid @enderror" required value="{{ old('date') }}">
+                    @error('date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
@@ -61,7 +85,7 @@
             </form>
         </div>
     </div>
-    {{-- @dd($errors)  --}}
+
     <!-- Opcional: Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -88,5 +112,7 @@
             form.classList.add('was-validated');
         });
     </script>
+
+{{-- @dd($errors) --}}
 </body>
 </html>
