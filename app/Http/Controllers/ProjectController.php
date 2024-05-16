@@ -6,18 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ProjectController extends Controller {
-    public function index() {
+    public function index(Request $request) {
         // URL de la API de proveedores
         $apiUrl = 'http://127.0.0.1:8000/api/projects';
+        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchProject';
+        $searchQuery = $request->input('query');
 
-        // Realiza una solicitud HTTP GET a la API y obtén la respuesta
-        $response = Http::get($apiUrl);
+
+        // Si hay un término de búsqueda, usar la URL de búsqueda
+        if ($searchQuery) {
+            $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+            $response = Http::get($apiSearchUrl);
+        } else {
+            $response = Http::get($apiUrl);
+        }
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $projects = $response->json();
-
             // Pasa los datos de proveedores a la vista y renderiza la vista
             return view('projects.index', compact('projects'));
         }
@@ -106,8 +113,7 @@ class ProjectController extends Controller {
         }
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // URL de la API para eliminar un proyecto específico
         $apiUrl = 'http://localhost:8000/api/projects/' . $id;
 

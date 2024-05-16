@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class SupplierController extends Controller {
-    public function index() {
+    public function index(Request $request) {
         // URL de la API de proveedores
         $apiUrl = 'http://127.0.0.1:8000/api/suppliers';
+        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchSupplier';
+        $searchQuery = $request->input('query');
 
-        // Realiza una solicitud HTTP GET a la API y obtén la respuesta
-        $response = Http::get($apiUrl);
+        // Si hay un término de búsqueda, usar la URL de búsqueda
+        if ($searchQuery) {
+            $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+            $response = Http::get($apiSearchUrl);
+        } else {
+            $response = Http::get($apiUrl);
+        }
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {

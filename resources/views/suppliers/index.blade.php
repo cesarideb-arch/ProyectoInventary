@@ -75,6 +75,14 @@
         <div class="mb-3">
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
         </div>
+        <form method="GET" action="{{ route('suppliers.index') }}">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Buscar proveedores..." value="{{ request('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
             @if(isset($suppliers) && count($suppliers) > 0)
             <table class="table table-striped">
