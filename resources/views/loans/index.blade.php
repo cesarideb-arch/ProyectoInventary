@@ -17,6 +17,14 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Préstamos</h1>
+        <form method="GET" action="{{ route('loans.index') }}">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Buscar prestamos..." value="{{ request('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
             @if(isset($loans) && count($loans) > 0)
             <table class="table table-striped">
@@ -36,7 +44,7 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ $loan['quantity'] }}</td>
-                        <td>{{ \Carbon\Carbon::parse($loan['created_at'])->format('d/m/Y H:i:s') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($loan['created_at'])->format('Y-m-d H:i:s') }}</td>
                         <td>
                             @if($loan['status'] == 0)
                                 Producto Regresado

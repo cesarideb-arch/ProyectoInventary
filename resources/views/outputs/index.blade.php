@@ -72,6 +72,15 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Salidas</h1>
+
+        <form method="GET" action="{{ route('outputs.index') }}">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Buscar salidas..." value="{{ request('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
             @if(isset($outputs) && count($outputs) > 0)
             <table class="table table-striped">
