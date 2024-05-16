@@ -104,15 +104,11 @@
                     <td>{{ $product['name'] }}</td>
                     <td>{{ $product['description'] }}</td>
                     <td>${{ $product['price'] }}</td>
-                    {{-- <td>{{ $product['category_id']}}</td>
-                    <td>{{ $product['supplier_id']}}</td> --}}
                     <td>{{ $product['category']['name']}}</td>
                     <td>{{ $product['supplier']['company']}}</td>
-            
                     <td>
                         <img src="http://localhost:8000/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 20%;">
                     </td>
-                    
                     <td>
                         <div class="btn-group btn-group-horizontal" role="group">
                             <!-- Botón de Edición -->
@@ -122,7 +118,6 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                        
                             <!-- Botón de Eliminación -->
                             <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form" style="margin-right: 5px;">
                                 @csrf
@@ -131,27 +126,35 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
-                        
                             <!-- Botón adicional, por ejemplo, Entradas -->
                             <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
-                        
                             <!-- Botón de Salida -->
                             <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
                                 <i class="fas fa-sign-out-alt" style="color: red;"></i>
                             </a>
-                        
                             <!-- Botón de Préstamos -->
                             <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-exchange-alt"></i>
                             </a>
                         </div>
-                </td>
+                    </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('products.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('products.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('products.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron productos.</p>
             @endif
@@ -166,7 +169,7 @@
             event.preventDefault(); // Previene la acción predeterminada del formulario
             Swal.fire({
                 title: '¿Estás seguro?',
-                text: "¿Quieres Eliminar?",
+                text: "¿Quieres eliminar este producto?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -181,12 +184,11 @@
             });
         });
     });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection

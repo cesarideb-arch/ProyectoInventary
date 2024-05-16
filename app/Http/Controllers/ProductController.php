@@ -11,35 +11,50 @@ class ProductController extends Controller {
         // URL base de la API de productos
         $apiUrl = 'http://127.0.0.1:8000/api/products';
         $searchQuery = $request->input('query');
-      
+
+        // Parámetros de paginación
+        $page = $request->input('page', 1); // Página actual, por defecto es 1
+        $perPage = 10; // Número máximo de elementos por página
+
         // Define la URL de búsqueda en la API
         $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
-  
-
 
         // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
         if ($searchQuery) {
-            $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+            $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
             $response = Http::get($apiSearchUrl);
         } else {
+            $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::get($apiUrl);
         }
-        
-    
+
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
-            $products = $response->json();
-    
-            // Pasa los datos de productos y la consulta de búsqueda a la vista y renderiza la vista
-            return view('products.index', compact('products', 'searchQuery'));
+            $data = $response->json();
+
+            // Verifica si la clave 'data' está presente en la respuesta
+            if (is_array($data) && array_key_exists('data', $data)) {
+                $products = $data['data'];
+                $total = $data['total'] ?? 0;
+                $currentPage = $data['current_page'] ?? 1;
+                $lastPage = $data['last_page'] ?? 1;
+            } else {
+                // Asume que toda la respuesta es el conjunto de datos
+                $products = array_slice($data, ($page - 1) * $perPage, $perPage);
+                $total = count($data);
+                $currentPage = $page;
+                $lastPage = ceil($total / $perPage);
+            }
+
+            // Pasa los datos de productos, la consulta de búsqueda y los parámetros de paginación a la vista y renderiza la vista
+            return view('products.index', compact('products', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
-    
+
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los productos de la API');
     }
-    
-    
+
 
 
     public function show($id) {
@@ -111,22 +126,22 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
             'date' => 'required|date',
         ]);
-    
+
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/outputs';
-    
+
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
         $response = Http::post($apiUrl, $validatedData);
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una vista con un mensaje de éxito
             return redirect()->route('products.index')->with('success', 'Salida creada exitosamente.');
         }
-    
+
         // Manejar errores de la API
         $error = $response->json('error', 'Ocurrió un error desconocido.');
-    
+
         return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
 
@@ -141,25 +156,25 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
             'date' => 'required|date',
         ]);
-    
+
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/loans';
-    
+
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
         $response = Http::post($apiUrl, $validatedData);
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una vista con un mensaje de éxito
             return redirect()->route('products.index')->with('success', 'Préstamo creado exitosamente.');
         }
-    
+
         // Manejar errores de la API
         $error = $response->json('error', 'Ocurrió un error desconocido.');
-    
+
         return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
-    
+
 
 
 
@@ -254,16 +269,16 @@ class ProductController extends Controller {
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
         ]);
-    
+
         // URL de tu API para almacenar productos
         $apiUrl = 'http://localhost:8000/api/products';
-    
+
         // Verificar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
-    
+
             // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
             $response = Http::attach(
                 'profile_image',
@@ -273,11 +288,11 @@ class ProductController extends Controller {
         } else {
             // Si no hay imagen adjunta, elimina el campo de imagen de los datos validados
             unset($validatedData['profile_image']);
-    
+
             // Realizar una solicitud HTTP POST a tu API sin el campo de imagen
             $response = Http::post($apiUrl, $validatedData);
         }
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -287,7 +302,7 @@ class ProductController extends Controller {
             return back()->withInput()->withErrors('Error al crear el producto. Por favor, inténtalo de nuevo más tarde.');
         }
     }
-    
+
 
     public function edit($id) {
 
@@ -335,27 +350,27 @@ class ProductController extends Controller {
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
         ]);
-    
+
         // URL de tu API para obtener y actualizar productos
         $apiUrl = 'http://localhost:8000/api/products/' . $id;
-    
+
         // Obtener los datos actuales del producto
         $currentProductResponse = Http::get($apiUrl);
-    
+
         if (!$currentProductResponse->successful()) {
             return back()->withInput()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
         }
-    
+
         $currentProductData = $currentProductResponse->json();
-    
+
         // Verificar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
-            
+
             $validatedData['_method'] = 'PUT';
-    
+
             // Realizar una solicitud HTTP PUT a tu API con los datos validados del formulario
             $response = Http::attach(
                 'profile_image',
@@ -366,11 +381,11 @@ class ProductController extends Controller {
             // Si no hay imagen adjunta, mantener la imagen actual
             $validatedData['profile_image'] = $currentProductData['profile_image'];
             $validatedData['_method'] = 'PUT';
-            
+
             // Realizar una solicitud HTTP PUT a tu API sin el campo de imagen
             $response = Http::post($apiUrl, $validatedData);
         }
-    
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
