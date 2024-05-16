@@ -6,19 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class CategoryController extends Controller {
-    public function index() {
-        // URL de la API de proveedores
-        $apiUrl = 'http://127.0.0.1:8000/api/categories';
 
-        // Realiza una solicitud HTTP GET a la API y obtén la respuesta
-        $response = Http::get($apiUrl);
+    public function index(Request $request) {
+        // URL de la API de categorías y búsqueda
+        $apiUrl = 'http://127.0.0.1:8000/api/categories';
+        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchCategory';
+        $searchQuery = $request->input('query');
+
+        // Si hay un término de búsqueda, usar la URL de búsqueda
+        if ($searchQuery) {
+            $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+            $response = Http::get($apiSearchUrl);
+        } else {
+            $response = Http::get($apiUrl);
+        }
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $categories = $response->json();
 
-            // Pasa los datos de proveedores a la vista y renderiza la vista
+            // Pasa los datos de categorías a la vista y renderiza la vista
             return view('categories.index', compact('categories'));
         }
     }
