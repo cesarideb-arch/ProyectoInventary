@@ -123,6 +123,17 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('suppliers.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('suppliers.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('suppliers.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron proveedores.</p>
             @endif
@@ -162,5 +173,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection
