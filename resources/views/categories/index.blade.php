@@ -77,7 +77,7 @@
         </div>
         <form method="GET" action="{{ route('categories.index') }}">
             <div class="input-group mb-3">
-                <input type="text" name="query" class="form-control" placeholder="Buscar categorias..." value="{{ request('query') }}">
+                <input type="text" name="query" class="form-control" placeholder="Buscar categorías..." value="{{ request('query') }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                 </div>
@@ -88,34 +88,45 @@
             @if(isset($categories) && count($categories) > 0)
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th style="text-align: center;" colspan="2">Acciones</th>
-                </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th style="text-align: center;" colspan="2">Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
-                @foreach($categories as $category)
+                    @foreach($categories as $category)
                     <tr>
-                    <td>{{ $category['name'] }}</td>
-                    <td>{{ $category['description'] }}</td>
-                    <td>
-                        <div class="btn-group btn-group-horizontal text-center" role="group">
-                        <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
-                        </form>
-                        <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
-                        </form>
-                        </div>
-                    </td>
+                        <td>{{ $category['name'] }}</td>
+                        <td>{{ $category['description'] }}</td>
+                        <td>
+                            <div class="btn-group btn-group-horizontal text-center" role="group">
+                                <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
+                                </form>
+                                <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
-                @endforeach
+                    @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('categories.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('categories.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('categories.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron categorías.</p>
             @endif
@@ -153,5 +164,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection
