@@ -114,38 +114,39 @@
                     </td>
                     
                     <td>
-                    <div class="btn-group btn-group-horizontal" role="group">
-                        <!-- Botón de Edición -->
-                        <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </form>
-                
-                        <!-- Botón de Eliminación -->
-                        <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </form>
-                
-                        <!-- Botón adicional, por ejemplo, Entradas -->
-                        <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-arrow-circle-right"></i>
-                        </a>
-
-                        <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-arrow-circle-right"></i>
-                        </a>
-
+                        <div class="btn-group btn-group-horizontal" role="group">
+                            <!-- Botón de Edición -->
+                            <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
+                                @csrf
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </form>
                         
-                        <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
+                            <!-- Botón de Eliminación -->
+                            <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form" style="margin-right: 5px;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        
+                            <!-- Botón adicional, por ejemplo, Entradas -->
+                            <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                                <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        
+                            <!-- Botón de Salida -->
+                            <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                                <i class="fas fa-sign-out-alt" style="color: red;"></i>
+                            </a>
+                        
+                            <!-- Botón de Préstamos -->
+                            <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
+                                <i class="fas fa-exchange-alt"></i>
+                            </a>
+                        </div>
                 </td>
                     </tr>
                 @endforeach
