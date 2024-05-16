@@ -75,7 +75,16 @@
         <div class="mb-3">
             <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
         </div>
+        <form method="GET" action="{{ route('products.index') }}">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Buscar productos..." value="{{ request('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive">
+            <!-- Tabla de productos -->
             @if(isset($products) && count($products) > 0)
             <table class="table table-striped">
                 <thead>
@@ -83,6 +92,9 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
+                    <th>Categoría</th>
+                    <th>Proveedor</th>
+                    <th>Imagen</th>
                     <th style="text-align: center;" colspan="3">Acciones</th>
                 </tr>
                 </thead>
@@ -92,6 +104,11 @@
                     <td>{{ $product['name'] }}</td>
                     <td>{{ $product['description'] }}</td>
                     <td>${{ $product['price'] }}</td>
+                    {{-- <td>{{ $product['category_id']}}</td>
+                    <td>{{ $product['supplier_id']}}</td> --}}
+                         <td>{{ $product['category']['name']}}</td>
+                    <td>{{ $product['supplier']['company']}}</td>
+            
                     <td>
                         <img src="http://localhost:8000/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 20%;">
                     </td>
@@ -128,12 +145,8 @@
                         <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
                             <i class="fas fa-arrow-circle-right"></i>
                         </a>
-
-
-
                     </div>
                 </td>
-                    
                     </tr>
                 @endforeach
                 </tbody>
@@ -142,10 +155,7 @@
             <p>No se encontraron productos.</p>
             @endif
         </div>
-        </div>
-
-
-
+    </div>
 
     <script>
     const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
@@ -172,11 +182,9 @@
     });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-        
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 

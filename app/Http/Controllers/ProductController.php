@@ -7,22 +7,82 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller {
 
-    public function index() {
-        // URL de la API de productos
+    //  public function index(Request $request) {
+    //     // URL base de la API de productos
+    //     $apiUrl = 'http://127.0.0.1:8000/api/products';
+    //     $searchQuery = $request->input('query');
+      
+    //     // Define la URL de búsqueda en la API
+    //     $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
+    
+
+    //     // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
+    //     if ($searchQuery) {
+    //         $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+    //         $response = Http::get($apiSearchUrl);
+    //     } else {
+    //         $response = Http::get($apiUrl);
+    //     }
+        
+    
+    //     // Verifica si la solicitud fue exitosa
+    //     if ($response->successful()) {
+    //         // Decodifica la respuesta JSON en un array asociativo
+    //         $products = $response->json();
+    
+    //         // Pasa los datos de productos y la consulta de búsqueda a la vista y renderiza la vista
+    //         return view('products.index', compact('products', 'searchQuery'));
+    //     }
+    
+    //     // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
+    //     return redirect()->back()->with('error', 'Error al obtener los productos de la API');
+    // }
+    
+    public function index(Request $request) {
+        // URL base de la API de productos
         $apiUrl = 'http://127.0.0.1:8000/api/products';
-
-        // Realiza una solicitud HTTP GET a la API y obtén la respuesta
-        $response = Http::get($apiUrl);
-
+        $searchQuery = $request->input('query');
+      
+        // Define la URL de búsqueda en la API
+        $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
+        $categoriesApiUrl = 'http://127.0.0.1:8000/api/categories';
+        $suppliersApiUrl = 'http://127.0.0.1:8000/api/suppliers';
+    
+        // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
+        if ($searchQuery) {
+            $apiSearchUrl .= '?search=' . urlencode($searchQuery);
+            $response = Http::get($apiSearchUrl);
+        } else {
+            $response = Http::get($apiUrl);
+        }
+      
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $products = $response->json();
-
-            // Pasa los datos de productos a la vista y renderiza la vista
-            return view('products.index', compact('products'));
+    
+            // Obtiene las categorías y proveedores
+            $categoriesResponse = Http::get($categoriesApiUrl);
+            $suppliersResponse = Http::get($suppliersApiUrl);
+    
+            if ($categoriesResponse->successful() && $suppliersResponse->successful()) {
+                $categories = $categoriesResponse->json();
+                $suppliers = $suppliersResponse->json();
+            } else {
+                // Si las solicitudes de categorías o proveedores no fueron exitosas, redirige o muestra un mensaje de error
+                return redirect()->back()->with('error', 'Error al obtener las categorías o proveedores de la API');
+            }
+    
+            // Pasa los datos de productos, categorías, proveedores y la consulta de búsqueda a la vista y renderiza la vista
+            return view('products.index', compact('products', 'categories', 'suppliers', 'searchQuery'));
         }
+    
+        // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
+        return redirect()->back()->with('error', 'Error al obtener los productos de la API');
     }
+    
+    
+
 
 
     public function show($id) {
