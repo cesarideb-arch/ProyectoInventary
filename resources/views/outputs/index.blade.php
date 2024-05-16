@@ -97,7 +97,7 @@
                 <tbody>
                     @foreach($outputs as $output)
                     <tr>
-                        <td>{{ $output['project']['company_name']}}</td>
+                        <td>{{ $output['project']['company_name'] }}</td>
                         <td>{{ $output['product']['name'] }}</td>
                         <td>{{ $output['responsible'] }}</td>
                         <td>{{ $output['quantity'] }}</td>
@@ -107,6 +107,17 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('outputs.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('outputs.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('outputs.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron salidas.</p>
             @endif

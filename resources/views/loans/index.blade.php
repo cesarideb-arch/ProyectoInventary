@@ -19,7 +19,7 @@
         <h1 class="mb-4">Listado de Préstamos</h1>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
-                <input type="text" name="query" class="form-control" placeholder="Buscar prestamos..." value="{{ request('query') }}">
+                <input type="text" name="query" class="form-control" placeholder="Buscar préstamos..." value="{{ request('query') }}">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                 </div>
@@ -66,6 +66,17 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('loans.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('loans.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('loans.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron préstamos.</p>
             @endif
@@ -101,7 +112,6 @@
             });
         });
     </script>
-    {{-- @dd($errors) --}}
 </body>
 </html>
 @endsection
