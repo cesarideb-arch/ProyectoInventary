@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -7,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
+    <title>Lista de Entradas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -69,18 +68,20 @@
             margin-right: 5px;
         }
     </style>
+</head>
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Entradas</h1>
-        <div class="table-responsive">
-            <form method="GET" action="{{ route('entrances.index') }}">
-                <div class="input-group mb-3">
-                    <input type="text" name="query" class="form-control" placeholder="Buscar entradas..." value="{{ request('query') }}">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-                    </div>
+
+        <form method="GET" action="{{ route('entrances.index') }}">
+            <div class="input-group mb-3">
+                <input type="text" name="query" class="form-control" placeholder="Buscar entradas..." value="{{ request('query') }}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                 </div>
-            </form>
+            </div>
+        </form>
+        <div class="table-responsive">
             @if(isset($entrances) && count($entrances) > 0)
             <table class="table table-striped">
                 <thead>
@@ -96,22 +97,32 @@
                 <tbody>
                     @foreach($entrances as $entrance)
                     <tr>
-                        <td>{{ $entrance['project']['company_name']}}</td>
-                        <td>{{ $entrance['product']['name'] }}</td>
-                        <td>{{ $entrance['responsible'] }}</td>
-                        <td>{{ $entrance['quantity'] }}</td>
-                        <td>{{ $entrance['description'] }}</td>
-                        <td>{{ $entrance['date'] }}</td>
+                        <td>{{ $entrance['project']['company_name'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['product']['name'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['quantity'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['description'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['date'] ?? 'N/A' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            <div class="pagination">
+                @if($currentPage > 1)
+                    <a href="{{ route('entrances.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                @for($i = 1; $i <= $lastPage; $i++)
+                    <a href="{{ route('entrances.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
+                @endfor
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('entrances.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+            </div>
             @else
             <p>No se encontraron entradas.</p>
             @endif
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
