@@ -106,7 +106,7 @@
                     <td>${{ $product['price'] }}</td>
                     {{-- <td>{{ $product['category_id']}}</td>
                     <td>{{ $product['supplier_id']}}</td> --}}
-                         <td>{{ $product['category']['name']}}</td>
+                    <td>{{ $product['category']['name']}}</td>
                     <td>{{ $product['supplier']['company']}}</td>
             
                     <td>

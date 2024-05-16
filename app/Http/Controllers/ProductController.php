@@ -7,37 +7,6 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller {
 
-    //  public function index(Request $request) {
-    //     // URL base de la API de productos
-    //     $apiUrl = 'http://127.0.0.1:8000/api/products';
-    //     $searchQuery = $request->input('query');
-      
-    //     // Define la URL de búsqueda en la API
-    //     $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
-    
-
-    //     // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
-    //     if ($searchQuery) {
-    //         $apiSearchUrl .= '?search=' . urlencode($searchQuery);
-    //         $response = Http::get($apiSearchUrl);
-    //     } else {
-    //         $response = Http::get($apiUrl);
-    //     }
-        
-    
-    //     // Verifica si la solicitud fue exitosa
-    //     if ($response->successful()) {
-    //         // Decodifica la respuesta JSON en un array asociativo
-    //         $products = $response->json();
-    
-    //         // Pasa los datos de productos y la consulta de búsqueda a la vista y renderiza la vista
-    //         return view('products.index', compact('products', 'searchQuery'));
-    //     }
-    
-    //     // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
-    //     return redirect()->back()->with('error', 'Error al obtener los productos de la API');
-    // }
-    
     public function index(Request $request) {
         // URL base de la API de productos
         $apiUrl = 'http://127.0.0.1:8000/api/products';
@@ -45,9 +14,9 @@ class ProductController extends Controller {
       
         // Define la URL de búsqueda en la API
         $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
-        $categoriesApiUrl = 'http://127.0.0.1:8000/api/categories';
-        $suppliersApiUrl = 'http://127.0.0.1:8000/api/suppliers';
-    
+  
+
+
         // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery);
@@ -55,26 +24,15 @@ class ProductController extends Controller {
         } else {
             $response = Http::get($apiUrl);
         }
-      
+        
+    
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $products = $response->json();
     
-            // Obtiene las categorías y proveedores
-            $categoriesResponse = Http::get($categoriesApiUrl);
-            $suppliersResponse = Http::get($suppliersApiUrl);
-    
-            if ($categoriesResponse->successful() && $suppliersResponse->successful()) {
-                $categories = $categoriesResponse->json();
-                $suppliers = $suppliersResponse->json();
-            } else {
-                // Si las solicitudes de categorías o proveedores no fueron exitosas, redirige o muestra un mensaje de error
-                return redirect()->back()->with('error', 'Error al obtener las categorías o proveedores de la API');
-            }
-    
-            // Pasa los datos de productos, categorías, proveedores y la consulta de búsqueda a la vista y renderiza la vista
-            return view('products.index', compact('products', 'categories', 'suppliers', 'searchQuery'));
+            // Pasa los datos de productos y la consulta de búsqueda a la vista y renderiza la vista
+            return view('products.index', compact('products', 'searchQuery'));
         }
     
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
@@ -82,7 +40,6 @@ class ProductController extends Controller {
     }
     
     
-
 
 
     public function show($id) {
@@ -296,38 +253,30 @@ class ProductController extends Controller {
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
         ]);
-
+    
         // URL de tu API para almacenar productos
         $apiUrl = 'http://localhost:8000/api/products';
-
-        // dd($request->hasFile('profile_image'));
-
+    
         // Verificar si la solicitud contiene una imagen
-        /*  if ($request->hasFile('profile_image')) {
+        if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
-
+    
             // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
             $response = Http::attach(
                 'profile_image',
                 $imageContents,
                 $imageName
             )->post($apiUrl, $validatedData);
-
         } else {
-            // Si no hay imagen adjunta, simplemente envía los datos sin el campo de imagen
+            // Si no hay imagen adjunta, elimina el campo de imagen de los datos validados
+            unset($validatedData['profile_image']);
+    
+            // Realizar una solicitud HTTP POST a tu API sin el campo de imagen
             $response = Http::post($apiUrl, $validatedData);
-        } */
-
-        $response = Http::attach(
-            'profile_image',
-            file_get_contents($request->file('profile_image')),
-            $request->file('profile_image')->getClientOriginalName()
-        )->post($apiUrl, $validatedData);
-
-        // dd($response->json());
-
+        }
+    
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -337,6 +286,7 @@ class ProductController extends Controller {
             return back()->withInput()->withErrors('Error al crear el producto. Por favor, inténtalo de nuevo más tarde.');
         }
     }
+    
 
     public function edit($id) {
 
@@ -384,32 +334,42 @@ class ProductController extends Controller {
             'category_id' => 'required|integer',
             'supplier_id' => 'required|integer',
         ]);
-
-        // URL de tu API para actualizar productos
+    
+        // URL de tu API para obtener y actualizar productos
         $apiUrl = 'http://localhost:8000/api/products/' . $id;
-        //  dd($request->all());
+    
+        // Obtener los datos actuales del producto
+        $currentProductResponse = Http::get($apiUrl);
+    
+        if (!$currentProductResponse->successful()) {
+            return back()->withInput()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
+        }
+    
+        $currentProductData = $currentProductResponse->json();
+    
         // Verificar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {
             $file = $request->file('profile_image');
             $imageContents = file_get_contents($file->getPathname());
             $imageName = $file->getClientOriginalName();
-
-
-
+            
             $validatedData['_method'] = 'PUT';
+    
             // Realizar una solicitud HTTP PUT a tu API con los datos validados del formulario
             $response = Http::attach(
                 'profile_image',
                 $imageContents,
                 $imageName
             )->post($apiUrl, $validatedData);
-
-            // dd($response->json());
         } else {
-            // Si no hay imagen adjunta, simplemente envía los datos sin el campo de imagen
+            // Si no hay imagen adjunta, mantener la imagen actual
+            $validatedData['profile_image'] = $currentProductData['profile_image'];
+            $validatedData['_method'] = 'PUT';
+            
+            // Realizar una solicitud HTTP PUT a tu API sin el campo de imagen
             $response = Http::post($apiUrl, $validatedData);
         }
-
+    
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -419,7 +379,6 @@ class ProductController extends Controller {
             return back()->withInput()->withErrors('Error al actualizar el producto. Por favor, inténtalo de nuevo más tarde.');
         }
     }
-
 
     public function destroy($id) {
         // URL de la API para eliminar un producto específico

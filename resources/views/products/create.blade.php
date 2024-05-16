@@ -5,6 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .image-preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #imagePreview {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: none;
+            margin-top: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -57,13 +101,16 @@
                 <label for="price">Precio:</label>
                 <input type="number" id="price" name="price" value="{{ old('price') }}" step="0.01" required class="form-control">
             </div>
-            
-        <div class="form-group">
-                <label for="profile_image">Imagen:</label>
-                <input type="file" id="profile_image" name="profile_image" class="form-control">
-            </div> 
 
-           
+            <div class="form-group">
+                <label for="profile_image">Imagen:</label>
+                <input type="file" id="profile_image" name="profile_image" class="form-control" onchange="previewImage(event)">
+            </div>
+
+            <div class="image-preview-container">
+                <img id="imagePreview" src="#" alt="Vista previa de la imagen">
+            </div>
+
             <div class="form-group">
                 <label for="serie">Serie:</label>
                 <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control">
@@ -83,7 +130,7 @@
                 <label for="supplier_id">Proveedor:</label>
                 <select id="supplier_id" name="supplier_id" class="form-control">
                     <option value="">Seleccione un proveedor</option>
-                    @foreach ($suppliers as $supplier )
+                    @foreach ($suppliers as $supplier)
                         <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
                     @endforeach
                 </select>
@@ -93,19 +140,30 @@
                 <label for="category_id">Categoría:</label>
                 <select id="category_id" name="category_id" class="form-control">
                     <option value="">Seleccione una categoría</option>
-                    @foreach ($categories as $category )
+                    @foreach ($categories as $category)
                         <option value="{{ $category['id']}}">{{ $category['name']}}</option>
                     @endforeach
                 </select>
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
+            <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
         </form>
-        {{-- @dd($errors->all()) --}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
 </html>

@@ -61,9 +61,9 @@ Route::get('/products/{id}/loans', [ProductController::class, 'loansGet'])->name
 Route::get('/products/{id}/output', [ProductController::class, 'outPutGet'])->name('products.output.get');
 
 
-// Route::get('/products/{id}/entrances', [ProductController::class, 'entrancesGet'])->name('products.entrances.get');
-// Route::post('/products/{id}/entrances', [ProductController::class, 'entrancesPost'])->name('products.entrances.post');
-// Route::post('/products/{id}/output', [ProductController::class, 'outPutPost'])->name('products.output.post');
+Route::get('/products/{id}/entrances', [ProductController::class, 'entrancesGet'])->name('products.entrances.get');
+Route::post('/products/{id}/entrances', [ProductController::class, 'entrancesPost'])->name('products.entrances.post');
+ Route::post('/products/{id}/output', [ProductController::class, 'outPutPost'])->name('products.output.post');
 
 
 
