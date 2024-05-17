@@ -95,7 +95,6 @@ class ProductController extends Controller {
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
-            'date' => 'required|date',
         ]);
 
         // URL de tu segunda API para almacenar datos
@@ -124,7 +123,6 @@ class ProductController extends Controller {
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
-            'date' => 'required|date',
         ]);
 
         // URL de tu segunda API para almacenar datos
@@ -154,7 +152,6 @@ class ProductController extends Controller {
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
-            'date' => 'required|date',
         ]);
 
         // URL de tu segunda API para almacenar datos

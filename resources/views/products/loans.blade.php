@@ -49,17 +49,19 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>
                     <input type="datetime-local" name="date" id="date" class="form-control @error('date') is-invalid @enderror" required value="{{ old('date') }}">
                     @error('date')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>
+                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
                 </div>
+                
             </form>
         </div>
     </div>

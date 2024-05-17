@@ -102,8 +102,8 @@
                         <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['quantity'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['description'] ?? 'N/A' }}</td>
-                        <td>{{ $entrance['date'] ?? 'N/A' }}</td>
-                    </tr>
+                        <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d h:i:s A') }}</td>
+
                     @endforeach
                 </tbody>
             </table>
