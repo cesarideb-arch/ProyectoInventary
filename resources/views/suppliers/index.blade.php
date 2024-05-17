@@ -133,6 +133,9 @@
                 @if($currentPage < $lastPage)
                     <a href="{{ route('suppliers.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
+                <a href="{{ route('projects.index') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i>
+                </a>            </div>
             </div>
             @else
             <p>No se encontraron proveedores.</p>

@@ -76,6 +76,9 @@
                 @if($currentPage < $lastPage)
                     <a href="{{ route('loans.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
+                <a href="{{ route('loans.index') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i>
+                </a>            </div>
             </div>
             @else
             <p>No se encontraron préstamos.</p>

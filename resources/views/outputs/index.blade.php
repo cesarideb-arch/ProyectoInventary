@@ -117,7 +117,9 @@
                 @if($currentPage < $lastPage)
                     <a href="{{ route('outputs.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
-            </div>
+                <a href="{{ route('outputs.index') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i>
+                </a>            </div>
             @else
             <p>No se encontraron salidas.</p>
             @endif
