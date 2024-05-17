@@ -130,9 +130,13 @@
                 <label for="supplier_id">Proveedor:</label>
                 <select id="supplier_id" name="supplier_id" class="form-control">
                     <option value="">Seleccione un proveedor</option>
-                    @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
-                    @endforeach
+                    @if (count($suppliers) > 0)
+                        @foreach ($suppliers as $supplier)
+                            <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No hay proveedores disponibles Agrega</option>
+                    @endif
                 </select>
             </div>
 
@@ -140,9 +144,13 @@
                 <label for="category_id">Categoría:</label>
                 <select id="category_id" name="category_id" class="form-control">
                     <option value="">Seleccione una categoría</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category['id']}}">{{ $category['name']}}</option>
-                    @endforeach
+                    @if (count($categories) > 0)
+                        @foreach ($categories as $category)
+                            <option value="{{ $category['id']}}">{{ $category['name']}}</option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No hay categorías disponibles Agrega</option>
+                    @endif
                 </select>
             </div>
 

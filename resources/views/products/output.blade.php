@@ -33,16 +33,18 @@
             @endif
             <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
-                <div class="mb-3">
-                    <label for="project_id" class="form-label">Proyecto:</label>
-                    <select name="project_id" id="project_id" class="form-select @error('project_id') is-invalid @enderror" required>
-                        @foreach ($projects as $project)
-                            <option value="{{ $project['id'] }}" {{ old('project_id') == $project['id'] ? 'selected' : '' }}>{{ $project['name'] }}</option>
-                        @endforeach
+                <div class="form-group">
+                    <label for="project_id">Proyecto:</label>
+                    <select id="project_id" name="project_id" class="form-control">
+                        <option value="">Seleccione un proyecto</option>
+                        @if (count($projects) > 0)
+                            @foreach ($projects as $project)
+                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                            @endforeach
+                        @else
+                            <option value="" disabled>No hay proyectos disponibles Agrega</option>
+                        @endif
                     </select>
-                    @error('project_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>

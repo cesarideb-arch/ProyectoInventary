@@ -24,12 +24,17 @@
             <h1>Proyectos</h1>
             <form id="entranceForm" action="{{ route('products.entrances.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
-                <div class="mb-3">
-                    <label for="project_id" class="form-label">Proyecto:</label>
-                    <select name="project_id" id="project_id" class="form-select" required>
-                        @foreach ($projects as $project)
-                        <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
-                        @endforeach
+                <div class="form-group">
+                    <label for="project_id">Proyecto:</label>
+                    <select id="project_id" name="project_id" class="form-control">
+                        <option value="">Seleccione un proyecto</option>
+                        @if (count($projects) > 0)
+                            @foreach ($projects as $project)
+                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                            @endforeach
+                        @else
+                            <option value="" disabled>No hay proyectos disponibles Agrega</option>
+                        @endif
                     </select>
                 </div>
 
