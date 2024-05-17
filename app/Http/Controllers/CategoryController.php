@@ -127,17 +127,17 @@ class CategoryController extends Controller {
     public function destroy($id) {
         // URL de la API para eliminar una categoría específica
         $apiUrl = 'http://localhost:8000/api/categories/' . $id;
-
+    
         // Realizar una solicitud HTTP DELETE a la API para eliminar la categoría
         $response = Http::delete($apiUrl);
-
+    
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
-            // Redirigir a una página de éxito o mostrar un mensaje de éxito
             return redirect()->route('categories.index')->with('success', 'Categoría eliminada exitosamente.');
         } else {
-            // Manejar errores si la solicitud no fue exitosa
-            return back()->withErrors('Error al eliminar la categoría. Por favor, inténtalo de nuevo más tarde.');
+            $errorMessage = $response->json()['message'] ?? 'Error al eliminar la categoría. Por favor, inténtalo de nuevo más tarde.';
+            return redirect()->route('categories.index')->with('error', $errorMessage);
         }
     }
+    
 }

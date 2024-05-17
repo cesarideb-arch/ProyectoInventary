@@ -149,7 +149,8 @@ class ProjectController extends Controller {
             return redirect()->route('projects.index')->with('success', 'Proyecto eliminado exitosamente.');
         } else {
             // Manejar errores si la solicitud no fue exitosa
-            return back()->withErrors('Error al eliminar el proyecto. Por favor, inténtalo de nuevo más tarde.');
+            $errorMessage = $response->json()['message'] ?? 'Error al eliminar el proyecto. Por favor, inténtalo de nuevo más tarde.';
+            return redirect()->route('projects.index')->with('error', $errorMessage);
         }
     }
 }

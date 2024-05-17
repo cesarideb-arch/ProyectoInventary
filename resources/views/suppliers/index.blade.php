@@ -11,54 +11,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Estilos para la ventana emergente */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .modal-content i {
-            color: red;
-            font-size: 24px;
-        }
-
-        .modal-buttons {
-            margin-top: 20px;
-        }
-
-        .modal-buttons button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .modal-buttons button.cancel {
-            background-color: #ccc;
-        }
-
-        .modal-buttons button.confirm {
-            background-color: #ff3b30;
-            color: white;
-        }
-
         .btn-group-horizontal {
             display: flex;
             align-items: center;
@@ -135,13 +87,34 @@
                 @endif
                 <a href="{{ route('projects.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
+            </div>
             </div>
             @else
             <p>No se encontraron proveedores.</p>
             @endif
         </div>
     </div>
+
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session('error') }}'
+        });
+    </script>
+    @endif
 
     <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script>

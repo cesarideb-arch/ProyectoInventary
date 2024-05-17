@@ -81,13 +81,33 @@
                 @endif
                 <a href="{{ route('projects.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
             </div>
             @else
             <p>No se encontraron proyectos.</p>
             @endif
         </div>
     </div>
+
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session('error') }}'
+        });
+    </script>
+    @endif
 
     <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

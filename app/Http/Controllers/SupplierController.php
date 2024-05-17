@@ -143,7 +143,8 @@ class SupplierController extends Controller {
             return redirect()->route('suppliers.index')->with('success', 'Proveedor eliminado exitosamente.');
         } else {
             // Manejar errores si la solicitud no fue exitosa
-            return back()->withErrors('Error al eliminar el proveedor. Por favor, inténtalo de nuevo más tarde.');
+            $errorMessage = $response->json()['message'] ?? 'Error al eliminar el proveedor. Por favor, inténtalo de nuevo más tarde.';
+            return redirect()->route('suppliers.index')->with('error', $errorMessage);
         }
     }
 }
