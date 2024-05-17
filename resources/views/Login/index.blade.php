@@ -79,7 +79,15 @@
     <div class="container">
         <div class="login-form">
             <div class="login-heading">
-                <img src="https://img.freepik.com/fotos-premium/icono-avatar-personas-representacion-3d-aislado-sobre-fondo-transparente_640106-1078.jpg?w=826" alt="Logo">
+                <div class="login-heading">
+                    <div class="login-heading text-center">
+                        <img src="{{ asset('fav.png') }}" alt="Logo" style="margin-left: -10px;">
+                        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+                    </div>
+                    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+                </div>
+                
+                <link rel="icon" href="/favicon.ico" type="image/x-icon">
             </div>
             <form action="{{ route('login') }}" method="POST">
                 @csrf
