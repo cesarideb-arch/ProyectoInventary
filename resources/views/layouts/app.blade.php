@@ -23,18 +23,19 @@
             color: #fff;
             padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
         }
 
         .menu-toggle {
             display: none;
             flex-direction: column;
             cursor: pointer;
-            justify-content: flex-start;
-            /* Alinea el botón a la izquierda */
-            align-self: flex-start;
-            /* Añade un margen izquierdo para separarlo del borde izquierdo */
             margin-left: 10px;
         }
 
@@ -51,6 +52,8 @@
             padding: 0;
             display: flex;
             align-items: center;
+            justify-content: center;
+            flex: 1;
         }
 
         .nav-list li {
@@ -65,6 +68,11 @@
 
         .nav-list li a:hover {
             color: #ffcc00;
+        }
+
+        .nav-list img {
+            height: 60px;
+            margin-right: 20px;
         }
 
         .logout-form {
@@ -89,15 +97,12 @@
                 justify-content: center;
                 padding: 10px;
                 align-items: center;
-                /* Alinea el botón a la izquierda */
-                align-self: flex-start;
-                /* Quita el margen izquierdo para que no haya espacio adicional */
                 margin-left: 0;
             }
 
             .nav-list {
                 position: absolute;
-                top: 70px;
+                top: 143px;
                 left: 0;
                 right: 0;
                 background-color: #333;
@@ -111,7 +116,6 @@
                 border-radius: 5px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
-
             .nav-list.active {
                 display: flex;
             }
@@ -129,43 +133,44 @@
                 display: block;
                 padding: 10px;
             }
+
+            .nav-list img {
+                height: 40px;
+                margin-right: 0;
+            }
         }
     </style>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario</title>
     <!-- Incluir SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <nav>
-        <div class="container">
-            <div class="menu-toggle" id="mobile-menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-            <ul class="nav-list">
-                <li><a href="{{ route('start.index') }}">Inicio</a></li>
-                <li><a href="{{ route('products.index') }}">Inventario</a></li>
-                <li><a href="{{ route('categories.index') }}">Categorías</a></li>
-                <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
-                <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
-                <li><a href="{{ route('entrances.index') }}">Lista de Entradas</a></li>
-                <li><a href="{{ route('outputs.index') }}"> Lista de Salidas</a></li>
-                <li><a href="{{ route('loans.index') }}"> Lista de Prestamo</a></li>
-
-                <li class="logout-form">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" style="background-color: transparent; border: none; margin-top: 10px; outline: none;">
-                            <i class="fas fa-sign-out-alt" style="color: red; font-size: 24px; border-radius: 15px; padding: 5px; background-color: rgba(255, 0, 0, 0.1);"></i>
-                        </button>
-                    </form>
-                </li>
-            </ul>
+        <div class="logo">
+            <img src="{{ asset('favicon.ico') }}" alt="Logo" style="height: 80px;">
         </div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="nav-list">
+            <li><a href="{{ route('start.index') }}">Inicio</a></li>
+            <li><a href="{{ route('products.index') }}">Inventario</a></li>
+            <li><a href="{{ route('categories.index') }}">Categorías</a></li>
+            <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
+            <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
+            <li><a href="{{ route('entrances.index') }}">Lista de Entradas</a></li>
+            <li><a href="{{ route('outputs.index') }}">Lista de Salidas</a></li>
+            <li><a href="{{ route('loans.index') }}">Lista de Prestamo</a></li>
+            <li class="logout-form">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" style="background-color: transparent; border: none; margin-top: 10px; outline: none;">
+                        <i class="fas fa-sign-out-alt" style="color: red; font-size: 24px; border-radius: 15px; padding: 5px; background-color: rgba(255, 0, 0, 0.1);"></i>
+                    </button>
+                </form>
+            </li>
+        </ul>
     </nav>
     
     <div class="container">
