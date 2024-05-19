@@ -79,7 +79,7 @@
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar productos..." value="{{ request('query') }}">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    <button class="btn" type="submit" style="background-color: #333 ; color: rgb(255, 255, 255);">Buscar</button>
                 </div>
             </div>
         </form>
@@ -156,7 +156,8 @@
                 @endif
                 <a href="{{ route('products.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
+            </div>
             </div>
             @else
             <p>No se encontraron productos.</p>

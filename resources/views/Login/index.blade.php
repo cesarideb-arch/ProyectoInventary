@@ -73,6 +73,12 @@
             margin-top: 10px; /* Mueve el mensaje de error un poco más abajo */
             color: #dc3545; /* Color rojo */
         }
+
+        /* Cambia el color de selección del texto */
+        ::selection {
+            background: #333 !important; /* Cambia este color al que prefieras */
+            color: #fff !important; /* Cambia este color al que prefieras */
+        }
     </style>
     
 <body>

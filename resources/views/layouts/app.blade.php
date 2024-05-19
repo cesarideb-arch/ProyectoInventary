@@ -102,7 +102,7 @@
 
             .nav-list {
                 position: absolute;
-                top: 143px;
+                top: 140px;
                 left: 0;
                 right: 0;
                 background-color: #333;
