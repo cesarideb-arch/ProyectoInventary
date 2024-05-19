@@ -18,15 +18,18 @@ class EntranceController extends Controller
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 15; // Número máximo de elementos por página
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
     
         // Realiza una solicitud HTTP GET a la API y obtén la respuesta
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiSearchUrl);
+            $response = Http::withToken($token)->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiUrl);
+            $response = Http::withToken($token)->get($apiUrl);
         }
     
         // Verifica si la solicitud fue exitosa
@@ -55,5 +58,4 @@ class EntranceController extends Controller
             return 'Error: ' . $response->status();
         }
     }
-    
 }

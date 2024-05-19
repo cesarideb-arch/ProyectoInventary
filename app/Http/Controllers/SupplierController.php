@@ -16,13 +16,16 @@ class SupplierController extends Controller {
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 10; // Número máximo de elementos por página
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiSearchUrl);
+            $response = Http::withToken($token)->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiUrl);
+            $response = Http::withToken($token)->get($apiUrl);
         }
 
         // Verifica si la solicitud fue exitosa
@@ -52,7 +55,6 @@ class SupplierController extends Controller {
         return redirect()->back()->with('error', 'Error al obtener los proveedores de la API');
     }
 
-
     public function create() {
         return view('suppliers.create');
     }
@@ -70,10 +72,13 @@ class SupplierController extends Controller {
         ]);
 
         // URL de tu API para almacenar proveedores
-        $apiUrl = 'http://localhost:8000/api/suppliers';
+        $apiUrl = 'http://127.0.0.1:8000/api/suppliers';
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -85,12 +90,15 @@ class SupplierController extends Controller {
         }
     }
 
-    public function edit($id) {
+    public function edit($id, Request $request) {
         // URL de la API para obtener un proveedor específico
         $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realiza una solicitud HTTP GET a la API para obtener los datos del proveedor
-        $response = Http::get($apiUrl);
+        $response = Http::withToken($token)->get($apiUrl);
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
@@ -99,15 +107,17 @@ class SupplierController extends Controller {
 
             // Muestra el formulario de edición con los datos del proveedor
             return view('suppliers.edit', compact('supplier'));
+        } else {
+            // Manejar errores si la solicitud no fue exitosa
+            return back()->withErrors('Error al obtener los datos del proveedor. Por favor, inténtalo de nuevo más tarde.');
         }
     }
 
-
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
-        $request->validate([
+        $validatedData = $request->validate([
             'article' => 'string|max:255',
-            'price' => 'numeric',
+            'price' => 'numeric|between:0,999999.99',
             'company' => 'string|max:255',
             'phone' => 'string|max:255',
             'email' => 'email|max:255',
@@ -117,8 +127,11 @@ class SupplierController extends Controller {
         // URL de la API para actualizar un proveedor específico
         $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP PUT para actualizar el proveedor
-        $response = Http::put($apiUrl, $request->all());
+        $response = Http::withToken($token)->put($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -130,12 +143,15 @@ class SupplierController extends Controller {
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id, Request $request) {
         // URL de la API para eliminar un proveedor específico
         $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP DELETE a la API para eliminar el proveedor
-        $response = Http::delete($apiUrl);
+        $response = Http::withToken($token)->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {

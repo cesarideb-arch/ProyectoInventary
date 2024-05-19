@@ -17,13 +17,16 @@ class CategoryController extends Controller {
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 10; // Número máximo de elementos por página
     
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+    
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiSearchUrl);
+            $response = Http::withToken($token)->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiUrl);
+            $response = Http::withToken($token)->get($apiUrl);
         }
     
         // Verifica si la solicitud fue exitosa
@@ -46,7 +49,7 @@ class CategoryController extends Controller {
             }
     
             // Pasa los datos de categorías y la página actual a la vista y renderiza la vista
-            return view('categories.index', compact('categories', 'page', 'total', 'currentPage', 'lastPage'));
+            return view('categories.index', compact('categories', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         } else {
             // Si la solicitud falla, muestra un mensaje de error
             return 'Error: ' . $response->status();
@@ -57,7 +60,6 @@ class CategoryController extends Controller {
         return view('categories.create');
     }
 
-
     public function store(Request $request) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
@@ -66,10 +68,13 @@ class CategoryController extends Controller {
         ]);
 
         // URL de tu API para almacenar categorías
-        $apiUrl = 'http://localhost:8000/api/categories';
+        $apiUrl = 'http://127.0.0.1:8000/api/categories';
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -81,12 +86,15 @@ class CategoryController extends Controller {
         }
     }
 
-    public function edit($id) {
+    public function edit($id, Request $request) {
         // URL de la API para obtener una categoría específica
-        $apiUrl = 'http://localhost:8000/api/categories/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP GET a la API para obtener los datos de la categoría
-        $response = Http::get($apiUrl);
+        $response = Http::withToken($token)->get($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -95,24 +103,27 @@ class CategoryController extends Controller {
 
             // Mostrar el formulario de edición con los datos de la categoría
             return view('categories.edit', compact('category'));
+        } else {
+            // Manejar errores si la solicitud no fue exitosa
+            return back()->withErrors('Error al obtener los datos de la categoría. Por favor, inténtalo de nuevo más tarde.');
         }
     }
 
-
-
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
-        $request->validate([
-            'name' => 'string|max:100',
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100',
             'description' => 'nullable|string|max:100'
-            // Agrega aquí otras validaciones si es necesario
         ]);
 
         // URL de la API para actualizar una categoría específica
-        $apiUrl = 'http://localhost:8000/api/categories/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP PUT para actualizar la categoría
-        $response = Http::put($apiUrl, $request->all());
+        $response = Http::withToken($token)->put($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -124,13 +135,16 @@ class CategoryController extends Controller {
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id, Request $request) {
         // URL de la API para eliminar una categoría específica
-        $apiUrl = 'http://localhost:8000/api/categories/' . $id;
-    
+        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP DELETE a la API para eliminar la categoría
-        $response = Http::delete($apiUrl);
-    
+        $response = Http::withToken($token)->delete($apiUrl);
+
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
             return redirect()->route('categories.index')->with('success', 'Categoría eliminada exitosamente.');
@@ -139,5 +153,5 @@ class CategoryController extends Controller {
             return redirect()->route('categories.index')->with('error', $errorMessage);
         }
     }
-    
 }
+

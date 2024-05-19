@@ -17,13 +17,16 @@ class ProjectController extends Controller {
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 10; // Número máximo de elementos por página
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiSearchUrl);
+            $response = Http::withToken($token)->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiUrl);
+            $response = Http::withToken($token)->get($apiUrl);
         }
 
         // Verifica si la solicitud fue exitosa
@@ -53,11 +56,9 @@ class ProjectController extends Controller {
         return redirect()->back()->with('error', 'Error al obtener los proyectos de la API');
     }
 
-
     public function create() {
         return view('projects.create');
     }
-
 
     public function store(Request $request) {
         // Validar los datos de la solicitud
@@ -74,10 +75,13 @@ class ProjectController extends Controller {
         ]);
 
         // URL de la API para almacenar proyectos
-        $apiUrl = 'http://localhost:8000/api/projects';
+        $apiUrl = 'http://127.0.0.1:8000/api/projects';
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a la API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -89,12 +93,15 @@ class ProjectController extends Controller {
         }
     }
 
-    public function edit($id) {
+    public function edit($id, Request $request) {
         // URL de la API para obtener un proyecto específico
-        $apiUrl = 'http://localhost:8000/api/projects/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del proyecto
-        $response = Http::get($apiUrl);
+        $response = Http::withToken($token)->get($apiUrl);
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
@@ -103,12 +110,15 @@ class ProjectController extends Controller {
 
             // Muestra el formulario de edición con los datos del proyecto
             return view('projects.edit', compact('project'));
+        } else {
+            // Manejar errores si la solicitud no fue exitosa
+            return back()->withErrors('Error al obtener los datos del proyecto. Por favor, inténtalo de nuevo más tarde.');
         }
     }
 
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'string|max:100',
             'description' => 'nullable|string',
             'company_name' => 'string|max:50',
@@ -121,10 +131,13 @@ class ProjectController extends Controller {
         ]);
 
         // URL de la API para actualizar un proyecto específico
-        $apiUrl = 'http://localhost:8000/api/projects/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP PUT para actualizar el proyecto
-        $response = Http::put($apiUrl, $request->all());
+        $response = Http::withToken($token)->put($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -136,12 +149,15 @@ class ProjectController extends Controller {
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id, Request $request) {
         // URL de la API para eliminar un proyecto específico
-        $apiUrl = 'http://localhost:8000/api/projects/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP DELETE a la API para eliminar el proyecto
-        $response = Http::delete($apiUrl);
+        $response = Http::withToken($token)->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {

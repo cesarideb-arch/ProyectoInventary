@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
 class ProductController extends Controller {
 
     public function index(Request $request) {
@@ -19,13 +24,16 @@ class ProductController extends Controller {
         // Define la URL de búsqueda en la API
         $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiSearchUrl);
+            $response = Http::withToken($token)->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::get($apiUrl);
+            $response = Http::withToken($token)->get($apiUrl);
         }
 
         // Verifica si la solicitud fue exitosa
@@ -55,20 +63,21 @@ class ProductController extends Controller {
         return redirect()->back()->with('error', 'Error al obtener los productos de la API');
     }
 
-
-
-    public function show($id) {
+    public function show($id, Request $request) {
         // URL de la API para obtener un producto específico
         $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
         // URL de la API para obtener todos los proyectos
         $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::get($productApiUrl);
+        $productResponse = Http::withToken($token)->get($productApiUrl);
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        $projectsResponse = Http::get($projectsApiUrl);
+        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
 
         if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
@@ -85,8 +94,6 @@ class ProductController extends Controller {
         return abort(404, 'Product or projects data not found.');
     }
 
-
-
     public function storeEntrance(Request $request) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
@@ -100,22 +107,25 @@ class ProductController extends Controller {
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/entrances';
 
-        // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
-        // dd para ver la respuesta de la API
-        // dd($response->json());
+        // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
+        if ($response->successful()) {
+            // Redirigir a una vista con un mensaje de éxito
+            return redirect()->route('products.index')->with('success', 'Entrada creada exitosamente.');
+        }
 
-        // Redirigir a una vista con un mensaje de éxito
-        return redirect()->route('products.index')->with('success', 'Entrada creada exitosamente.');
+        // Manejar errores de la API
+        $error = $response->json('error', 'Ocurrió un error desconocido.');
+
+        return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
 
-
-
-
-    public function storeOutPuts(Request $request) {
+    public function storeOutputs(Request $request) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'project_id' => 'required|integer',
@@ -128,8 +138,11 @@ class ProductController extends Controller {
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/outputs';
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -143,8 +156,6 @@ class ProductController extends Controller {
         return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
 
-
-
     public function storeLoans(Request $request) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
@@ -157,8 +168,11 @@ class ProductController extends Controller {
         // URL de tu segunda API para almacenar datos
         $apiUrl = 'http://127.0.0.1:8000/api/loans';
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -172,31 +186,21 @@ class ProductController extends Controller {
         return redirect()->back()->withErrors(['quantity' => $error])->withInput();
     }
 
-
-
-
-
-    public function loansGet($id) {
+    public function loansGet($id, Request $request) {
         // URL de la API para obtener un producto específico
         $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
-        // URL de la API para obtener todos los proyectos
-        // $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::get($productApiUrl);
-
-        // // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        // $projectsResponse = Http::get($projectsApiUrl);
+        $productResponse = Http::withToken($token)->get($productApiUrl);
 
         if ($productResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
             $product = $productResponse->json();
 
-            // Decodifica la respuesta JSON de los proyectos en un array asociativo
-            // $projects = $projectsResponse->json();
-
-            // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+            // Muestra la vista de detalles del producto con los datos del producto
             return view('products.loans', compact('product'));
         }
 
@@ -204,20 +208,21 @@ class ProductController extends Controller {
         return abort(404, 'Products data not found.');
     }
 
-
-
-    public function outPutGet($id) {
+    public function outPutGet($id, Request $request) {
         // URL de la API para obtener un producto específico
         $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
         // URL de la API para obtener todos los proyectos
         $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::get($productApiUrl);
+        $productResponse = Http::withToken($token)->get($productApiUrl);
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        $projectsResponse = Http::get($projectsApiUrl);
+        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
 
         if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
@@ -234,20 +239,21 @@ class ProductController extends Controller {
         return abort(404, 'Product or projects data not found.');
     }
 
-
-    public function create() {
-
+    public function create(Request $request) {
+        // URL de la API para obtener categorías y proveedores
         $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
 
-        $response = Http::get($apiUrl)->json();
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
+        // Realizar una solicitud HTTP GET a la API
+        $response = Http::withToken($token)->get($apiUrl)->json();
 
         $suppliers = $response['suppliers'];
-
         $categories = $response['categories'];
 
         return view('products.create', compact('suppliers', 'categories'));
     }
-
 
     public function store(Request $request) {
         // Validar los datos de la solicitud
@@ -268,7 +274,10 @@ class ProductController extends Controller {
         ]);
 
         // URL de tu API para almacenar productos
-        $apiUrl = 'http://localhost:8000/api/products';
+        $apiUrl = 'http://127.0.0.1:8000/api/products';
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Verificar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {
@@ -277,7 +286,7 @@ class ProductController extends Controller {
             $imageName = $file->getClientOriginalName();
 
             // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
-            $response = Http::attach(
+            $response = Http::withToken($token)->attach(
                 'profile_image',
                 $imageContents,
                 $imageName
@@ -287,7 +296,7 @@ class ProductController extends Controller {
             unset($validatedData['profile_image']);
 
             // Realizar una solicitud HTTP POST a tu API sin el campo de imagen
-            $response = Http::post($apiUrl, $validatedData);
+            $response = Http::withToken($token)->post($apiUrl, $validatedData);
         }
 
         // Verificar si la solicitud fue exitosa
@@ -300,35 +309,37 @@ class ProductController extends Controller {
         }
     }
 
+    public function edit($id, Request $request) {
+        // URL de la API para obtener categorías y proveedores
+        $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
 
-    public function edit($id) {
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
-
-        $api = 'http://127.0.0.1:8000/api/getCategoryProducts';
-
-        $response = Http::get($api)->json();
+        // Realizar una solicitud HTTP GET a la API
+        $response = Http::withToken($token)->get($apiUrl)->json();
 
         $suppliers = $response['suppliers'];
-
         $categories = $response['categories'];
 
         // URL de la API para obtener un producto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $response = Http::get($apiUrl);
+        $productResponse = Http::withToken($token)->get($productApiUrl);
 
         // Verifica si la solicitud fue exitosa
-        if ($response->successful()) {
+        if ($productResponse->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
-            $product = $response->json();
+            $product = $productResponse->json();
 
             // Muestra el formulario de edición con los datos del producto
-            return view('products.edit', compact('product'), compact('suppliers', 'categories'));
+            return view('products.edit', compact('product', 'suppliers', 'categories'));
         }
+
+        // Manejar errores si la solicitud no fue exitosa
+        return back()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
     }
-
-
 
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
@@ -349,10 +360,13 @@ class ProductController extends Controller {
         ]);
 
         // URL de tu API para obtener y actualizar productos
-        $apiUrl = 'http://localhost:8000/api/products/' . $id;
+        $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Obtener los datos actuales del producto
-        $currentProductResponse = Http::get($apiUrl);
+        $currentProductResponse = Http::withToken($token)->get($apiUrl);
 
         if (!$currentProductResponse->successful()) {
             return back()->withInput()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
@@ -369,7 +383,7 @@ class ProductController extends Controller {
             $validatedData['_method'] = 'PUT';
 
             // Realizar una solicitud HTTP PUT a tu API con los datos validados del formulario
-            $response = Http::attach(
+            $response = Http::withToken($token)->attach(
                 'profile_image',
                 $imageContents,
                 $imageName
@@ -380,7 +394,7 @@ class ProductController extends Controller {
             $validatedData['_method'] = 'PUT';
 
             // Realizar una solicitud HTTP PUT a tu API sin el campo de imagen
-            $response = Http::post($apiUrl, $validatedData);
+            $response = Http::withToken($token)->post($apiUrl, $validatedData);
         }
 
         // Verificar si la solicitud fue exitosa
@@ -393,12 +407,15 @@ class ProductController extends Controller {
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id, Request $request) {
         // URL de la API para eliminar un producto específico
         $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+
         // Realizar una solicitud HTTP DELETE a la API
-        $response = Http::delete($apiUrl);
+        $response = Http::withToken($token)->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {

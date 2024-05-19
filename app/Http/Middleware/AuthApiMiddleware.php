@@ -23,4 +23,5 @@ class AuthApiMiddleware
         }
         return $next($request);
     }
+
 }

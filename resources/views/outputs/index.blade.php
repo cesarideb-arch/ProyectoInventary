@@ -101,7 +101,7 @@
                         <td>{{ $output['product']['name'] }}</td>
                         <td>{{ $output['responsible'] }}</td>
                         <td>{{ $output['quantity'] }}</td>
-                        <td>{{ $output['description'] }}</td>
+                        <td>{{ $output['description'] ?? 'N/A'}}</td>
                         <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d h:i:s A') }}</td>
                     </tr>
                     @endforeach
