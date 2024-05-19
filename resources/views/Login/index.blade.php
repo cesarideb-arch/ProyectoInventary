@@ -14,7 +14,7 @@
         .container {
             max-width: 450px;
             margin: auto;
-            padding-top: 50px;
+            padding-top: 200px;
             text-align: center;
         }
     
