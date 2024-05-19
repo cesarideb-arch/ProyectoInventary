@@ -9,6 +9,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use GuzzleHttp\Client;
 
 class ProductController extends Controller {
 
@@ -309,6 +311,7 @@ class ProductController extends Controller {
         }
     }
 
+
     public function edit($id, Request $request) {
         // URL de la API para obtener categorías y proveedores
         $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
@@ -341,6 +344,9 @@ class ProductController extends Controller {
         return back()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
     }
 
+
+
+
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
@@ -359,53 +365,110 @@ class ProductController extends Controller {
             'supplier_id' => 'required|integer',
         ]);
 
-        // URL de tu API para obtener y actualizar productos
+        // Configurar los datos del formulario
+        $formParams = [
+            [
+                'name' => '_method',
+                'contents' => 'PUT',
+            ],
+            [
+                'name' => 'name',
+                'contents' => $validatedData['name'],
+            ],
+            [
+                'name' => 'model',
+                'contents' => $validatedData['model'] ?? '',
+            ],
+            [
+                'name' => 'measurement_unit',
+                'contents' => $validatedData['measurement_unit'] ?? '',
+            ],
+            [
+                'name' => 'brand',
+                'contents' => $validatedData['brand'] ?? '',
+            ],
+            [
+                'name' => 'quantity',
+                'contents' => $validatedData['quantity'],
+            ],
+            [
+                'name' => 'description',
+                'contents' => $validatedData['description'] ?? '',
+            ],
+            [
+                'name' => 'price',
+                'contents' => $validatedData['price'],
+            ],
+            [
+                'name' => 'serie',
+                'contents' => $validatedData['serie'] ?? '',
+            ],
+            [
+                'name' => 'observations',
+                'contents' => $validatedData['observations'] ?? '',
+            ],
+            [
+                'name' => 'location',
+                'contents' => $validatedData['location'] ?? '',
+            ],
+            [
+                'name' => 'category_id',
+                'contents' => $validatedData['category_id'],
+            ],
+            [
+                'name' => 'supplier_id',
+                'contents' => $validatedData['supplier_id'],
+            ],
+        ];
+
+        // Comprobar si la solicitud contiene una imagen
+        if ($request->hasFile('profile_image')) {
+            // Procesar la nueva imagen
+            $file = $request->file('profile_image');
+            $filePath = $file->getPathname();
+            $fileName = $file->getClientOriginalName();
+
+            $formParams[] = [
+                'name' => 'profile_image',
+                'contents' => fopen($filePath, 'r'),
+                'filename' => $fileName,
+            ];
+        }
+
+        // URL de la API para actualizar un producto específico
         $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
-        // Obtener los datos actuales del producto
-        $currentProductResponse = Http::withToken($token)->get($apiUrl);
+        // Crear un cliente Guzzle
+        $client = new Client();
 
-        if (!$currentProductResponse->successful()) {
-            return back()->withInput()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
-        }
+        // Realizar una solicitud HTTP POST con _method=PUT para actualizar el producto
+        try {
+            $response = $client->post($apiUrl, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+                'multipart' => $formParams,
+            ]);
 
-        $currentProductData = $currentProductResponse->json();
-
-        // Verificar si la solicitud contiene una imagen
-        if ($request->hasFile('profile_image')) {
-            $file = $request->file('profile_image');
-            $imageContents = file_get_contents($file->getPathname());
-            $imageName = $file->getClientOriginalName();
-
-            $validatedData['_method'] = 'PUT';
-
-            // Realizar una solicitud HTTP PUT a tu API con los datos validados del formulario
-            $response = Http::withToken($token)->attach(
-                'profile_image',
-                $imageContents,
-                $imageName
-            )->post($apiUrl, $validatedData);
-        } else {
-            // Si no hay imagen adjunta, mantener la imagen actual
-            $validatedData['profile_image'] = $currentProductData['profile_image'];
-            $validatedData['_method'] = 'PUT';
-
-            // Realizar una solicitud HTTP PUT a tu API sin el campo de imagen
-            $response = Http::withToken($token)->post($apiUrl, $validatedData);
-        }
-
-        // Verificar si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Redirigir a una página de éxito o mostrar un mensaje de éxito
-            return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente.');
-        } else {
-            // Manejar errores si la solicitud no fue exitosa
-            return back()->withInput()->withErrors('Error al actualizar el producto. Por favor, inténtalo de nuevo más tarde.');
+            // Verificar si la solicitud fue exitosa
+            if ($response->getStatusCode() == 200) {
+                // Redirigir a una página de éxito o mostrar un mensaje de éxito
+                return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente.');
+            } else {
+                // Manejar errores si la solicitud no fue exitosa
+                return back()->withInput()->withErrors('Error al actualizar el producto. Por favor, inténtalo de nuevo más tarde.');
+            }
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors('Error al actualizar el producto: ' . $e->getMessage());
         }
     }
+
+
+
 
     public function destroy($id, Request $request) {
         // URL de la API para eliminar un producto específico

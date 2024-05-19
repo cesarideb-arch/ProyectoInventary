@@ -153,7 +153,7 @@
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
         </form>
     </div>
-    {{-- @dd($errors) --}}
+     {{-- @dd($errors)  --}}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
