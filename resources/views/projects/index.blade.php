@@ -20,10 +20,9 @@
         <form method="GET" action="{{ route('projects.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Proyectos..." value="{{ request('query') }}">
-                <div class="input-group-append">
-                    <button class="btn" type="submit" style="background-color: #333 ; color: rgb(255, 255, 255);">Buscar</button>
-                </div>
-            </div>
+                <button class="btn" type="submit" style="background-color: #333; color: #fff;">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
         </form>
         <div class="table-responsive">
             @if(isset($projects) && count($projects) > 0)

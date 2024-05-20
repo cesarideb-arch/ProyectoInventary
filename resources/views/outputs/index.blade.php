@@ -76,9 +76,9 @@
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Salidas..." value="{{ request('query') }}">
-                <div class="input-group-append">
-                    <button class="btn" type="submit" style="background-color: #333 ; color: rgb(255, 255, 255);">Buscar</button>
-                </div>
+                <button class="btn" type="submit" style="background-color: #333; color: #fff;">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
             </div>
         </form>
         <div class="table-responsive">
