@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 class StartController extends Controller {
     public function index(Request $request) {
-        // URL de la API de préstamos
-        $apiUrl = 'http://127.0.0.1:8000/api/getCount';
-        $apiUrlProducts = 'http://127.0.0.1:8000/api/getCountProducts';
+        // Obtener la URL base de la API desde la configuración
+        $baseApiUrl = config('app.backend_api');
+
+        // Construir las URLs completas para las solicitudes API
+        $apiUrl = $baseApiUrl . '/api/getCount';
+        $apiUrlProducts = $baseApiUrl . '/api/getCountProducts';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -32,4 +35,3 @@ class StartController extends Controller {
         }
     }
 }
-
