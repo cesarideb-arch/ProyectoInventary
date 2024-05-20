@@ -29,34 +29,34 @@
         <div class="table-responsive">
             @if(isset($categories) && count($categories) > 0)
             <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th style="text-align: center;" colspan="2">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($categories as $category)
-                    <tr>
-                        <td>{{ $category['name'] }}</td>
-                        <td>{{ $category['description'] }}</td>
-                        <td>
-                            <div class="btn-group btn-group-horizontal text-center" role="group">
-                                <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
-                                </form>
-                                <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
+            <thead>
+                <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th style="text-align: center;" colspan="2">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($categories as $category)
+                <tr>
+                <td>{{ $category['name'] }}</td>
+                <td>{{ $category['description'] }}</td>
+                <td style="text-align: center;">
+                    <div class="btn-group btn-group-horizontal text-center" role="group">
+                    <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
+                    </form>
+                    <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                    </form>
+                    </div>
+                </td>
+                </tr>
+                @endforeach
+            </tbody>
             </table>
             <div class="pagination">
                 @if($currentPage > 1)
