@@ -41,13 +41,13 @@
                     @enderror
                 </div>
 
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="description" class="form-label">Descripción (Opcional):</label>
                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" maxlength="100">{{ old('description') }}</textarea>
                     @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>

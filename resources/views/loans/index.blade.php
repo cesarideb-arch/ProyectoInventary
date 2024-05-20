@@ -44,7 +44,7 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ $loan['quantity'] }}</td>
-                        <td>{{ \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d h:i:s A') }}</td>
+                        <td>{{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d h:i:s A') : 'N/A' }}</td>
                         <td>
                             @if($loan['status'] == 0)
                                 Producto Regresado
@@ -88,30 +88,52 @@
 
     <!-- Tus scripts aquí -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('.return-product-btn').click(function() {
                 var loanId = $(this).data('loan-id');
-                if (confirm('¿Estás seguro de que deseas regresar este producto?')) {
-                    $.ajax({
-                        url: '/loans/' + loanId, // Ruta a tu controlador para actualizar el préstamo
-                        type: 'PUT',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            loan_id: loanId
-                        },
-                        success: function(response) {
-                            // Puedes agregar aquí alguna notificación de éxito si lo deseas
-                            // Por ejemplo: alert('Préstamo devuelto exitosamente');
-                            // Pero en este caso, simplemente redireccionamos a la página de listado de préstamos
-                            window.location.href = '{{ route('loans.index') }}';
-                        },
-                        error: function(xhr, status, error) {
-                            // Manejo de errores
-                            console.error('Error al devolver el préstamo:', error);
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: '¿Estás seguro de que deseas regresar este producto?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, regresar',
+                    cancelButtonText: 'Cancelar',
+                    background: '#fff'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/loans/' + loanId, // Ruta a tu controlador para actualizar el préstamo
+                            type: 'PUT',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                loan_id: loanId
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: '¡Regresado!',
+                                    text: 'El producto ha sido regresado exitosamente.',
+                                    icon: 'success',
+                                    background: '#fff'
+                                }).then(() => {
+                                    window.location.href = '{{ route('loans.index') }}';
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Hubo un problema al regresar el producto.',
+                                    icon: 'error',
+                                    background: '#fff'
+                                });
+                                console.error('Error al devolver el préstamo:', error);
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
