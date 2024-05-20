@@ -19,9 +19,9 @@
         </div>
         <form method="GET" action="{{ route('categories.index') }}">
             <div class="input-group mb-3">
-                <input type="text" name="query" class="form-control" placeholder="Buscar categorías..." value="{{ request('query') }}">
+                <input type="text" name="query" class="form-control" placeholder="Buscar Categorías..." value="{{ request('query') }}">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                    <button class="btn" type="submit" style="background-color: #333 ; color: rgb(255, 255, 255);">Buscar</button>
                 </div>
             </div>
         </form>
