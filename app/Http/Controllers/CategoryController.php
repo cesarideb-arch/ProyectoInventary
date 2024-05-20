@@ -8,18 +8,21 @@ use Illuminate\Support\Facades\Http;
 class CategoryController extends Controller {
 
     public function index(Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API de categorías y búsqueda
-        $apiUrl = 'http://127.0.0.1:8000/api/categories';
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchCategory';
+        $apiUrl = $baseApiUrl . '/api/categories';
+        $apiSearchUrl = $baseApiUrl . '/api/searchCategory';
         $searchQuery = $request->input('query');
-    
+
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 10; // Número máximo de elementos por página
-    
+
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-    
+
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -28,12 +31,12 @@ class CategoryController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-    
+
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-    
+
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $categories = $data['data'];
@@ -47,7 +50,7 @@ class CategoryController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-    
+
             // Pasa los datos de categorías y la página actual a la vista y renderiza la vista
             return view('categories.index', compact('categories', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         } else {
@@ -67,8 +70,11 @@ class CategoryController extends Controller {
             'description' => 'nullable|string|max:100'
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu API para almacenar categorías
-        $apiUrl = 'http://127.0.0.1:8000/api/categories';
+        $apiUrl = $baseApiUrl . '/api/categories';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -87,8 +93,11 @@ class CategoryController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener una categoría específica
-        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+        $apiUrl = $baseApiUrl . '/api/categories/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -116,8 +125,11 @@ class CategoryController extends Controller {
             'description' => 'nullable|string|max:100'
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para actualizar una categoría específica
-        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+        $apiUrl = $baseApiUrl . '/api/categories/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -136,8 +148,11 @@ class CategoryController extends Controller {
     }
 
     public function destroy($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para eliminar una categoría específica
-        $apiUrl = 'http://127.0.0.1:8000/api/categories/' . $id;
+        $apiUrl = $baseApiUrl . '/api/categories/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -154,4 +169,3 @@ class CategoryController extends Controller {
         }
     }
 }
-

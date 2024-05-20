@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Http;
 class ProjectController extends Controller {
 
     public function index(Request $request) {
-        // URL base de la API de proyectos
-        $apiUrl = 'http://127.0.0.1:8000/api/projects';
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchProject';
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
+        // URL de la API de proyectos
+        $apiUrl = $baseApiUrl . '/api/projects';
+        $apiSearchUrl = $baseApiUrl . '/api/searchProject';
         $searchQuery = $request->input('query');
 
         // Parámetros de paginación
@@ -74,8 +77,11 @@ class ProjectController extends Controller {
             // Agregar otras validaciones si es necesario
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para almacenar proyectos
-        $apiUrl = 'http://127.0.0.1:8000/api/projects';
+        $apiUrl = $baseApiUrl . '/api/projects';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -94,8 +100,11 @@ class ProjectController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un proyecto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+        $apiUrl = $baseApiUrl . '/api/projects/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -130,8 +139,11 @@ class ProjectController extends Controller {
             // Agregar otras validaciones si es necesario
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para actualizar un proyecto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+        $apiUrl = $baseApiUrl . '/api/projects/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -150,8 +162,11 @@ class ProjectController extends Controller {
     }
 
     public function destroy($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para eliminar un proyecto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/projects/' . $id;
+        $apiUrl = $baseApiUrl . '/api/projects/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');

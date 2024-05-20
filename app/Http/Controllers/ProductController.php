@@ -1,10 +1,4 @@
 <?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,7 +10,8 @@ class ProductController extends Controller {
 
     public function index(Request $request) {
         // URL base de la API de productos
-        $apiUrl = 'http://127.0.0.1:8000/api/products';
+        $baseApiUrl = config('app.backend_api');
+        $apiUrl = $baseApiUrl . '/api/products';
         $searchQuery = $request->input('query');
 
         // Parámetros de paginación
@@ -24,7 +19,7 @@ class ProductController extends Controller {
         $perPage = 10; // Número máximo de elementos por página
 
         // Define la URL de búsqueda en la API
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/search';
+        $apiSearchUrl = $baseApiUrl . '/api/search';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -66,11 +61,14 @@ class ProductController extends Controller {
     }
 
     public function show($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un producto específico
-        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $productApiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // URL de la API para obtener todos los proyectos
-        $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+        $projectsApiUrl = $baseApiUrl . '/api/getprojects';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -106,8 +104,11 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu segunda API para almacenar datos
-        $apiUrl = 'http://127.0.0.1:8000/api/entrances';
+        $apiUrl = $baseApiUrl . '/api/entrances';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -137,8 +138,11 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu segunda API para almacenar datos
-        $apiUrl = 'http://127.0.0.1:8000/api/outputs';
+        $apiUrl = $baseApiUrl . '/api/outputs';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -167,8 +171,11 @@ class ProductController extends Controller {
             'description' => 'nullable|string|max:100',
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu segunda API para almacenar datos
-        $apiUrl = 'http://127.0.0.1:8000/api/loans';
+        $apiUrl = $baseApiUrl . '/api/loans';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -189,8 +196,11 @@ class ProductController extends Controller {
     }
 
     public function loansGet($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un producto específico
-        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $productApiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -211,11 +221,14 @@ class ProductController extends Controller {
     }
 
     public function outPutGet($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un producto específico
-        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $productApiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // URL de la API para obtener todos los proyectos
-        $projectsApiUrl = 'http://127.0.0.1:8000/api/getprojects';
+        $projectsApiUrl = $baseApiUrl . '/api/getprojects';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -242,8 +255,11 @@ class ProductController extends Controller {
     }
 
     public function create(Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener categorías y proveedores
-        $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
+        $apiUrl = $baseApiUrl . '/api/getCategoryProducts';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -275,8 +291,11 @@ class ProductController extends Controller {
             'supplier_id' => 'required|integer',
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu API para almacenar productos
-        $apiUrl = 'http://127.0.0.1:8000/api/products';
+        $apiUrl = $baseApiUrl . '/api/products';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -311,10 +330,12 @@ class ProductController extends Controller {
         }
     }
 
-
     public function edit($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener categorías y proveedores
-        $apiUrl = 'http://127.0.0.1:8000/api/getCategoryProducts';
+        $apiUrl = $baseApiUrl . '/api/getCategoryProducts';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -326,7 +347,7 @@ class ProductController extends Controller {
         $categories = $response['categories'];
 
         // URL de la API para obtener un producto específico
-        $productApiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $productApiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
         $productResponse = Http::withToken($token)->get($productApiUrl);
@@ -343,9 +364,6 @@ class ProductController extends Controller {
         // Manejar errores si la solicitud no fue exitosa
         return back()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
     }
-
-
-
 
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
@@ -435,8 +453,11 @@ class ProductController extends Controller {
             ];
         }
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para actualizar un producto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $apiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -467,12 +488,12 @@ class ProductController extends Controller {
         }
     }
 
-
-
-
     public function destroy($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para eliminar un producto específico
-        $apiUrl = 'http://127.0.0.1:8000/api/products/' . $id;
+        $apiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');

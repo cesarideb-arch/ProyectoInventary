@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 class SupplierController extends Controller {
     public function index(Request $request) {
-        // URL base de la API de proveedores
-        $apiUrl = 'http://127.0.0.1:8000/api/suppliers';
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchSupplier';
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
+        // URL de la API de proveedores
+        $apiUrl = $baseApiUrl . '/api/suppliers';
+        $apiSearchUrl = $baseApiUrl . '/api/searchSupplier';
         $searchQuery = $request->input('query');
 
         // Parámetros de paginación
@@ -71,8 +74,11 @@ class SupplierController extends Controller {
             // Otros campos de proveedor que puedan existir en tu API
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de tu API para almacenar proveedores
-        $apiUrl = 'http://127.0.0.1:8000/api/suppliers';
+        $apiUrl = $baseApiUrl . '/api/suppliers';
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -91,8 +97,11 @@ class SupplierController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un proveedor específico
-        $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
+        $apiUrl = $baseApiUrl . '/api/suppliers/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -124,8 +133,11 @@ class SupplierController extends Controller {
             'address' => 'string|max:100' // Nueva validación para el campo address
         ]);
 
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para actualizar un proveedor específico
-        $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
+        $apiUrl = $baseApiUrl . '/api/suppliers/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -144,8 +156,11 @@ class SupplierController extends Controller {
     }
 
     public function destroy($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para eliminar un proveedor específico
-        $apiUrl = 'http://127.0.0.1:8000/api/suppliers/' . $id;
+        $apiUrl = $baseApiUrl . '/api/suppliers/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');

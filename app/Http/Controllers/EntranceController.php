@@ -7,21 +7,23 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
 
-class EntranceController extends Controller
-{
+class EntranceController extends Controller {
     public function index(Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API de entradas
-        $apiUrl = 'http://127.0.0.1:8000/api/entrances';
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchEntrance';
+        $apiUrl = $baseApiUrl . '/api/entrances';
+        $apiSearchUrl = $baseApiUrl . '/api/searchEntrance';
         $searchQuery = $request->input('query');
-    
+
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 15; // Número máximo de elementos por página
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-    
+
         // Realiza una solicitud HTTP GET a la API y obtén la respuesta
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
@@ -31,12 +33,12 @@ class EntranceController extends Controller
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-    
+
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-    
+
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $entrances = $data['data'];
@@ -50,7 +52,7 @@ class EntranceController extends Controller
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-    
+
             // Pasa los datos de entradas y la página actual a la vista y renderiza la vista
             return view('entrances.index', compact('entrances', 'page', 'total', 'currentPage', 'lastPage'));
         } else {

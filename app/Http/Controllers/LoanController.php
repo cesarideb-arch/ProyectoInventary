@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -6,18 +7,21 @@ use Illuminate\Support\Facades\Http;
 
 class LoanController extends Controller {
     public function index(Request $request) {
-        // URL base de la API de préstamos
-        $apiUrl = 'http://127.0.0.1:8000/api/loans';
-        $apiSearchUrl = 'http://127.0.0.1:8000/api/searchLoan';
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
+        // URL de la API de préstamos
+        $apiUrl = $baseApiUrl . '/api/loans';
+        $apiSearchUrl = $baseApiUrl . '/api/searchLoan';
         $searchQuery = $request->input('query');
-    
+
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 15; // Número máximo de elementos por página
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-    
+
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -26,12 +30,12 @@ class LoanController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-    
+
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-    
+
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $loans = $data['data'];
@@ -45,18 +49,21 @@ class LoanController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-    
+
             // Pasa los datos de préstamos y los parámetros de paginación a la vista y renderiza la vista
             return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
-    
+
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los préstamos de la API');
     }
 
     public function edit($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para obtener un préstamo específico
-        $apiUrl = 'http://127.0.0.1:8000/api/loans/' . $id;
+        $apiUrl = $baseApiUrl . '/api/loans/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -78,8 +85,11 @@ class LoanController extends Controller {
     }
 
     public function update(Request $request, $id) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para actualizar el préstamo
-        $apiUrl = 'http://127.0.0.1:8000/api/comeBackLoan/' . $id;
+        $apiUrl = $baseApiUrl . '/api/comeBackLoan/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
@@ -98,8 +108,11 @@ class LoanController extends Controller {
     }
 
     public function destroy($id, Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
         // URL de la API para eliminar un préstamo específico
-        $apiUrl = 'http://127.0.0.1:8000/api/loans/' . $id;
+        $apiUrl = $baseApiUrl . '/api/loans/' . $id;
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
