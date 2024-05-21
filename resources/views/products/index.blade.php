@@ -110,11 +110,11 @@
                     <td>{{ $product['supplier']['company']}}</td>
                     <td>
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
-
                     </td>
                     <td>
                         <div class="btn-group btn-group-horizontal" role="group">
                             <!-- Botón de Edición -->
+                            @if (session('role') === '1')
                             <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-sm">
@@ -129,6 +129,7 @@
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </form>
+                            @endif
                             <!-- Botón adicional, por ejemplo, Entradas -->
                             <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
                                 <i class="fas fa-arrow-circle-right"></i>
