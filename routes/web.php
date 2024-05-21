@@ -54,6 +54,7 @@ Route::middleware('auth.api')->resource('outputs', OutputController::class);
 Route::middleware('auth.api')->resource('loans', LoanController::class);
 Route::middleware('auth.api')->resource('users', UserController::class);
 
+
 Route::post('/entrances', [ProductController::class, 'storeEntrance'])->name('products.entrances.store');
 Route::post('/products/outputs', [ProductController::class, 'storeOutPuts'])->name('products.outputs.store');
 Route::post('/products/loans', [ProductController::class, 'storeLoans'])->name('products.loans.store');
@@ -70,3 +71,4 @@ Route::post('/products/{id}/entrances', [ProductController::class, 'entrancesPos
 
 Route::middleware('auth.api')->resource('outputs', OutputController::class);
 Route::middleware('auth.api')->resource('loans', LoanController::class);
+
