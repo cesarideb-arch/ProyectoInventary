@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -31,12 +32,14 @@ class LoginController extends Controller {
 
             // Verificar si la respuesta contiene el token y la información del usuario
             if (isset($responseData['token']) && isset($responseData['user'])) {
-                // Si la respuesta contiene los datos esperados, almacenar el token en la sesión
+                // Si la respuesta contiene los datos esperados, almacenar el token y el rol en la sesión
                 $token = $responseData['token'];
                 $user = $responseData['user'];
+                $role = $user['role']; // Suponiendo que el rol está en el objeto user
 
-                // Almacena el token en la sesión (esto es solo un ejemplo)
+                // Almacena el token y el rol en la sesión
                 $request->session()->put('token', $token);
+                $request->session()->put('role', $role);
 
                 // Redirige al usuario a la página de inicio
                 return redirect()->route('start.index');
@@ -51,11 +54,10 @@ class LoginController extends Controller {
     }
 
     public function logout(Request $request) {
-        // Elimina el token de la sesión
-        $request->session()->forget('token');
+        // Elimina el token y el rol de la sesión
+        $request->session()->forget(['token', 'role']);
 
         // Redirige al usuario a la página de inicio de sesión
         return redirect()->route('login')->with('success', 'Has cerrado sesión correctamente.');
     }
 }
-
