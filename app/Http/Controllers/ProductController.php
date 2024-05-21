@@ -331,39 +331,47 @@ class ProductController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        // Verificar el rol del usuario desde la sesión
+        $userRole = $request->session()->get('role');
+    
+        if ($userRole == 2) {
+            return redirect()->back()->with('error', 'You are not authorized to perform this action.');
+        }
+    
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
+    
         // URL de la API para obtener categorías y proveedores
         $apiUrl = $baseApiUrl . '/api/getCategoryProducts';
-
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Realizar una solicitud HTTP GET a la API
         $response = Http::withToken($token)->get($apiUrl)->json();
-
+    
         $suppliers = $response['suppliers'];
         $categories = $response['categories'];
-
+    
         // URL de la API para obtener un producto específico
         $productApiUrl = $baseApiUrl . '/api/products/' . $id;
-
+    
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
         $productResponse = Http::withToken($token)->get($productApiUrl);
-
+    
         // Verifica si la solicitud fue exitosa
         if ($productResponse->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $product = $productResponse->json();
-
+    
             // Muestra el formulario de edición con los datos del producto
             return view('products.edit', compact('product', 'suppliers', 'categories'));
         }
-
+    
         // Manejar errores si la solicitud no fue exitosa
         return back()->withErrors('Error al obtener los datos del producto. Por favor, inténtalo de nuevo más tarde.');
     }
+    
 
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
@@ -487,6 +495,8 @@ class ProductController extends Controller {
             return back()->withInput()->withErrors('Error al actualizar el producto: ' . $e->getMessage());
         }
     }
+
+    
 
     public function destroy($id, Request $request) {
         // URL base de la API
