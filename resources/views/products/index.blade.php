@@ -109,7 +109,8 @@
                     <td>{{ $product['category']['name']}}</td>
                     <td>{{ $product['supplier']['company']}}</td>
                     <td>
-                        <img src="http://localhost:8000/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 20%;">
+                        <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 20%;">
+
                     </td>
                     <td>
                         <div class="btn-group btn-group-horizontal" role="group">

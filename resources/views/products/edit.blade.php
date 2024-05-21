@@ -106,7 +106,8 @@
 
             <div class="image-preview-container">
                 {{-- Imagen actual --}}
-                <img id="currentImage" src="http://localhost:8000/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen">
+                <img id="currentImage" src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen">
+
                 {{-- Vista previa de la nueva imagen --}}
                 <img id="imagePreview" src="#" alt="Vista previa de la nueva imagen">
             </div>
