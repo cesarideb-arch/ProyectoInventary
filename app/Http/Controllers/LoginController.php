@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,9 +10,13 @@ class LoginController extends Controller {
         // Primero, muestra la vista de inicio de sesión
         return view('login.index');
     }
+
     public function login(Request $request) {
-        // URL completa del endpoint de login en localhost:8000
-        $loginUrl = 'http://localhost:8000/api/login';
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
+        // URL completa del endpoint de login
+        $loginUrl = $baseApiUrl . '/api/login';
 
         // Haz la solicitud POST al endpoint de login
         $response = Http::post($loginUrl, [
@@ -35,7 +38,7 @@ class LoginController extends Controller {
                 // Almacena el token en la sesión (esto es solo un ejemplo)
                 $request->session()->put('token', $token);
 
-                // Redirige al usuario a la página de productos
+                // Redirige al usuario a la página de inicio
                 return redirect()->route('start.index');
             } else {
                 // Si la respuesta no contiene los datos esperados, muestra un mensaje de error
@@ -46,6 +49,7 @@ class LoginController extends Controller {
             return back()->with('error', 'Contraseña incorrecta o correo electrónico inválido. Inténtalo de nuevo.');
         }
     }
+
     public function logout(Request $request) {
         // Elimina el token de la sesión
         $request->session()->forget('token');
@@ -54,3 +58,4 @@ class LoginController extends Controller {
         return redirect()->route('login')->with('success', 'Has cerrado sesión correctamente.');
     }
 }
+
