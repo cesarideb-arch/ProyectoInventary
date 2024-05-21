@@ -11,7 +11,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EntranceController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\LoanController;
-
+use App\Http\Controllers\UserController;
 
 /*|--------------------------------------------------------------------------
 | Web Routes
@@ -52,6 +52,7 @@ Route::middleware('auth.api')->resource('projects', ProjectController::class);
 Route::middleware('auth.api')->resource('entrances', EntranceController::class);
 Route::middleware('auth.api')->resource('outputs', OutputController::class);
 Route::middleware('auth.api')->resource('loans', LoanController::class);
+Route::middleware('auth.api')->resource('users', UserController::class);
 
 Route::post('/entrances', [ProductController::class, 'storeEntrance'])->name('products.entrances.store');
 Route::post('/products/outputs', [ProductController::class, 'storeOutPuts'])->name('products.outputs.store');
