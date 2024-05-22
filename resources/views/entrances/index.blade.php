@@ -97,7 +97,7 @@
                 <tbody>
                     @foreach($entrances as $entrance)
                     <tr>
-                        <td>{{ $entrance['project']['company_name'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['project']['name'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['quantity'] ?? 'N/A' }}</td>

@@ -97,7 +97,7 @@
                 <tbody>
                     @foreach($outputs as $output)
                     <tr>
-                        <td>{{ $output['project']['company_name'] ?? 'N/A' }}</td>
+                        <td>{{ $output['project']['name'] ?? 'N/A' }}</td>
                         <td>{{ $output['product']['name'] ?? '' }}</td>
                         <td>{{ $output['responsible'] }}</td>
                         <td>{{ $output['quantity'] }}</td>

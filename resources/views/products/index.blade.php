@@ -96,6 +96,7 @@
                     <th>Precio</th>
                     <th>Categoría</th>
                     <th>Proveedor</th>
+                    <th>Ubicación</th>
                     <th>Imagen</th>
                     <th style="text-align: center;" colspan="3">Acciones</th>
                 </tr>
@@ -108,6 +109,7 @@
                     <td>${{ $product['price'] }}</td>
                     <td>{{ $product['category']['name']}}</td>
                     <td>{{ $product['supplier']['company']}}</td>
+                    <td>{{ $product['location']}}</td>
                     <td>
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                     </td>
