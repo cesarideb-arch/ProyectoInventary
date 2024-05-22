@@ -24,7 +24,7 @@ class AuthApiMiddleware {
 
         // Verificar si el rol del usuario es '1' o '2'
         $role = $request->session()->get('role');
-        if ($role !== '1' && $role !== '2') {
+        if ($role !== '1' && $role !== '2' && $role !== '0') {
             // Si el rol no es '1' o '2', redirigir al usuario a la página de inicio de sesión con un mensaje de error
             return redirect()->route('login')->with('error', 'Rol no autorizado.');
         }

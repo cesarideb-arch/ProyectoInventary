@@ -114,7 +114,7 @@
                     <td>
                         <div class="btn-group btn-group-horizontal" role="group">
                             <!-- Botón de Edición -->
-                            @if (session('role') === '1')
+                            @if (session('role') === '1' || session('role') === '0')
                             <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-sm">
