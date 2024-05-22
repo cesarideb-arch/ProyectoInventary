@@ -42,9 +42,14 @@
                                 <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
                             @endforeach
                         @else
-                            <option value="" disabled>No hay proyectos disponibles Agrega</option>
+                            <option value="" disabled>No hay proyectos disponibles</option>
                         @endif
                     </select>
+                </div>
+
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck">
+                    <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
                 </div>
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
@@ -72,14 +77,6 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-{{-- 
-                <div class="mb-3">
-                    <label for="date" class="form-label">Fecha:</label>
-                    <input type="datetime-local" name="date" id="date" class="form-control @error('date') is-invalid @enderror" required value="{{ old('date') }}">
-                    @error('date')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div> --}}
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>
@@ -92,20 +89,18 @@
     <!-- Opcional: Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script para establecer automáticamente la fecha y hora actual en el campo de fecha -->
     <script>
-        window.onload = function() {
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
-            var yyyy = today.getFullYear();
-            var hh = String(today.getHours()).padStart(2, '0');
-            var min = String(today.getMinutes()).padStart(2, '0');
-            var formattedDate = yyyy + '-' + mm + '-' + dd + 'T' + hh + ':' + min;
-            document.getElementById('date').value = formattedDate;
-        }
-
         // Validación personalizada del lado del cliente
+        document.getElementById('noProjectCheck').addEventListener('change', function() {
+            var projectSelect = document.getElementById('project_id');
+            if (this.checked) {
+                projectSelect.value = '';
+                projectSelect.disabled = true;
+            } else {
+                projectSelect.disabled = false;
+            }
+        });
+
         document.getElementById('entranceForm').addEventListener('submit', function(event) {
             var form = event.target;
             if (!form.checkValidity()) {
@@ -115,7 +110,5 @@
             form.classList.add('was-validated');
         });
     </script>
-
-{{-- @dd($errors) --}}
 </body>
 </html>
