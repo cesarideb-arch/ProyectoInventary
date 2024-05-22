@@ -10,40 +10,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .btn-group-horizontal {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn-group-horizontal .btn {
-            margin-right: 5px;
-            width: 36px; /* Tamaño fijo para los botones */
-            height: 36px; /* Tamaño fijo para los botones */
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .btn-group-horizontal .btn i {
-            font-size: 16px; /* Tamaño del ícono */
-        }
-        .table-responsive {
-            margin-top: 10px;
-        }
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-        }
-        .pagination {
-            display: flex;
-            justify-content: flex-start; /* Cambiado para alinear a la izquierda */
-            margin-top: 20px;
-        }
-        .pagination .btn {
-            margin: 0 5px;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -74,8 +40,8 @@
                     <tr>
                     <td>{{ $user['name'] }}</td>
                     <td>{{ $user['email'] }}</td>
-                    <td>
-                        <div class="btn-group btn-group-horizontal text-center" role="group">
+                    <td class="text-center">
+                        <div class="btn-group btn-group-horizontal" role="group">
                             <form action="{{ route('users.edit', $user['id']) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-custom-size">
@@ -105,7 +71,6 @@
                     <i class="fas fa-arrow-left"></i>
                 </a>
             </div>
-            </div>
             @else
             <p>No se encontraron usuarios.</p>
             @endif
@@ -132,7 +97,7 @@
                             <input type="password" class="form-control" id="admin_password" name="admin_password" required>
                         </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="justify-content: center;">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>

@@ -87,15 +87,20 @@ class UserController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
-        $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        try {
+            $response = Http::withToken($token)->post($apiUrl, $validatedData);
 
-        // Verificar si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Redirigir a una página de éxito o mostrar un mensaje de éxito
-            return redirect()->route('users.index')->with('success', 'Usuario registrado exitosamente.');
-        } else {
-            // Manejar errores si la solicitud no fue exitosa
-            return back()->withInput()->withErrors('Error al registrar el usuario. Por favor, inténtalo de nuevo más tarde.');
+            // Verificar si la solicitud fue exitosa
+            if ($response->successful()) {
+                // Redirigir a una página de éxito o mostrar un mensaje de éxito
+                return redirect()->route('users.index')->with('success', 'Usuario registrado exitosamente.');
+            } else {
+                // Manejar errores si la solicitud no fue exitosa
+                $errorMessage = $response->json()['message'] ?? 'Error al registrar el usuario. Por favor, Contraseña Incorrecta.';
+                return back()->withInput()->withErrors($errorMessage);
+            }
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors('Error al registrar el usuario: ' . $e->getMessage());
         }
     }
 
@@ -198,7 +203,7 @@ class UserController extends Controller {
                 return back()->withInput()->withErrors('Error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.');
             }
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors('Error al actualizar el usuario: ' . $e->getMessage());
+            return back()->withInput()->withErrors(('Error al actualizar el usuario: ' . 'Contraseña Incorrecta'));
         }
     }
 
@@ -252,7 +257,7 @@ class UserController extends Controller {
                 return response()->json(['message' => 'Error al eliminar el usuario. Por favor, inténtalo de nuevo más tarde.'], $response->getStatusCode());
             }
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error al eliminar el usuario: ' . $e->getMessage()], 500);
+            return response()->json(['message' => 'Error al eliminar el usuario: ' . 'Contraseña Incorrecta'], 500);
         }
     }
 }

@@ -12,6 +12,15 @@
 <body>
     <div class="container">
         <h1 class="mt-5 mb-4">Crear Usuario</h1>
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{ route('users.store') }}" method="POST">
             @csrf
             <div class="form-group">
@@ -44,12 +53,11 @@
             <a href="{{ route('users.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
-    {{-- @dd($errors) --}}
+
     <!-- JavaScript para Bootstrap y dependencias -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
 @endsection
