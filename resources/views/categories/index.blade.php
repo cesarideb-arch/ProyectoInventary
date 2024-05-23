@@ -45,7 +45,9 @@
                     <div class="btn-group btn-group-horizontal text-center" role="group">
                     <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
                         @csrf
-                        <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
+                        <button type="submit" class="btn btn-primary btn-custom-size">
+                            <i class="fas fa-edit"></i>
+                        </button>
                     </form>
                     <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
                         @csrf

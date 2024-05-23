@@ -62,7 +62,9 @@
                         <div class="btn-group btn-group-horizontal text-center" role="group">
                         <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-custom-size">Editar</button>
+                            <button type="submit" class="btn btn-primary btn-custom-size">
+                                <i class="fas fa-edit"></i>
+                            </button>
                         </form>
                         <form action="{{ route('suppliers.destroy', $supplier['id']) }}" method="POST" class="delete-form">
                             @csrf
