@@ -25,6 +25,25 @@
         @else
             <p class="lead">No se pudo obtener el número de productos.</p>
         @endif
+
+        
+
+
+
+
+        @if(session()->has('role'))
+            <p class="lead">Rol: {{ session('role') }}</p>
+        @else
+            <p class="lead">No se pudo obtener el rol del usuario.</p>
+        @endif
+
+        @if(session()->has('name'))
+            <p class="lead">Name: {{ session('name') }}</p>
+        @else
+            <p class="lead">Failed to retrieve user's name.</p>
+        @endif
+
+        
     </div>
 </div>
         </div>

@@ -36,10 +36,13 @@ class LoginController extends Controller {
                 $token = $responseData['token'];
                 $user = $responseData['user'];
                 $role = $user['role']; // Suponiendo que el rol está en el objeto user
+                $name = $user['name']; // Suponiendo que el nombre está en el objeto user
 
                 // Almacena el token y el rol en la sesión
                 $request->session()->put('token', $token);
                 $request->session()->put('role', $role);
+                $request->session()->put('name', $name);
+
 
                 // Redirige al usuario a la página de inicio
                 return redirect()->route('start.index');
