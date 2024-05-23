@@ -72,9 +72,11 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Inventario General</h1>
-        <div class="mb-3">
-            <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-        </div>
+        @if (session('role') === '1' || session('role') === '0')
+            <div class="mb-3">
+                <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+            </div>
+        @endif
         <form method="GET" action="{{ route('products.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Productos..." value="{{ request('query') }}">

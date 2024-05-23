@@ -271,6 +271,12 @@ class ProductController extends Controller {
         $suppliers = $response['suppliers'];
         $categories = $response['categories'];
 
+        // Verificar el rol del usuario desde la sesión
+        $userRole = $request->session()->get('role');
+        if ($userRole == 2) {
+            return redirect()->back()->with('error', 'You are not authorized to perform this action.');
+        }
+
         return view('products.create', compact('suppliers', 'categories'));
     }
 
