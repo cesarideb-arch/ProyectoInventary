@@ -31,11 +31,11 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
+            <form id="outputForm" action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control">
+                    <select id="project_id" name="project_id" class="form-control" required>
                         <option value="">Seleccione un proyecto</option>
                         @if (count($projects) > 0)
                             @foreach ($projects as $project)
@@ -45,6 +45,7 @@
                             <option value="" disabled>No hay proyectos disponibles</option>
                         @endif
                     </select>
+                    <div class="invalid-feedback">Por favor, seleccione un proyecto o marque "Sin proyecto".</div>
                 </div>
 
                 <div class="form-group form-check">
@@ -96,17 +97,36 @@
             if (this.checked) {
                 projectSelect.value = '';
                 projectSelect.disabled = true;
+                projectSelect.removeAttribute('required');
             } else {
                 projectSelect.disabled = false;
+                projectSelect.setAttribute('required', 'required');
             }
         });
 
-        document.getElementById('entranceForm').addEventListener('submit', function(event) {
+        document.getElementById('outputForm').addEventListener('submit', function(event) {
             var form = event.target;
+            var projectSelect = document.getElementById('project_id');
+            var noProjectCheck = document.getElementById('noProjectCheck');
+
+            if (projectSelect.value === '' && !noProjectCheck.checked) {
+                projectSelect.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                projectSelect.classList.remove('is-invalid');
+                projectSelect.classList.add('is-valid');
+            }
+
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
+
+            if (noProjectCheck.checked) {
+                projectSelect.removeAttribute('name');
+            }
+
             form.classList.add('was-validated');
         });
     </script>

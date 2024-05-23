@@ -26,7 +26,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control">
+                    <select id="project_id" name="project_id" class="form-control" required>
                         <option value="">Seleccione un proyecto</option>
                         @if (count($projects) > 0)
                             @foreach ($projects as $project)
@@ -36,6 +36,7 @@
                             <option value="" disabled>No hay proyectos disponibles</option>
                         @endif
                     </select>
+                    <div class="invalid-feedback">Por favor, seleccione un proyecto o marque "Sin proyecto".</div>
                 </div>
 
                 <div class="form-group form-check">
@@ -48,11 +49,13 @@
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
                     <input type="text" name="responsible" id="responsible" class="form-control" required maxlength="100">
+                    <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
                     <input type="number" name="quantity" id="quantity" class="form-control" required>
+                    <div class="invalid-feedback">Por favor, ingrese una cantidad válida.</div>
                 </div>
 
                 <div class="mb-3">
@@ -78,22 +81,36 @@
             if (this.checked) {
                 projectSelect.value = '';
                 projectSelect.disabled = true;
+                projectSelect.removeAttribute('required');
             } else {
                 projectSelect.disabled = false;
+                projectSelect.setAttribute('required', 'required');
             }
         });
 
         // Validación personalizada del lado del cliente
         document.getElementById('entranceForm').addEventListener('submit', function(event) {
             var form = event.target;
+            var projectSelect = document.getElementById('project_id');
+            var noProjectCheck = document.getElementById('noProjectCheck');
+
+            if (projectSelect.value === '' && !noProjectCheck.checked) {
+                projectSelect.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                projectSelect.classList.remove('is-invalid');
+                projectSelect.classList.add('is-valid');
+            }
+
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
 
             // Si el checkbox está marcado, elimina el valor del campo project_id
-            if (document.getElementById('noProjectCheck').checked) {
-                document.getElementById('project_id').removeAttribute('name');
+            if (noProjectCheck.checked) {
+                projectSelect.removeAttribute('name');
             }
 
             form.classList.add('was-validated');
