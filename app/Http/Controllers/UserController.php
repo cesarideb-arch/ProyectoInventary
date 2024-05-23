@@ -13,6 +13,11 @@ class UserController extends Controller {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
+        // Verificación de rol, solo permite acceso a usuarios con rol 1 o 2
+        if (session('role') === '1' || session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
+
         // URL de la API de usuarios
         $apiUrl = $baseApiUrl . '/api/users';
         $apiSearchUrl = $baseApiUrl . '/api/searchUsers';
@@ -63,6 +68,10 @@ class UserController extends Controller {
 
 
     public function create() {
+        // Verificación de rol, solo permite acceso a usuarios con rol 1 o 2
+        if (session('role') === '1' || session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
         return view('users.create');
     }
 
@@ -106,6 +115,11 @@ class UserController extends Controller {
 
 
     public function edit($id, Request $request) {
+        // Verificación de rol, solo permite acceso a usuarios con rol 1 o 2
+        if (session('role') === '1' || session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
+        
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
