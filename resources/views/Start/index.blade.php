@@ -27,18 +27,25 @@
         @endif
 
         
-
-
-
-
         @if(session()->has('role'))
-            <p class="lead">Rol: {{ session('role') }}</p>
+            @php
+                $role = session('role');
+                $roleName = '';
+                if ($role == 0) {
+                    $roleName = 'Administrador';
+                } elseif ($role == 1) {
+                    $roleName = 'Trabajador 1';
+                } elseif ($role == 2) {
+                    $roleName = 'Trabajador 2';
+                }
+            @endphp
+            <p class="lead">Rol: {{ $roleName }}</p>
         @else
             <p class="lead">No se pudo obtener el rol del usuario.</p>
         @endif
 
         @if(session()->has('name'))
-            <p class="lead">Name: {{ session('name') }}</p>
+            <p class="lead">Nombre: {{ session('name') }}</p>
         @else
             <p class="lead">Failed to retrieve user's name.</p>
         @endif
