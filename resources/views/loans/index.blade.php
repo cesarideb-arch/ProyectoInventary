@@ -44,7 +44,7 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ $loan['quantity'] }}</td>
-                        <td>{{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d h:i:s A') : 'N/A' }}</td>
+                        <td>{{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}</td>
                         <td>
                             @if($loan['status'] == 0)
                                 Producto Regresado
