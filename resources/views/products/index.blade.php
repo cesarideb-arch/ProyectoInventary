@@ -110,8 +110,8 @@
                     <td>{{ $product['description'] }}</td>
                     <td>${{ $product['price'] }}</td>
                     <td>{{ $product['category']['name']}}</td>
-                    <td>{{ $product['supplier']['company']}}</td>
-                    <td>{{ $product['location']}}</td>
+                    <td>{{ $product['supplier']['company'] ?? 'N/A' }}</td>
+                    <td>{{ $product['location'] ?? 'N/A' }}</td>
                     <td>
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                     </td>

@@ -135,9 +135,14 @@
                             <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
                         @endforeach
                     @else
-                        <option value="" disabled>No hay proveedores disponibles Agrega</option>
+                        <option value="" disabled>No hay proveedores disponibles</option>
                     @endif
                 </select>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck">
+                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
             </div>
 
             <div class="form-group">
@@ -149,7 +154,7 @@
                             <option value="{{ $category['id']}}">{{ $category['name']}}</option>
                         @endforeach
                     @else
-                        <option value="" disabled>No hay categorías disponibles Agrega</option>
+                        <option value="" disabled>No hay categorías disponibles</option>
                     @endif
                 </select>
             </div>
@@ -172,6 +177,43 @@
             };
             reader.readAsDataURL(event.target.files[0]);
         }
+
+        document.getElementById('noSupplierCheck').addEventListener('change', function() {
+            var supplierSelect = document.getElementById('supplier_id');
+            if (this.checked) {
+                supplierSelect.value = '';
+                supplierSelect.disabled = true;
+                supplierSelect.removeAttribute('required');
+            } else {
+                supplierSelect.disabled = false;
+                supplierSelect.setAttribute('required', 'required');
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var supplierSelect = document.getElementById('supplier_id');
+            var noSupplierCheck = document.getElementById('noSupplierCheck');
+
+            if (supplierSelect.value === '' && !noSupplierCheck.checked) {
+                supplierSelect.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                supplierSelect.classList.remove('is-invalid');
+                supplierSelect.classList.add('is-valid');
+            }
+
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            if (noSupplierCheck.checked) {
+                supplierSelect.removeAttribute('name');
+            }
+
+            this.classList.add('was-validated');
+        });
     </script>
 </body>
 </html>

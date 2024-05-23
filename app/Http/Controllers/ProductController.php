@@ -295,7 +295,7 @@ class ProductController extends Controller {
             'observations' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:20',
             'category_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
+            'supplier_id' => 'nullable|integer',
         ]);
 
         // URL base de la API
@@ -395,64 +395,65 @@ class ProductController extends Controller {
             'observations' => 'nullable|string|max:50',
             'location' => 'nullable|string|max:20',
             'category_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
+            'supplier_id' => 'nullable|integer',
         ]);
 
         // Configurar los datos del formulario
         $formParams = [
             [
-                'name' => '_method',
-                'contents' => 'PUT',
+            'name' => '_method',
+            'contents' => 'PUT',
             ],
             [
-                'name' => 'name',
-                'contents' => $validatedData['name'],
+            'name' => 'name',
+            'contents' => $validatedData['name'],
             ],
             [
-                'name' => 'model',
-                'contents' => $validatedData['model'] ?? '',
+            'name' => 'model',
+            'contents' => $validatedData['model'] ?? null,
             ],
             [
-                'name' => 'measurement_unit',
-                'contents' => $validatedData['measurement_unit'] ?? '',
+            'name' => 'measurement_unit',
+            'contents' => $validatedData['measurement_unit'] ?? null,
             ],
             [
-                'name' => 'brand',
-                'contents' => $validatedData['brand'] ?? '',
+            'name' => 'brand',
+            'contents' => $validatedData['brand'] ?? null,
             ],
             [
-                'name' => 'quantity',
-                'contents' => $validatedData['quantity'],
+            'name' => 'quantity',
+            'contents' => $validatedData['quantity'],
             ],
             [
-                'name' => 'description',
-                'contents' => $validatedData['description'] ?? '',
+            'name' => 'description',
+            'contents' => $validatedData['description'] ?? null,
             ],
             [
-                'name' => 'price',
-                'contents' => $validatedData['price'],
+            'name' => 'price',
+            'contents' => $validatedData['price'],
             ],
             [
-                'name' => 'serie',
-                'contents' => $validatedData['serie'] ?? '',
+            'name' => 'serie',
+            'contents' => $validatedData['serie'] ?? null,
             ],
             [
-                'name' => 'observations',
-                'contents' => $validatedData['observations'] ?? '',
+            'name' => 'observations',
+            'contents' => $validatedData['observations'] ?? null,
             ],
             [
-                'name' => 'location',
-                'contents' => $validatedData['location'] ?? '',
+            'name' => 'location',
+            'contents' => $validatedData['location'] ?? null,
             ],
             [
-                'name' => 'category_id',
-                'contents' => $validatedData['category_id'],
+            'name' => 'category_id',
+            'contents' => $validatedData['category_id'],
             ],
             [
-                'name' => 'supplier_id',
-                'contents' => $validatedData['supplier_id'],
+            'name' => 'supplier_id',
+            'contents' => $validatedData['supplier_id'] ?? null,
             ],
         ];
+    
 
         // Comprobar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {

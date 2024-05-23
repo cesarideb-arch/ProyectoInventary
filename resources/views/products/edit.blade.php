@@ -126,12 +126,18 @@
             <div class="form-group">
                 <label for="supplier_id">Proveedor:</label>
                 <select class="form-control" id="supplier_id" name="supplier_id">
+                    <option value="">Seleccione un proveedor</option>
                     @foreach ($suppliers as $supplier)
                         <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
                             {{ $supplier['company'] }}
                         </option>
                     @endforeach
                 </select>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck" {{ $product['supplier_id'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
             </div>
 
             <div class="form-group">
@@ -154,7 +160,6 @@
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
         </form>
     </div>
-     {{-- @dd($errors)  --}}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -179,6 +184,50 @@
             if (currentImage.src) {
                 currentImage.style.display = 'block';
             }
+
+            var noSupplierCheck = document.getElementById('noSupplierCheck');
+            var supplierSelect = document.getElementById('supplier_id');
+            if (noSupplierCheck.checked) {
+                supplierSelect.value = '';
+                supplierSelect.disabled = true;
+            }
+        });
+
+        document.getElementById('noSupplierCheck').addEventListener('change', function() {
+            var supplierSelect = document.getElementById('supplier_id');
+            if (this.checked) {
+                supplierSelect.value = '';
+                supplierSelect.disabled = true;
+                supplierSelect.removeAttribute('required');
+            } else {
+                supplierSelect.disabled = false;
+                supplierSelect.setAttribute('required', 'required');
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var supplierSelect = document.getElementById('supplier_id');
+            var noSupplierCheck = document.getElementById('noSupplierCheck');
+
+            if (supplierSelect.value === '' && !noSupplierCheck.checked) {
+                supplierSelect.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                supplierSelect.classList.remove('is-invalid');
+                supplierSelect.classList.add('is-valid');
+            }
+
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            if (noSupplierCheck.checked) {
+                supplierSelect.removeAttribute('name');
+            }
+
+            this.classList.add('was-validated');
         });
     </script>
 </body>
