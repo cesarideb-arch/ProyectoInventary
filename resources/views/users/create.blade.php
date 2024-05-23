@@ -39,7 +39,7 @@
                 <label for="role">Rol</label>
                 <select class="form-control" id="role" name="role" required>
                     <option value="">Selecciona un rol</option>
-                    <option value="1">Admin</option>
+                    <option value="1">Admin Trabajador</option>
                     <option value="2">Trabajador</option>
                 </select>
             </div>
