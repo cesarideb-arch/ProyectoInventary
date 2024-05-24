@@ -164,7 +164,7 @@
             <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
             <li><a href="{{ route('entrances.index') }}">Lista de Entradas</a></li>
             <li><a href="{{ route('outputs.index') }}">Lista de Salidas</a></li>
-            <li><a href="{{ route('loans.index') }}">Lista de Prestamo</a></li>
+            <li><a href="{{ route('loans.index') }}">Lista de Préstamos</a></li>
 
             <li class="logout-form">
                 <form action="{{ route('logout') }}" method="POST">
