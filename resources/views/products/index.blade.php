@@ -173,6 +173,26 @@
         </div>
     </div>
 
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session('error') }}'
+        });
+    </script>
+    @endif
+
     <script>
     const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
 
