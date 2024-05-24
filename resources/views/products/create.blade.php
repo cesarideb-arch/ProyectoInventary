@@ -160,7 +160,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
+            <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 

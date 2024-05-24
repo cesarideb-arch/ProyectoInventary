@@ -161,7 +161,7 @@
 
             {{-- Botón para enviar el formulario --}}
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-            <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
+            <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 

@@ -65,7 +65,7 @@
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Regresar</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
         </div>
