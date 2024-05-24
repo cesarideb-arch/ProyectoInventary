@@ -34,6 +34,8 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Categoría</button>
+            <a href="{{ route('categories.index') }}" class="btn btn-secondary">Cancelar</a>
+
         </form>
     </div>
 

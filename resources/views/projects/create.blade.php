@@ -49,6 +49,7 @@
                 <input type="text" class="form-control" id="client_name" name="client_name">
             </div>
             <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+            <a href="{{ route('projects.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 
