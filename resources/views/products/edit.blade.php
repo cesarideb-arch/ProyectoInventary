@@ -127,11 +127,15 @@
                 <label for="supplier_id">Proveedor:</label>
                 <select class="form-control" id="supplier_id" name="supplier_id">
                     <option value="">Seleccione un proveedor</option>
-                    @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
-                            {{ $supplier['company'] }}
-                        </option>
-                    @endforeach
+                    @if(count($suppliers) > 0)
+                        @foreach ($suppliers as $supplier)
+                            <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
+                                {{ $supplier['company'] }}
+                            </option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No hay proveedores disponibles</option>
+                    @endif
                 </select>
             </div>
 
