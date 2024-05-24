@@ -41,6 +41,23 @@ class AuthApiMiddleware {
             }
         }
 
+
+        // Verificar si el 'email' está presente en la sesión
+        if (!$request->session()->has('email')) {
+            // Obtener el correo electrónico del usuario desde la solicitud o alguna otra fuente
+            $email = $request->input('email');
+            
+            if ($email) {
+                // Guardar el correo electrónico en la sesión
+                $request->session()->put('email', $email);
+            } else {
+                // Si no se puede obtener el correo electrónico, redirigir al usuario a la página de inicio de sesión con un mensaje de error
+                return redirect()->route('login')->with('error', 'No se pudo obtener el correo electrónico del usuario.');
+            }
+        }
+
+
+        // Si todas las verificaciones son exitosas, continúa con la solicitud
         return $next($request);
     }
 }

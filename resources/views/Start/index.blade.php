@@ -49,8 +49,12 @@
         @else
             <p class="lead">Failed to retrieve user's name.</p>
         @endif
+        @if(session()->has('email'))
+            <p class="lead">Email: {{ session('email') }}</p>
+        @else
+            <p class="lead">Failed to retrieve user's email.</p>
+        @endif
 
-        
     </div>
 </div>
         </div>
