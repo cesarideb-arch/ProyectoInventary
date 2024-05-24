@@ -70,9 +70,9 @@
                 if ($role == 0) {
                     $roleName = 'Administrador';
                 } elseif ($role == 1) {
-                    $roleName = 'Trabajador 1';
+                    $roleName = 'Trabajador rango 1';
                 } elseif ($role == 2) {
-                    $roleName = 'Trabajador 2';
+                    $roleName = 'Trabajador rango 2';
                 }
             @endphp
             <p class="lead">Rol: {{ $roleName }}</p>
