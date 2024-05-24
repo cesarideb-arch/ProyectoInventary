@@ -27,23 +27,28 @@ class StartController extends Controller {
         $responseOutput = Http::withToken($token)->get($apiUrlOutput);
         $responseLoan = Http::withToken($token)->get($apiUrlLoan);
     
+        // Inicializar variables para los datos
+        $entranceProduct = null;
+        $outputProduct = null;
+        $loanProduct = null;
+    
         // Verifica si las solicitudes fueron exitosas
         if ($response->successful() && $responseProducts->successful() &&
             $responseEntrance->successful() && $responseOutput->successful() &&
             $responseLoan->successful()) {
-            
+    
             // Decodifica las respuestas JSON en arrays asociativos
             $counts = $response->json();
             $products = $responseProducts->json();
-            $entrances = $responseEntrance->json();
-            $outputs = $responseOutput->json();
-            $loans = $responseLoan->json();
+            $entranceProduct = $responseEntrance->json();
+            $outputProduct = $responseOutput->json();
+            $loanProduct = $responseLoan->json();
     
             // Pasa los datos a la vista y renderiza la vista
-            return view('start.index', compact('counts', 'products', 'entrances', 'outputs', 'loans'));
+            return view('start.index', compact('counts', 'products', 'entranceProduct', 'outputProduct', 'loanProduct'));
         } else {
             // Manejar el caso donde alguna solicitud no fue exitosa
             return view('start.index', ['message' => 'Error al obtener datos de la API']);
         }
     }
-}    
+}
