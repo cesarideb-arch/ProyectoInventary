@@ -13,16 +13,50 @@
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Inicio</h1>
-        <p class="lead">Bienvenido a la página de inicio de la aplicación de inventario.</p>
+        <p class="lead">Bienvenido 
+            @if(session()->has('name'))
+                <strong>{{ session('name') }}</strong>
+            @else
+                Usuario no encontrado
+            @endif
+            a la página de inicio de la aplicación de inventario.</p>
+
+
+        @if(session()->has('role'))
+            @php
+                $role = session('role');
+                $roleName = '';
+                if ($role == 0) {
+                    $roleName = 'Administrador';
+                } elseif ($role == 1) {
+                    $roleName = 'Trabajador rango 1';
+                } elseif ($role == 2) {
+                    $roleName = 'Trabajador rango 2';
+                }
+            @endphp
+            <p class="lead"><strong>Rol: </strong> {{ $roleName }}</p>
+        @else
+            <p class="lead">No se pudo obtener el rol del usuario.</p>
+        @endif
+
+
+        @if(session()->has('email'))
+            <p class="lead"><strong>Email:</strong> {{ session('email') }}</p>
+        @else
+            <p class="lead">No se pudo obtener el email del usuario.</p>
+        @endif
         
+
+
+
         @if(isset($counts['count']))
-            <p class="lead">El número de préstamos es: {{ $counts['count'] }}</p>
+            <p class="lead"><strong>El número de préstamos es:</strong> {{ $counts['count'] }}</p>
         @else
             <p class="lead">No se pudo obtener el número de préstamos.</p>
         @endif
 
         @if(isset($products['count']))
-            <p class="lead">El número de productos es: {{ $products['count'] }}</p>
+            <p class="lead"><strong>El número de productos es: </strong>{{ $products['count'] }}</p>
         @else
             <p class="lead">No se pudo obtener el número de productos.</p>
         @endif
@@ -61,35 +95,6 @@
             </ul>
         @else
             <p class="lead">No se pudo obtener el producto con mayor cantidad de préstamos.</p>
-        @endif
-
-        @if(session()->has('role'))
-            @php
-                $role = session('role');
-                $roleName = '';
-                if ($role == 0) {
-                    $roleName = 'Administrador';
-                } elseif ($role == 1) {
-                    $roleName = 'Trabajador rango 1';
-                } elseif ($role == 2) {
-                    $roleName = 'Trabajador rango 2';
-                }
-            @endphp
-            <p class="lead">Rol: {{ $roleName }}</p>
-        @else
-            <p class="lead">No se pudo obtener el rol del usuario.</p>
-        @endif
-
-        @if(session()->has('name'))
-            <p class="lead">Nombre: {{ session('name') }}</p>
-        @else
-            <p class="lead">No se pudo obtener el nombre del usuario.</p>
-        @endif
-
-        @if(session()->has('email'))
-            <p class="lead">Email: {{ session('email') }}</p>
-        @else
-            <p class="lead">No se pudo obtener el email del usuario.</p>
         @endif
 
     </div>
