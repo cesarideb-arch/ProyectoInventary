@@ -21,7 +21,6 @@
             @endif
             a la página de inicio de la aplicación de inventario.</p>
 
-
         @if(session()->has('role'))
             @php
                 $role = session('role');
@@ -39,15 +38,11 @@
             <p class="lead">No se pudo obtener el rol del usuario.</p>
         @endif
 
-
         @if(session()->has('email'))
             <p class="lead"><strong>Email:</strong> {{ session('email') }}</p>
         @else
             <p class="lead">No se pudo obtener el email del usuario.</p>
         @endif
-        
-
-
 
         @if(isset($counts['count']))
             <p class="lead"><strong>El número de préstamos es:</strong> {{ $counts['count'] }}</p>
@@ -59,6 +54,18 @@
             <p class="lead"><strong>El número de productos es: </strong>{{ $products['count'] }}</p>
         @else
             <p class="lead">No se pudo obtener el número de productos.</p>
+        @endif
+
+        @if(isset($countEntrances['count']))
+            <p class="lead"><strong>El número de entradas es: </strong>{{ $countEntrances['count'] }}</p>
+        @else
+            <p class="lead">No se pudo obtener el número de entradas.</p>
+        @endif
+
+        @if(isset($countOutputs['count']))
+            <p class="lead"><strong>El número de salidas es: </strong>{{ $countOutputs['count'] }}</p>
+        @else
+            <p class="lead">No se pudo obtener el número de salidas.</p>
         @endif
 
         @if(isset($entranceProduct))
@@ -96,7 +103,6 @@
         @else
             <p class="lead">No se pudo obtener el producto con mayor cantidad de préstamos.</p>
         @endif
-
     </div>
 </div>
 </body>
