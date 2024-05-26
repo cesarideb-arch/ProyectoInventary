@@ -44,7 +44,13 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ $loan['quantity'] }}</td>
-                        <td>{{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}</td>
+                        <td>
+                            @if($loan['status'] == 0)
+                                {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
+                            @else
+                                {{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
+                            @endif
+                        </td>
                         <td>
                             @if($loan['status'] == 0)
                                 Producto Regresado
@@ -78,7 +84,7 @@
                 @endif
                 <a href="{{ route('loans.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
             </div>
             @else
             <p>No se encontraron préstamos.</p>
@@ -106,7 +112,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '/loans/' + loanId, // Ruta a tu controlador para actualizar el préstamo
+                            url: '/loans/' + loanId,
                             type: 'PUT',
                             data: {
                                 _token: '{{ csrf_token() }}',
