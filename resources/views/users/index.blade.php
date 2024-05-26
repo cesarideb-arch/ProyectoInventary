@@ -32,6 +32,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Email</th>
+                    <th>Rol</th>
                     <th style="text-align: center;" colspan="2">Acciones</th>
                 </tr>
                 </thead>
@@ -40,6 +41,13 @@
                     <tr>
                     <td>{{ $user['name'] }}</td>
                     <td>{{ $user['email'] }}</td>
+                    <td>
+                        @if($user['role'] == 1)
+                            Admin Trabajador
+                        @elseif($user['role'] == 2)
+                            Trabajador
+                        @endif
+                    </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-horizontal" role="group">
                             <form action="{{ route('users.edit', $user['id']) }}" method="GET">
