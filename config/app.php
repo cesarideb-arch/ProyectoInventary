@@ -29,7 +29,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'backend_api' => env('BACKEND_API', 'http://192.168.1.15:8000'),
+    'backend_api' => env('BACKEND_API', 'http://default-ip:8000'),
 
 
     /*
