@@ -21,52 +21,21 @@
             @endif
             a la página de inicio de la aplicación de inventario.</p>
 
-        @if(session()->has('role'))
-            @php
-                $role = session('role');
-                $roleName = '';
-                if ($role == 0) {
-                    $roleName = 'Administrador';
-                } elseif ($role == 1) {
-                    $roleName = 'Trabajador rango 1';
-                } elseif ($role == 2) {
-                    $roleName = 'Trabajador rango 2';
-                }
-            @endphp
-            <p class="lead"><strong>Rol: </strong> {{ $roleName }}</p>
-        @else
-            <p class="lead">No se pudo obtener el rol del usuario.</p>
-        @endif
+        @php
+            $role = session('role');
+            $roleName = ($role == 0) ? 'Administrador' : (($role == 1) ? 'Trabajador rango 1' : (($role == 2) ? 'Trabajador rango 2' : ''));
+        @endphp
+        <p class="lead"><strong>Rol: </strong> {{ $roleName }}</p>
 
-        @if(session()->has('email'))
-            <p class="lead"><strong>Email:</strong> {{ session('email') }}</p>
-        @else
-            <p class="lead">No se pudo obtener el email del usuario.</p>
-        @endif
+        <p class="lead"><strong>Email:</strong> {{ session('email', 'No se pudo obtener el email del usuario.') }}</p>
 
-        @if(isset($counts['count']))
-            <p class="lead"><strong>El número de préstamos es:</strong> {{ $counts['count'] }}</p>
-        @else
-            <p class="lead">No se pudo obtener el número de préstamos.</p>
-        @endif
+        <p class="lead"><strong>El número de préstamos es:</strong> {{ $counts['count'] ?? 'No se pudo obtener el número de préstamos.' }}</p>
 
-        @if(isset($products['count']))
-            <p class="lead"><strong>El número de productos es: </strong>{{ $products['count'] }}</p>
-        @else
-            <p class="lead">No se pudo obtener el número de productos.</p>
-        @endif
+        <p class="lead"><strong>El número de productos es: </strong>{{ $products['count'] ?? 'No se pudo obtener el número de productos.' }}</p>
 
-        @if(isset($countEntrances['count']))
-            <p class="lead"><strong>El número de entradas es: </strong>{{ $countEntrances['count'] }}</p>
-        @else
-            <p class="lead">No se pudo obtener el número de entradas.</p>
-        @endif
+        <p class="lead"><strong>El número de entradas es: </strong>{{ $countEntrances['count'] ?? 'No se pudo obtener el número de entradas.' }}</p>
 
-        @if(isset($countOutputs['count']))
-            <p class="lead"><strong>El número de salidas es: </strong>{{ $countOutputs['count'] }}</p>
-        @else
-            <p class="lead">No se pudo obtener el número de salidas.</p>
-        @endif
+        <p class="lead"><strong>El número de salidas es: </strong>{{ $countOutputs['count'] ?? 'No se pudo obtener el número de salidas.' }}</p>
 
         @if(isset($entranceProduct))
             <p class="lead">Producto con mayor cantidad de entradas:</p>
