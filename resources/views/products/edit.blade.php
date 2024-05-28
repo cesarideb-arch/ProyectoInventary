@@ -89,6 +89,11 @@
                 <input type="text" class="form-control" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}">
             </div>
 
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noMeasurementUnitCheck" name="noMeasurementUnitCheck" {{ $product['measurement_unit'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noMeasurementUnitCheck">Sin unidad de medida</label>
+            </div>
+
             <div class="form-group">
                 <label for="brand">Marca:</label>
                 <input type="text" class="form-control" id="brand" name="brand" value="{{ $product['brand'] }}">
@@ -195,6 +200,13 @@
                 supplierSelect.value = '';
                 supplierSelect.disabled = true;
             }
+
+            var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
+            var measurementUnitInput = document.getElementById('measurement_unit');
+            if (noMeasurementUnitCheck.checked) {
+                measurementUnitInput.value = '';
+                measurementUnitInput.disabled = true;
+            }
         });
 
         document.getElementById('noSupplierCheck').addEventListener('change', function() {
@@ -209,9 +221,23 @@
             }
         });
 
+        document.getElementById('noMeasurementUnitCheck').addEventListener('change', function() {
+            var measurementUnitInput = document.getElementById('measurement_unit');
+            if (this.checked) {
+                measurementUnitInput.value = '';
+                measurementUnitInput.disabled = true;
+                measurementUnitInput.removeAttribute('required');
+            } else {
+                measurementUnitInput.disabled = false;
+                measurementUnitInput.setAttribute('required', 'required');
+            }
+        });
+
         document.querySelector('form').addEventListener('submit', function(event) {
             var supplierSelect = document.getElementById('supplier_id');
             var noSupplierCheck = document.getElementById('noSupplierCheck');
+            var measurementUnitInput = document.getElementById('measurement_unit');
+            var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
 
             if (supplierSelect.value === '' && !noSupplierCheck.checked) {
                 supplierSelect.classList.add('is-invalid');
@@ -222,6 +248,15 @@
                 supplierSelect.classList.add('is-valid');
             }
 
+            if (measurementUnitInput.value === '' && !noMeasurementUnitCheck.checked) {
+                measurementUnitInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                measurementUnitInput.classList.remove('is-invalid');
+                measurementUnitInput.classList.add('is-valid');
+            }
+
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -229,6 +264,10 @@
 
             if (noSupplierCheck.checked) {
                 supplierSelect.removeAttribute('name');
+            }
+
+            if (noMeasurementUnitCheck.checked) {
+                measurementUnitInput.removeAttribute('name');
             }
 
             this.classList.add('was-validated');
