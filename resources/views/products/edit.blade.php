@@ -35,13 +35,9 @@
             width: 100%;
             max-width: 300px;
             height: auto;
-            display: none;
             margin-top: 10px;
             border: 1px solid #ced4da;
             border-radius: 5px;
-        }
-        #currentImage {
-            display: block;
         }
         .btn-primary {
             background-color: #007bff;
@@ -67,16 +63,6 @@
             <div class="form-group">
                 <label for="name">Nombre:</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ $product['name'] }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Descripción:</label>
-                <textarea class="form-control" id="description" name="description">{{ $product['description'] }}</textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="price">Precio:</label>
-                <input type="number" class="form-control" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required>
             </div>
 
             <div class="form-group">
@@ -110,6 +96,16 @@
             </div>
 
             <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea class="form-control" id="description" name="description">{{ $product['description'] }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Precio:</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required>
+            </div>
+
+            <div class="form-group">
                 <label for="profile_image">Imagen:</label>
                 <input type="file" id="profile_image" name="profile_image" class="form-control" onchange="previewImage(event)">
             </div>
@@ -119,39 +115,7 @@
                 <img id="currentImage" src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen">
 
                 {{-- Vista previa de la nueva imagen --}}
-                <img id="imagePreview" src="#" alt="Vista previa de la nueva imagen">
-            </div>
-
-            <div class="form-group">
-                <label for="category_id">Categoría:</label>
-                <select class="form-control" id="category_id" name="category_id">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category['id'] }}" {{ $category['id'] == $product['category_id'] ? 'selected' : '' }}>
-                            {{ $category['name'] }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="supplier_id">Proveedor:</label>
-                <select class="form-control" id="supplier_id" name="supplier_id">
-                    <option value="">Seleccione un proveedor</option>
-                    @if(count($suppliers) > 0)
-                        @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
-                                {{ $supplier['company'] }}
-                            </option>
-                        @endforeach
-                    @else
-                        <option value="" disabled>No hay proveedores disponibles</option>
-                    @endif
-                </select>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck" {{ $product['supplier_id'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
+                <img id="imagePreview" src="#" alt="Vista previa de la nueva imagen" style="display: none;">
             </div>
 
             <div class="form-group">
@@ -177,6 +141,38 @@
             <div class="form-group">
                 <label for="location">Ubicación:</label>
                 <input type="text" class="form-control" id="location" name="location" value="{{ $product['location'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="supplier_id">Proveedor:</label>
+                <select class="form-control" id="supplier_id" name="supplier_id">
+                    <option value="">Seleccione un proveedor</option>
+                    @if(count($suppliers) > 0)
+                        @foreach ($suppliers as $supplier)
+                            <option value="{{ $supplier['id'] }}" {{ $supplier['id'] == $product['supplier_id'] ? 'selected' : '' }}>
+                                {{ $supplier['company'] }}
+                            </option>
+                        @endforeach
+                    @else
+                        <option value="" disabled>No hay proveedores disponibles</option>
+                    @endif
+                </select>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck" {{ $product['supplier_id'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
+            </div>
+
+            <div class="form-group">
+                <label for="category_id">Categoría:</label>
+                <select class="form-control" id="category_id" name="category_id">
+                    @foreach ($categories as $category)
+                        <option value="{{ $category['id'] }}" {{ $category['id'] == $product['category_id'] ? 'selected' : '' }}>
+                            {{ $category['name'] }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             {{-- Botón para enviar el formulario --}}
@@ -206,7 +202,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             var currentImage = document.getElementById('currentImage');
             if (currentImage.src) {
-                currentImage.style.display = 'block';
+                currentImage.style.display
+
+ = 'block';
             }
 
             var noSupplierCheck = document.getElementById('noSupplierCheck');
