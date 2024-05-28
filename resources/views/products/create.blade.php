@@ -193,12 +193,20 @@
         $(document).ready(function() {
             $('#category_id').select2({
                 placeholder: 'Seleccione una categoría',
-                allowClear: true
+                language: {
+                    noResults: function() {
+                        return 'No hay categorías disponibles con ese nombre';
+                    }
+                }
             });
 
             $('#supplier_id').select2({
                 placeholder: 'Seleccione un proveedor',
-                allowClear: true
+                language: {
+                    noResults: function() {
+                        return 'No hay proveedores disponibles con ese nombre';
+                    }
+                }
             });
         });
 
