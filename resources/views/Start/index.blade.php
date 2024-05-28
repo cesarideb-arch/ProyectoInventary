@@ -54,9 +54,8 @@
             @if($product)
                 <p class="lead">{{ $label }}</p>
                 <ul>
-                    <li>Nombre: {{ $product['name'] }}</li>
-                    <li>Cantidad: {{ $product['quantity'] }}</li>
-                    {{-- <li>Marca: {{ $product['brand'] }}</li> --}}
+                    <li>Nombre: {{ $product['name'] ?? 'Nombre no disponible' }}</li>
+                    <li>Cantidad: {{ $product['total_quantity'] ?? 'Cantidad no disponible' }}</li>
                 </ul>
             @else
                 <p class="lead">No se pudo obtener el {{ strtolower($label) }}</p>

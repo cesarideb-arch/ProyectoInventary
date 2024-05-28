@@ -37,6 +37,8 @@ class StartController extends Controller {
                 return view('start.index', ['message' => 'Error al obtener datos de la API']);
             }
         }
+           // Agregar dd() para ver el contenido de $responses
+    // dd($responses);
 
         // Pasa los datos a la vista y renderiza la vista
         return view('start.index', $responses);
