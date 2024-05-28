@@ -45,9 +45,9 @@
 
         @php
             $productData = [
-                'Producto con mayor cantidad de entradas:' => $entranceProduct ?? null,
-                'Producto con mayor cantidad de salidas:' => $outputProduct ?? null,
-                'Producto con mayor cantidad de préstamos:' => $loanProduct ?? null,
+            'Producto con mayor cantidad de entradas:' => $entranceProduct ?? null,
+            'Producto con mayor cantidad de salidas:' => $outputProduct ?? null,
+            'Producto con mayor cantidad de préstamos:' => $loanProduct ?? null,
             ];
         @endphp
         @foreach($productData as $label => $product)
