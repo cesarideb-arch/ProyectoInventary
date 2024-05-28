@@ -211,98 +211,59 @@
 
             var noSupplierCheck = document.getElementById('noSupplierCheck');
             var supplierSelect = document.getElementById('supplier_id');
-            if (noSupplierCheck.checked) {
-                supplierSelect.value = '';
-                supplierSelect.disabled = true;
-            }
+            toggleInput(noSupplierCheck, supplierSelect);
 
             var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
             var measurementUnitInput = document.getElementById('measurement_unit');
-            if (noMeasurementUnitCheck.checked) {
-                measurementUnitInput.value = '';
-                measurementUnitInput.disabled = true;
-            }
+            toggleInput(noMeasurementUnitCheck, measurementUnitInput);
 
             var noModelCheck = document.getElementById('noModelCheck');
             var modelInput = document.getElementById('model');
-            if (noModelCheck.checked) {
-                modelInput.value = '';
-                modelInput.disabled = true;
-            }
+            toggleInput(noModelCheck, modelInput);
 
             var noSerieCheck = document.getElementById('noSerieCheck');
             var serieInput = document.getElementById('serie');
-            if (noSerieCheck.checked) {
-                serieInput.value = '';
-                serieInput.disabled = true;
-            }
+            toggleInput(noSerieCheck, serieInput);
 
             var noObservationsCheck = document.getElementById('noObservationsCheck');
             var observationsInput = document.getElementById('observations');
-            if (noObservationsCheck.checked) {
-                observationsInput.value = '';
-                observationsInput.disabled = true;
-            }
+            toggleInput(noObservationsCheck, observationsInput);
         });
+
+        function toggleInput(checkbox, input) {
+            if (checkbox.checked) {
+                input.value = '';
+                input.disabled = true;
+                input.removeAttribute('required');
+            } else {
+                input.disabled = false;
+                input.setAttribute('required', 'required');
+            }
+        }
 
         document.getElementById('noSupplierCheck').addEventListener('change', function() {
             var supplierSelect = document.getElementById('supplier_id');
-            if (this.checked) {
-                supplierSelect.value = '';
-                supplierSelect.disabled = true;
-                supplierSelect.removeAttribute('required');
-            } else {
-                supplierSelect.disabled = false;
-                supplierSelect.setAttribute('required', 'required');
-            }
+            toggleInput(this, supplierSelect);
         });
 
         document.getElementById('noMeasurementUnitCheck').addEventListener('change', function() {
             var measurementUnitInput = document.getElementById('measurement_unit');
-            if (this.checked) {
-                measurementUnitInput.value = '';
-                measurementUnitInput.disabled = true;
-                measurementUnitInput.removeAttribute('required');
-            } else {
-                measurementUnitInput.disabled = false;
-                measurementUnitInput.setAttribute('required', 'required');
-            }
+            toggleInput(this, measurementUnitInput);
         });
 
         document.getElementById('noModelCheck').addEventListener('change', function() {
             var modelInput = document.getElementById('model');
-            if (this.checked) {
-                modelInput.value = '';
-                modelInput.disabled = true;
-                modelInput.removeAttribute('required');
-            } else {
-                modelInput.disabled = false;
-                modelInput.setAttribute('required', 'required');
-            }
+            toggleInput(this, modelInput);
         });
 
         document.getElementById('noSerieCheck').addEventListener('change', function() {
             var serieInput = document.getElementById('serie');
-            if (this.checked) {
-                serieInput.value = '';
-                serieInput.disabled = true;
-                serieInput.removeAttribute('required');
-            } else {
-                serieInput.disabled = false;
-                serieInput.setAttribute('required', 'required');
-            }
+            toggleInput(this, serieInput);
         });
 
         document.getElementById('noObservationsCheck').addEventListener('change', function() {
             var observationsInput = document.getElementById('observations');
-            if (this.checked) {
-                observationsInput.value = '';
-                observationsInput.disabled = true;
-                observationsInput.removeAttribute('required');
-            } else {
-                observationsInput.disabled = false;
-                observationsInput.setAttribute('required', 'required');
-            }
+            toggleInput(this, observationsInput);
         });
 
         document.querySelector('form').addEventListener('submit', function(event) {
@@ -317,50 +278,11 @@
             var observationsInput = document.getElementById('observations');
             var noObservationsCheck = document.getElementById('noObservationsCheck');
 
-            if (supplierSelect.value === '' && !noSupplierCheck.checked) {
-                supplierSelect.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                supplierSelect.classList.remove('is-invalid');
-                supplierSelect.classList.add('is-valid');
-            }
-
-            if (measurementUnitInput.value === '' && !noMeasurementUnitCheck.checked) {
-                measurementUnitInput.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                measurementUnitInput.classList.remove('is-invalid');
-                measurementUnitInput.classList.add('is-valid');
-            }
-
-            if (modelInput.value === '' && !noModelCheck.checked) {
-                modelInput.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                modelInput.classList.remove('is-invalid');
-                modelInput.classList.add('is-valid');
-            }
-
-            if (serieInput.value === '' && !noSerieCheck.checked) {
-                serieInput.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                serieInput.classList.remove('is-invalid');
-                serieInput.classList.add('is-valid');
-            }
-
-            if (observationsInput.value === '' && !noObservationsCheck.checked) {
-                observationsInput.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                observationsInput.classList.remove('is-invalid');
-                observationsInput.classList.add('is-valid');
-            }
+            validateInput(supplierSelect, noSupplierCheck);
+            validateInput(measurementUnitInput, noMeasurementUnitCheck);
+            validateInput(modelInput, noModelCheck);
+            validateInput(serieInput, noSerieCheck);
+            validateInput(observationsInput, noObservationsCheck);
 
             if (!this.checkValidity()) {
                 event.preventDefault();
@@ -389,6 +311,17 @@
 
             this.classList.add('was-validated');
         });
+
+        function validateInput(input, checkbox) {
+            if (input.value === '' && !checkbox.checked) {
+                input.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            }
+        }
     </script>
 </body>
 </html>
