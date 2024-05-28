@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             background-color: #f8f9fa;
@@ -67,7 +68,7 @@
 
             <div class="form-group">
                 <label for="model">Modelo:</label>
-                <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}">
+                <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}" {{ $product['model'] == null ? 'disabled' : '' }}>
             </div>
 
             <div class="form-group form-check">
@@ -77,7 +78,7 @@
 
             <div class="form-group">
                 <label for="measurement_unit">Unidad de medida:</label>
-                <input type="text" class="form-control" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}">
+                <input type="text" class="form-control" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}" {{ $product['measurement_unit'] == null ? 'disabled' : '' }}>
             </div>
 
             <div class="form-group form-check">
@@ -120,7 +121,7 @@
 
             <div class="form-group">
                 <label for="serie">Serie:</label>
-                <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}">
+                <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}" {{ $product['serie'] == null ? 'disabled' : '' }}>
             </div>
 
             <div class="form-group form-check">
@@ -130,7 +131,7 @@
 
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
-                <input type="text" class="form-control" id="observations" name="observations" value="{{ $product['observations'] }}">
+                <input type="text" class="form-control" id="observations" name="observations" value="{{ $product['observations'] }}" {{ $product['observations'] == null ? 'disabled' : '' }}>
             </div>
 
             <div class="form-group form-check">
@@ -145,7 +146,7 @@
 
             <div class="form-group">
                 <label for="supplier_id">Proveedor:</label>
-                <select class="form-control" id="supplier_id" name="supplier_id">
+                <select class="form-control" id="supplier_id" name="supplier_id" {{ $product['supplier_id'] == null ? 'disabled' : '' }}>
                     <option value="">Seleccione un proveedor</option>
                     @if(count($suppliers) > 0)
                         @foreach ($suppliers as $supplier)
@@ -181,31 +182,23 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn
+
+.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function(){
-                var output = document.getElementById('imagePreview');
-                output.src = reader.result;
-                output.style.display = 'block';
+        $(document).ready(function() {
+            $('#category_id').select2({
+                placeholder: 'Seleccione una categoría',
+                allowClear: true
+            });
 
-                // Ocultar la imagen actual cuando se carga una nueva imagen
-                document.getElementById('currentImage').style.display = 'none';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        // Mostrar la vista previa de la imagen actual
-        document.addEventListener('DOMContentLoaded', function() {
-            var currentImage = document.getElementById('currentImage');
-            if (currentImage.src) {
-                currentImage.style.display
-
- = 'block';
-            }
+            $('#supplier_id').select2({
+                placeholder: 'Seleccione un proveedor',
+                allowClear: true
+            });
 
             var noSupplierCheck = document.getElementById('noSupplierCheck');
             var supplierSelect = document.getElementById('supplier_id');
@@ -227,6 +220,19 @@
             var observationsInput = document.getElementById('observations');
             toggleInput(noObservationsCheck, observationsInput);
         });
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+
+                // Ocultar la imagen actual cuando se carga una nueva imagen
+                document.getElementById('currentImage').style.display = 'none';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
 
         function toggleInput(checkbox, input) {
             if (checkbox.checked) {
