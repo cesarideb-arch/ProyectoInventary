@@ -13,65 +13,55 @@
 <div class="container">
     <div class="jumbotron">
         <h1 class="display-4">Inicio</h1>
-        <p class="lead">Bienvenido 
+        <p class="lead">
+            Bienvenido 
             @if(session()->has('name'))
                 <strong>{{ session('name') }}</strong>
             @else
                 Usuario no encontrado
             @endif
-            a la página de inicio de la aplicación de inventario.</p>
+            a la página de inicio de la aplicación de inventario.
+        </p>
 
         @php
-            $role = session('role');
-            $roleName = ($role == 0) ? 'Administrador' : (($role == 1) ? 'Trabajador rango 1' : (($role == 2) ? 'Trabajador rango 2' : ''));
+            $roleNames = ['Administrador', 'Trabajador rango 1', 'Trabajador rango 2'];
+            $role = session('role', -1);
         @endphp
-        <p class="lead"><strong>Rol: </strong> {{ $roleName }}</p>
+        <p class="lead"><strong>Rol: </strong> {{ $role >= 0 && $role < count($roleNames) ? $roleNames[$role] : 'Rol no identificado' }}</p>
 
         <p class="lead"><strong>Email:</strong> {{ session('email', 'No se pudo obtener el email del usuario.') }}</p>
 
-        <p class="lead"><strong>El número de préstamos es:</strong> {{ $counts['count'] ?? 'No se pudo obtener el número de préstamos.' }}</p>
+        @php
+            $countData = [
+                'El número de préstamos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos.',
+                'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
+                'El número de entradas es:' => $countEntrances['count'] ?? 'No se pudo obtener el número de entradas.',
+                'El número de salidas es:' => $countOutputs['count'] ?? 'No se pudo obtener el número de salidas.',
+            ];
+        @endphp
+        @foreach($countData as $label => $count)
+            <p class="lead"><strong>{{ $label }}</strong> {{ $count }}</p>
+        @endforeach
 
-        <p class="lead"><strong>El número de productos es: </strong>{{ $products['count'] ?? 'No se pudo obtener el número de productos.' }}</p>
-
-        <p class="lead"><strong>El número de entradas es: </strong>{{ $countEntrances['count'] ?? 'No se pudo obtener el número de entradas.' }}</p>
-
-        <p class="lead"><strong>El número de salidas es: </strong>{{ $countOutputs['count'] ?? 'No se pudo obtener el número de salidas.' }}</p>
-
-        @if(isset($entranceProduct))
-            <p class="lead">Producto con mayor cantidad de entradas:</p>
-            <ul>
-                <li>Nombre: {{ $entranceProduct['name'] }}</li>
-                <li>Cantidad: {{ $entranceProduct['quantity'] }}</li>
-                {{-- <li>Marca: {{ $entranceProduct['brand'] }}</li> --}}
-                <!-- Agrega aquí más detalles según sea necesario -->
-            </ul>
-        @else
-            <p class="lead">No se pudo obtener el producto con mayor cantidad de entradas.</p>
-        @endif
-
-        @if(isset($outputProduct))
-            <p class="lead">Producto con mayor cantidad de salidas:</p>
-            <ul>
-                <li>Nombre: {{ $outputProduct['name'] }}</li>
-                <li>Cantidad: {{ $outputProduct['quantity'] }}</li>
-                {{-- <li>Marca: {{ $outputProduct['brand'] }}</li> --}}
-                <!-- Agrega aquí más detalles según sea necesario -->
-            </ul>
-        @else
-            <p class="lead">No se pudo obtener el producto con mayor cantidad de salidas.</p>
-        @endif
-
-        @if(isset($loanProduct))
-            <p class="lead">Producto con mayor cantidad de préstamos:</p>
-            <ul>
-                <li>Nombre: {{ $loanProduct['name'] }}</li>
-                <li>Cantidad: {{ $loanProduct['quantity'] }}</li>
-                {{-- <li>Marca: {{ $loanProduct['brand'] }}</li> --}}
-                <!-- Agrega aquí más detalles según sea necesario -->
-            </ul>
-        @else
-            <p class="lead">No se pudo obtener el producto con mayor cantidad de préstamos.</p>
-        @endif
+        @php
+            $productData = [
+                'Producto con mayor cantidad de entradas:' => $entranceProduct ?? null,
+                'Producto con mayor cantidad de salidas:' => $outputProduct ?? null,
+                'Producto con mayor cantidad de préstamos:' => $loanProduct ?? null,
+            ];
+        @endphp
+        @foreach($productData as $label => $product)
+            @if($product)
+                <p class="lead">{{ $label }}</p>
+                <ul>
+                    <li>Nombre: {{ $product['name'] }}</li>
+                    <li>Cantidad: {{ $product['quantity'] }}</li>
+                    {{-- <li>Marca: {{ $product['brand'] }}</li> --}}
+                </ul>
+            @else
+                <p class="lead">No se pudo obtener el {{ strtolower($label) }}</p>
+            @endif
+        @endforeach
     </div>
 </div>
 </body>
