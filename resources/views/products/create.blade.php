@@ -218,9 +218,7 @@
             checkbox.addEventListener('change', function() {
                 if (this.checked) {
                     input.value = '';
-                    input.disabled
-
- = true;
+                    input.disabled = true;
                     input.removeAttribute('required');
                 } else {
                     input.disabled = false;
