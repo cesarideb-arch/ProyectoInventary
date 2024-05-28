@@ -195,6 +195,11 @@
                 placeholder: 'Seleccione una categoría',
                 allowClear: true
             });
+
+            $('#supplier_id').select2({
+                placeholder: 'Seleccione un proveedor',
+                allowClear: true
+            });
         });
 
         function previewImage(event) {
@@ -213,13 +218,13 @@
             checkbox.addEventListener('change', function() {
                 if (this.checked) {
                     input.value = '';
-                    input.disabled = true;
+                    input.disabled
+
+ = true;
                     input.removeAttribute('required');
                 } else {
                     input.disabled = false;
-                    input
-
-.setAttribute('required', 'required');
+                    input.setAttribute('required', 'required');
                 }
             });
         }
