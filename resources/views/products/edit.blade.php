@@ -71,7 +71,7 @@
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea class="form-control" id="description" name="description" required>{{ $product['description'] }}</textarea>
+                <textarea class="form-control" id="description" name="description">{{ $product['description'] }}</textarea>
             </div>
 
             <div class="form-group">
@@ -82,6 +82,11 @@
             <div class="form-group">
                 <label for="model">Modelo:</label>
                 <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}">
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noModelCheck" name="noModelCheck" {{ $product['model'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noModelCheck">Sin modelo</label>
             </div>
 
             <div class="form-group">
@@ -154,9 +159,19 @@
                 <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}">
             </div>
 
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck" {{ $product['serie'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noSerieCheck">Sin serie</label>
+            </div>
+
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
                 <input type="text" class="form-control" id="observations" name="observations" value="{{ $product['observations'] }}">
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noObservationsCheck" name="noObservationsCheck" {{ $product['observations'] == null ? 'checked' : '' }}>
+                <label class="form-check-label" for="noObservationsCheck">Sin observaciones</label>
             </div>
 
             <div class="form-group">
@@ -207,6 +222,27 @@
                 measurementUnitInput.value = '';
                 measurementUnitInput.disabled = true;
             }
+
+            var noModelCheck = document.getElementById('noModelCheck');
+            var modelInput = document.getElementById('model');
+            if (noModelCheck.checked) {
+                modelInput.value = '';
+                modelInput.disabled = true;
+            }
+
+            var noSerieCheck = document.getElementById('noSerieCheck');
+            var serieInput = document.getElementById('serie');
+            if (noSerieCheck.checked) {
+                serieInput.value = '';
+                serieInput.disabled = true;
+            }
+
+            var noObservationsCheck = document.getElementById('noObservationsCheck');
+            var observationsInput = document.getElementById('observations');
+            if (noObservationsCheck.checked) {
+                observationsInput.value = '';
+                observationsInput.disabled = true;
+            }
         });
 
         document.getElementById('noSupplierCheck').addEventListener('change', function() {
@@ -233,11 +269,53 @@
             }
         });
 
+        document.getElementById('noModelCheck').addEventListener('change', function() {
+            var modelInput = document.getElementById('model');
+            if (this.checked) {
+                modelInput.value = '';
+                modelInput.disabled = true;
+                modelInput.removeAttribute('required');
+            } else {
+                modelInput.disabled = false;
+                modelInput.setAttribute('required', 'required');
+            }
+        });
+
+        document.getElementById('noSerieCheck').addEventListener('change', function() {
+            var serieInput = document.getElementById('serie');
+            if (this.checked) {
+                serieInput.value = '';
+                serieInput.disabled = true;
+                serieInput.removeAttribute('required');
+            } else {
+                serieInput.disabled = false;
+                serieInput.setAttribute('required', 'required');
+            }
+        });
+
+        document.getElementById('noObservationsCheck').addEventListener('change', function() {
+            var observationsInput = document.getElementById('observations');
+            if (this.checked) {
+                observationsInput.value = '';
+                observationsInput.disabled = true;
+                observationsInput.removeAttribute('required');
+            } else {
+                observationsInput.disabled = false;
+                observationsInput.setAttribute('required', 'required');
+            }
+        });
+
         document.querySelector('form').addEventListener('submit', function(event) {
             var supplierSelect = document.getElementById('supplier_id');
             var noSupplierCheck = document.getElementById('noSupplierCheck');
             var measurementUnitInput = document.getElementById('measurement_unit');
             var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
+            var modelInput = document.getElementById('model');
+            var noModelCheck = document.getElementById('noModelCheck');
+            var serieInput = document.getElementById('serie');
+            var noSerieCheck = document.getElementById('noSerieCheck');
+            var observationsInput = document.getElementById('observations');
+            var noObservationsCheck = document.getElementById('noObservationsCheck');
 
             if (supplierSelect.value === '' && !noSupplierCheck.checked) {
                 supplierSelect.classList.add('is-invalid');
@@ -257,6 +335,33 @@
                 measurementUnitInput.classList.add('is-valid');
             }
 
+            if (modelInput.value === '' && !noModelCheck.checked) {
+                modelInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                modelInput.classList.remove('is-invalid');
+                modelInput.classList.add('is-valid');
+            }
+
+            if (serieInput.value === '' && !noSerieCheck.checked) {
+                serieInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                serieInput.classList.remove('is-invalid');
+                serieInput.classList.add('is-valid');
+            }
+
+            if (observationsInput.value === '' && !noObservationsCheck.checked) {
+                observationsInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                observationsInput.classList.remove('is-invalid');
+                observationsInput.classList.add('is-valid');
+            }
+
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -268,6 +373,18 @@
 
             if (noMeasurementUnitCheck.checked) {
                 measurementUnitInput.removeAttribute('name');
+            }
+
+            if (noModelCheck.checked) {
+                modelInput.removeAttribute('name');
+            }
+
+            if (noSerieCheck.checked) {
+                serieInput.removeAttribute('name');
+            }
+
+            if (noObservationsCheck.checked) {
+                observationsInput.removeAttribute('name');
             }
 
             this.classList.add('was-validated');

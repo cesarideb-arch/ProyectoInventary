@@ -107,7 +107,7 @@
                 @foreach($products as $product)
                     <tr>
                     <td>{{ $product['name'] }}</td>
-                    <td>{{ $product['description'] }}</td>
+                    <td>{{ $product['description'] ?? 'N/A' }}</td>
                     <td>${{ $product['price'] }}</td>
                     <td>{{ $product['category']['name']}}</td>
                     <td>{{ $product['supplier']['company'] ?? 'N/A' }}</td>

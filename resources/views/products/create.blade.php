@@ -77,9 +77,14 @@
                 <input type="text" id="model" name="model" value="{{ old('model') }}" class="form-control">
             </div>
 
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noModelCheck" name="noModelCheck">
+                <label class="form-check-label" for="noModelCheck">Sin modelo</label>
+            </div>
+
             <div class="form-group">
                 <label for="measurement_unit">Unidad de medida:</label>
-                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ old('measurement_unit') }}" class="form-control" required>
+                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ old('measurement_unit') }}" class="form-control">
             </div>
 
             <div class="form-group form-check">
@@ -99,9 +104,9 @@
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea id="description" name="description" required class="form-control">{{ old('description') }}</textarea>
+                <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
             </div>
-
+            
             <div class="form-group">
                 <label for="price">Precio:</label>
                 <input type="number" id="price" name="price" value="{{ old('price') }}" step="0.01" required class="form-control">
@@ -121,9 +126,19 @@
                 <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control">
             </div>
 
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck">
+                <label class="form-check-label" for="noSerieCheck">Sin serie</label>
+            </div>
+
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
                 <input type="text" id="observations" name="observations" value="{{ old('observations') }}" class="form-control">
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noObservationsCheck" name="noObservationsCheck">
+                <label class="form-check-label" for="noObservationsCheck">Sin observaciones</label>
             </div>
 
             <div class="form-group">
@@ -183,67 +198,52 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        document.getElementById('noSupplierCheck').addEventListener('change', function() {
-            var supplierSelect = document.getElementById('supplier_id');
-            if (this.checked) {
-                supplierSelect.value = '';
-                supplierSelect.disabled = true;
-                supplierSelect.removeAttribute('required');
-            } else {
-                supplierSelect.disabled = false;
-                supplierSelect.setAttribute('required', 'required');
-            }
-        });
+        function toggleInputDisable(checkboxId, inputId) {
+            var checkbox = document.getElementById(checkboxId);
+            var input = document.getElementById(inputId);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    input.value = '';
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            });
+        }
 
-        document.getElementById('noMeasurementUnitCheck').addEventListener('change', function() {
-            var measurementUnitInput = document.getElementById('measurement_unit');
-            if (this.checked) {
-                measurementUnitInput.value = '';
-                measurementUnitInput.disabled = true;
-                measurementUnitInput.removeAttribute('required');
-            } else {
-                measurementUnitInput.disabled = false;
-                measurementUnitInput.setAttribute('required', 'required');
-            }
-        });
+        toggleInputDisable('noSupplierCheck', 'supplier_id');
+        toggleInputDisable('noMeasurementUnitCheck', 'measurement_unit');
+        toggleInputDisable('noModelCheck', 'model');
+        toggleInputDisable('noSerieCheck', 'serie');
+        toggleInputDisable('noObservationsCheck', 'observations');
 
         document.querySelector('form').addEventListener('submit', function(event) {
-            var supplierSelect = document.getElementById('supplier_id');
-            var noSupplierCheck = document.getElementById('noSupplierCheck');
-            var measurementUnitInput = document.getElementById('measurement_unit');
-            var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
+            var inputs = ['supplier_id', 'measurement_unit', 'model', 'serie', 'observations'];
+            var checkboxes = ['noSupplierCheck', 'noMeasurementUnitCheck', 'noModelCheck', 'noSerieCheck', 'noObservationsCheck'];
 
-            if (supplierSelect.value === '' && !noSupplierCheck.checked) {
-                supplierSelect.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                supplierSelect.classList.remove('is-invalid');
-                supplierSelect.classList.add('is-valid');
-            }
+            for (var i = 0; i < inputs.length; i++) {
+                var input = document.getElementById(inputs[i]);
+                var checkbox = document.getElementById(checkboxes[i]);
 
-            if (measurementUnitInput.value === '' && !noMeasurementUnitCheck.checked) {
-                measurementUnitInput.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                measurementUnitInput.classList
+                if (input.value === '' && !checkbox.checked) {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
 
-.remove('is-invalid');
-                measurementUnitInput.classList.add('is-valid');
+                if (checkbox.checked) {
+                    input.removeAttribute('name');
+                }
             }
 
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
-            }
-
-            if (noSupplierCheck.checked) {
-                supplierSelect.removeAttribute('name');
-            }
-
-            if (noMeasurementUnitCheck.checked) {
-                measurementUnitInput.removeAttribute('name');
             }
 
             this.classList.add('was-validated');
