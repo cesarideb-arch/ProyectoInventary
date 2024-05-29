@@ -60,6 +60,18 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36px;
         }
+        .form-check-label {
+            color: initial;
+        }
+        .form-check-input:checked ~ .form-check-label {
+            color: green;
+        }
+        .is-invalid .select2-selection {
+            border-color: #dc3545;
+        }
+        .is-valid .select2-selection {
+            border-color: #28a745;
+        }
     </style>
 </head>
 <body>
@@ -76,17 +88,23 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data" novalidate>
             @csrf
 
             <div class="form-group">
                 <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required class="form-control">
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required class="form-control @error('name') is-invalid @enderror">
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="model">Modelo:</label>
-                <input type="text" id="model" name="model" value="{{ old('model') }}" class="form-control">
+                <input type="text" id="model" name="model" value="{{ old('model') }}" class="form-control @error('model') is-invalid @enderror">
+                @error('model')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -96,7 +114,10 @@
 
             <div class="form-group">
                 <label for="measurement_unit">Unidad de medida:</label>
-                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ old('measurement_unit') }}" class="form-control">
+                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ old('measurement_unit') }}" class="form-control @error('measurement_unit') is-invalid @enderror">
+                @error('measurement_unit')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -106,45 +127,46 @@
 
             <div class="form-group">
                 <label for="brand">Marca:</label>
-                <input type="text" id="brand" name="brand" value="{{ old('brand') }}" class="form-control">
+                <input type="text" id="brand" name="brand" value="{{ old('brand') }}" required class="form-control @error('brand') is-invalid @enderror">
+                @error('brand')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control" min="1">
+                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control @error('quantity') is-invalid @enderror" min="1">
+                @error('quantity')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
+                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-          <div class="form-group">
-    <label for="price">Precio:</label>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text">$</span>
-        </div>
-        <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" min="0.01" placeholder="0.00">
-    </div>
-</div>
-
-<script>
-    document.getElementById('price').addEventListener('input', function (e) {
-        var value = e.target.value;
-        value = value.replace(/,/g, ''); // Eliminar las comas existentes
-        if (!isNaN(value) && value !== '') {
-            var parts = value.split('.');
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            e.target.value = parts.join('.');
-        }
-    });
-</script>
-
+            <div class="form-group">
+                <label for="price">Precio:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" min="0.01" placeholder="0.00">
+                </div>
+            </div>
+            
+        
 
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
-                <input type="file" id="profile_image" name="profile_image" class="form-control" onchange="previewImage(event)">
+                <input type="file" id="profile_image" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" onchange="previewImage(event)">
+                @error('profile_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="image-preview-container">
@@ -153,7 +175,10 @@
 
             <div class="form-group">
                 <label for="serie">Serie:</label>
-                <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control">
+                <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control @error('serie') is-invalid @enderror">
+                @error('serie')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -163,7 +188,10 @@
 
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
-                <input type="text" id="observations" name="observations" value="{{ old('observations') }}" class="form-control">
+                <input type="text" id="observations" name="observations" value="{{ old('observations') }}" class="form-control @error('observations') is-invalid @enderror">
+                @error('observations')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -173,21 +201,27 @@
 
             <div class="form-group">
                 <label for="location">Ubicación:</label>
-                <input type="text" id="location" name="location" value="{{ old('location') }}" class="form-control">
+                <input type="text" id="location" name="location" value="{{ old('location') }}" required class="form-control @error('location') is-invalid @enderror">
+                @error('location')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="supplier_id">Proveedor:</label>
-                <select id="supplier_id" name="supplier_id" class="form-control">
+                <select id="supplier_id" name="supplier_id" class="form-control @error('supplier_id') is-invalid @enderror">
                     <option value="">Seleccione un proveedor</option>
                     @if (count($suppliers) > 0)
                         @foreach ($suppliers as $supplier)
-                            <option value="{{ $supplier['id']}}">{{ $supplier['company']}}</option>
+                            <option value="{{ $supplier['id'] }}" {{ old('supplier_id') == $supplier['id'] ? 'selected' : '' }}>{{ $supplier['company'] }}</option>
                         @endforeach
                     @else
                         <option value="" disabled>No hay proveedores disponibles</option>
                     @endif
                 </select>
+                @error('supplier_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -197,38 +231,18 @@
 
             <div class="form-group">
                 <label for="category_id">Categoría:</label>
-                <select id="category_id" name="category_id" class="form-control">
+                <select id="category_id" name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
                     <option value="">Seleccione una categoría</option>
                     @if (count($categories) > 0)
                         @foreach ($categories as $category)
-                            <option value="{{ $category['id']}}">{{ $category['name']}}</option>
+                            <option value="{{ $category['id'] }}" {{ old('category_id') == $category['id'] ? 'selected' : '' }}>{{ $category['name'] }}</option>
                         @endforeach
-                    @else
-                        <option value="" disabled>No hay categorías disponibles</option>
                     @endif
                 </select>
+                @error('category_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noCategoryCheck" name="noCategoryCheck">
-                <label class="form-check-label" for="noCategoryCheck">Sin categoría</label>
-            </div>
-
-            <script>
-                var categoryCheckbox = document.getElementById('noCategoryCheck');
-                var categorySelect = document.getElementById('category_id');
-
-                categoryCheckbox.addEventListener('change', function() {
-                    if (this.checked) {
-                        categorySelect.value = '';
-                        categorySelect.disabled = true;
-                        categorySelect.classList.add('is-invalid');
-                    } else {
-                        categorySelect.disabled = false;
-                        categorySelect.classList.remove('is-invalid');
-                    }
-                });
-            </script>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
@@ -245,7 +259,7 @@
                 placeholder: 'Seleccione una categoría',
                 language: {
                     noResults: function() {
-                        return 'No hay categorías disponibles con ese nombre';
+                        return 'No hay resultados';
                     }
                 }
             });
@@ -254,7 +268,7 @@
                 placeholder: 'Seleccione un proveedor',
                 language: {
                     noResults: function() {
-                        return 'No hay proveedores disponibles con ese nombre';
+                        return 'No hay resultados';
                     }
                 }
             });
@@ -278,9 +292,12 @@
                     input.value = '';
                     input.disabled = true;
                     input.removeAttribute('required');
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
                 } else {
                     input.disabled = false;
                     input.setAttribute('required', 'required');
+                    input.classList.remove('is-valid');
                 }
             });
         }
@@ -309,8 +326,46 @@
                 }
 
                 if (checkbox.checked) {
-                    input.removeAttribute('name');
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.add('is-valid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
                 }
+            }
+
+            var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
+            for (var i = 0; i < requiredInputs.length; i++) {
+                var input = document.getElementById(requiredInputs[i]);
+                if (input.value === '') {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            }
+
+            var categoryInput = document.getElementById('category_id');
+            if (categoryInput.value === '') {
+                categoryInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                categoryInput.classList.remove('is-invalid');
+                categoryInput.classList.add('is-valid');
+            }
+
+            var supplierInput = document.getElementById('supplier_id');
+            if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
+                supplierInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                supplierInput.classList.remove('is-invalid');
+                supplierInput.classList.add('is-valid');
             }
 
             if (!this.checkValidity()) {
