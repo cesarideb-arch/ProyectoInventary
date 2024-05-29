@@ -97,6 +97,7 @@
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese el nombre del producto.</div>
             </div>
 
             <div class="form-group">
@@ -105,6 +106,7 @@
                 @error('model')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese el modelo del producto o marque "Sin modelo".</div>
             </div>
 
             <div class="form-group form-check">
@@ -118,6 +120,7 @@
                 @error('measurement_unit')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la unidad de medida o marque "Sin unidad de medida".</div>
             </div>
 
             <div class="form-group form-check">
@@ -131,6 +134,7 @@
                 @error('brand')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la marca del producto.</div>
             </div>
 
             <div class="form-group">
@@ -139,6 +143,7 @@
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la cantidad del producto.</div>
             </div>
 
             <div class="form-group">
@@ -147,40 +152,25 @@
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la descripción del producto.</div>
             </div>
        
-                        <label for="price">Precio:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input type="number" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
-                        </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const priceInput = document.getElementById('price');
-        
-                    priceInput.addEventListener('input', function() {
-                        let value = this.value.replace(/,/g, '');
-                        if (!isNaN(value) && value !== '') {
-                            this.value = Number(value).toLocaleString('en');
-                        }
-                    });
-                    priceInput.addEventListener('blur', function() {
-                        let value = this.value.replace(/,/g, '');
-                        this.value = parseFloat(value).toFixed(2);
-                    });
-                });
-            </script>
-
-            <div class="form-group">
+            <label for="price">Precio:</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="number" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
             </div>
+            <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
+
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
                 <input type="file" id="profile_image" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" onchange="previewImage(event)">
                 @error('profile_image')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione una imagen del producto.</div>
             </div>
 
             <div class="image-preview-container">
@@ -193,6 +183,7 @@
                 @error('serie')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la serie del producto o marque "Sin serie".</div>
             </div>
 
             <div class="form-group form-check">
@@ -206,6 +197,7 @@
                 @error('observations')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese observaciones del producto o marque "Sin observaciones".</div>
             </div>
 
             <div class="form-group form-check">
@@ -219,6 +211,7 @@
                 @error('location')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la ubicación del producto.</div>
             </div>
 
             <div class="form-group">
@@ -236,6 +229,7 @@
                 @error('supplier_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione un proveedor o marque "Sin proveedor".</div>
             </div>
 
             <div class="form-group form-check">
@@ -256,6 +250,7 @@
                 @error('category_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione una categoría.</div>
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
@@ -307,11 +302,9 @@
                     input.disabled = true;
                     input.removeAttribute('required');
                     input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
                 } else {
                     input.disabled = false;
                     input.setAttribute('required', 'required');
-                    input.classList.remove('is-valid');
                 }
             });
         }
@@ -342,7 +335,6 @@
                 if (checkbox.checked) {
                     input.disabled = true;
                     input.removeAttribute('required');
-                    input.classList.add('is-valid');
                 } else {
                     input.disabled = false;
                     input.setAttribute('required', 'required');
