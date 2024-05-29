@@ -24,7 +24,7 @@
         </p>
 
         @php
-            $roleNames = ['Administrador', 'Trabajador rango 1', 'Trabajador rango 2'];
+            $roleNames = ['Administrador', 'Trabajador Administrador', 'Trabajado'];
             $role = session('role', -1);
         @endphp
         <p class="lead"><strong>Rol: </strong> {{ $role >= 0 && $role < count($roleNames) ? $roleNames[$role] : 'Rol no identificado' }}</p>
