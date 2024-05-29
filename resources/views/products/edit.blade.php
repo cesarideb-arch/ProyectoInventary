@@ -95,14 +95,16 @@
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese el nombre del producto.</div>
             </div>
 
             <div class="form-group">
                 <label for="model">Modelo:</label>
-                <input type="text" id="model" name="model" value="{{ $product['model'] }}" class="form-control @error('model') is-invalid @enderror" {{ $product['model'] == null ? 'disabled' : '' }}>
+                <input type="text" id="model" name="model" value="{{ $product['model'] }}" class="form-control @error('model') is-invalid @enderror">
                 @error('model')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese el modelo del producto o marque "Sin modelo".</div>
             </div>
 
             <div class="form-group form-check">
@@ -112,10 +114,11 @@
 
             <div class="form-group">
                 <label for="measurement_unit">Unidad de medida:</label>
-                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}" class="form-control @error('measurement_unit') is-invalid @enderror" {{ $product['measurement_unit'] == null ? 'disabled' : '' }}>
+                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}" class="form-control @error('measurement_unit') is-invalid @enderror">
                 @error('measurement_unit')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la unidad de medida o marque "Sin unidad de medida".</div>
             </div>
 
             <div class="form-group form-check">
@@ -129,6 +132,7 @@
                 @error('brand')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la marca del producto.</div>
             </div>
 
             <div class="form-group">
@@ -137,6 +141,7 @@
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la cantidad del producto.</div>
             </div>
 
             <div class="form-group">
@@ -145,6 +150,7 @@
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la descripción del producto.</div>
             </div>
 
             <div class="form-group">
@@ -156,6 +162,7 @@
                     <input type="text" id="formattedPrice" class="form-control" value="{{ number_format($product['price'], 2) }}" required>
                     <input type="hidden" id="price" name="price" value="{{ $product['price'] }}" required>
                 </div>
+                <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
             </div>
             <script>
                 function formatPrice(value) {
@@ -193,6 +200,7 @@
                 @error('profile_image')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione una imagen del producto.</div>
             </div>
 
             <div class="image-preview-container">
@@ -200,12 +208,15 @@
                 <img id="imagePreview" src="#" alt="Vista previa de la imagen" style="display: none;">
             </div>
 
-            <div class="form-group">
+            <div class="
+
+form-group">
                 <label for="serie">Serie:</label>
-                <input type="text" id="serie" name="serie" value="{{ $product['serie'] }}" class="form-control @error('serie') is-invalid @enderror" {{ $product['serie'] == null ? 'disabled' : '' }}>
+                <input type="text" id="serie" name="serie" value="{{ $product['serie'] }}" class="form-control @error('serie') is-invalid @enderror">
                 @error('serie')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la serie del producto o marque "Sin serie".</div>
             </div>
 
             <div class="form-group form-check">
@@ -215,10 +226,11 @@
 
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
-                <input type="text" id="observations" name="observations" value="{{ $product['observations'] }}" class="form-control @error('observations') is-invalid @enderror" {{ $product['observations'] == null ? 'disabled' : '' }}>
+                <input type="text" id="observations" name="observations" value="{{ $product['observations'] }}" class="form-control @error('observations') is-invalid @enderror">
                 @error('observations')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese observaciones del producto o marque "Sin observaciones".</div>
             </div>
 
             <div class="form-group form-check">
@@ -232,11 +244,12 @@
                 @error('location')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, ingrese la ubicación del producto.</div>
             </div>
 
             <div class="form-group">
                 <label for="supplier_id">Proveedor:</label>
-                <select id="supplier_id" name="supplier_id" class="form-control @error('supplier_id') is-invalid @enderror" {{ $product['supplier_id'] == null ? 'disabled' : '' }}>
+                <select id="supplier_id" name="supplier_id" class="form-control @error('supplier_id') is-invalid @enderror">
                     <option value="">Seleccione un proveedor</option>
                     @if(count($suppliers) > 0)
                         @foreach ($suppliers as $supplier)
@@ -251,6 +264,7 @@
                 @error('supplier_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione un proveedor o marque "Sin proveedor".</div>
             </div>
 
             <div class="form-group form-check">
@@ -273,6 +287,7 @@
                 @error('category_id')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div class="invalid-feedback">Por favor, seleccione una categoría.</div>
             </div>
 
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -293,6 +308,11 @@
                         return 'No hay resultados';
                     }
                 }
+            }).on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    $(this).next('.invalid-feedback').hide();
+                }
             });
 
             $('#supplier_id').select2({
@@ -302,27 +322,18 @@
                         return 'No hay resultados';
                     }
                 }
+            }).on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    $(this).next('.invalid-feedback').hide();
+                }
             });
 
-            var noSupplierCheck = document.getElementById('noSupplierCheck');
-            var supplierSelect = document.getElementById('supplier_id');
-            toggleInput(noSupplierCheck, supplierSelect);
-
-            var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
-            var measurementUnitInput = document.getElementById('measurement_unit');
-            toggleInput(noMeasurementUnitCheck, measurementUnitInput);
-
-            var noModelCheck = document.getElementById('noModelCheck');
-            var modelInput = document.getElementById('model');
-            toggleInput(noModelCheck, modelInput);
-
-            var noSerieCheck = document.getElementById('noSerieCheck');
-            var serieInput = document.getElementById('serie');
-            toggleInput(noSerieCheck, serieInput);
-
-            var noObservationsCheck = document.getElementById('noObservationsCheck');
-            var observationsInput = document.getElementById('observations');
-            toggleInput(noObservationsCheck, observationsInput);
+            toggleInputDisable('noSupplierCheck', 'supplier_id');
+            toggleInputDisable('noMeasurementUnitCheck', 'measurement_unit');
+            toggleInputDisable('noModelCheck', 'model');
+            toggleInputDisable('noSerieCheck', 'serie');
+            toggleInputDisable('noObservationsCheck', 'observations');
         });
 
         function previewImage(event) {
@@ -331,50 +342,38 @@
                 var output = document.getElementById('imagePreview');
                 output.src = reader.result;
                 output.style.display = 'block';
-
                 document.getElementById('currentImage').style.display = 'none';
             };
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        function toggleInput(checkbox, input) {
+        function toggleInputDisable(checkboxId, inputId) {
+            var checkbox = document.getElementById(checkboxId);
+            var input = document.getElementById(inputId);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    if ($(input).hasClass('select2-hidden-accessible')) {
+                        $(input).val(null).trigger('change');
+                    } else {
+                        input.value = '';
+                    }
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            });
+
             if (checkbox.checked) {
-                input.value = '';
                 input.disabled = true;
                 input.removeAttribute('required');
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
             } else {
                 input.disabled = false;
                 input.setAttribute('required', 'required');
-                input.classList.remove('is-valid');
             }
         }
-
-        document.getElementById('noSupplierCheck').addEventListener('change', function() {
-            var supplierSelect = document.getElementById('supplier_id');
-            toggleInput(this, supplierSelect);
-        });
-
-        document.getElementById('noMeasurementUnitCheck').addEventListener('change', function() {
-            var measurementUnitInput = document.getElementById('measurement_unit');
-            toggleInput(this, measurementUnitInput);
-        });
-
-        document.getElementById('noModelCheck').addEventListener('change', function() {
-            var modelInput = document.getElementById('model');
-            toggleInput(this, modelInput);
-        });
-
-        document.getElementById('noSerieCheck').addEventListener('change', function() {
-            var serieInput = document.getElementById('serie');
-            toggleInput(this, serieInput);
-        });
-
-        document.getElementById('noObservationsCheck').addEventListener('change', function() {
-            var observationsInput = document.getElementById('observations');
-            toggleInput(this, observationsInput);
-        });
 
         document.querySelector('form').addEventListener('submit', function(event) {
             var inputs = ['supplier_id', 'measurement_unit', 'model', 'serie', 'observations'];
@@ -396,7 +395,6 @@
                 if (checkbox.checked) {
                     input.disabled = true;
                     input.removeAttribute('required');
-                    input.classList.add('is-valid');
                 } else {
                     input.disabled = false;
                     input.setAttribute('required', 'required');
@@ -428,7 +426,9 @@
 
             var supplierInput = document.getElementById('supplier_id');
             if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
-                supplierInput.classList.add('is-invalid');
+                supplierInput.classList.add
+
+('is-invalid');
                 event.preventDefault();
                 event.stopPropagation();
             } else {
@@ -436,12 +436,40 @@
                 supplierInput.classList.add('is-valid');
             }
 
+            // Remove commas from price before submitting the form
+            var priceInput = document.getElementById('price');
+            priceInput.value = priceInput.value.replace(/,/g, '');
+
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
 
             this.classList.add('was-validated');
+        });
+
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.checkValidity()) {
+                    this.classList.remove('is-invalid');
+                    this.nextElementSibling.style.display = 'none';
+                }
+            });
+        });
+
+        // Function to format number as currency with commas
+        function formatNumberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Event listener to format price input with commas
+        document.getElementById('price').addEventListener('input', function (e) {
+            var value = e.target.value.replace(/,/g, '');
+            if (!isNaN(value) && value !== '') {
+                e.target.value = formatNumberWithCommas(value);
+            } else {
+                e.target.value = '';
+            }
         });
     </script>
 </body>
