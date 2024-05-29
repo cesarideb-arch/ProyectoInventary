@@ -148,19 +148,33 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+       
+                        <label for="price">Precio:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="number" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
+                        </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const priceInput = document.getElementById('price');
+        
+                    priceInput.addEventListener('input', function() {
+                        let value = this.value.replace(/,/g, '');
+                        if (!isNaN(value) && value !== '') {
+                            this.value = Number(value).toLocaleString('en');
+                        }
+                    });
+                    priceInput.addEventListener('blur', function() {
+                        let value = this.value.replace(/,/g, '');
+                        this.value = parseFloat(value).toFixed(2);
+                    });
+                });
+            </script>
 
             <div class="form-group">
-                <label for="price">Precio:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                    </div>
-                    <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" min="0.01" placeholder="0.00">
-                </div>
             </div>
-            
-        
-
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
                 <input type="file" id="profile_image" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" onchange="previewImage(event)">
