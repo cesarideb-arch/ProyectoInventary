@@ -60,26 +60,49 @@
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: 36px;
         }
+        .form-check-label {
+            color: initial;
+        }
+        .is-invalid .select2-selection {
+            border-color: #dc3545;
+        }
+        .is-valid .select2-selection {
+            border-color: #28a745;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Editar Producto</h1>
 
-        {{-- Formulario para editar el producto --}}
-        <form method="POST" action="{{ route('products.update', $product['id']) }}" enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('products.update', $product['id']) }}" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
 
-            {{-- Campos del formulario --}}
             <div class="form-group">
                 <label for="name">Nombre:</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ $product['name'] }}" required>
+                <input type="text" id="name" name="name" value="{{ $product['name'] }}" required class="form-control @error('name') is-invalid @enderror">
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="model">Modelo:</label>
-                <input type="text" class="form-control" id="model" name="model" value="{{ $product['model'] }}" {{ $product['model'] == null ? 'disabled' : '' }}>
+                <input type="text" id="model" name="model" value="{{ $product['model'] }}" class="form-control @error('model') is-invalid @enderror" {{ $product['model'] == null ? 'disabled' : '' }}>
+                @error('model')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -89,7 +112,10 @@
 
             <div class="form-group">
                 <label for="measurement_unit">Unidad de medida:</label>
-                <input type="text" class="form-control" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}" {{ $product['measurement_unit'] == null ? 'disabled' : '' }}>
+                <input type="text" id="measurement_unit" name="measurement_unit" value="{{ $product['measurement_unit'] }}" class="form-control @error('measurement_unit') is-invalid @enderror" {{ $product['measurement_unit'] == null ? 'disabled' : '' }}>
+                @error('measurement_unit')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -99,33 +125,41 @@
 
             <div class="form-group">
                 <label for="brand">Marca:</label>
-                <input type="text" class="form-control" id="brand" name="brand" value="{{ $product['brand'] }}">
+                <input type="text" id="brand" name="brand" value="{{ $product['brand'] }}" required class="form-control @error('brand') is-invalid @enderror">
+                @error('brand')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required min="1">
+                <input type="number" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required class="form-control @error('quantity') is-invalid @enderror" min="1">
+                @error('quantity')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea class="form-control" id="description" name="description">{{ $product['description'] }}</textarea>
+                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ $product['description'] }}</textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
-                <label for="formattedPrice">Precio:</label>
+                <label for="price">Precio:</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                     </div>
-                    <input type="text" class="form-control" id="formattedPrice" placeholder="0.00">
-                    <input type="hidden" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required min="1">
+                    <input type="text" id="formattedPrice" class="form-control" value="{{ number_format($product['price'], 2) }}" required>
+                    <input type="hidden" id="price" name="price" value="{{ $product['price'] }}" required>
                 </div>
             </div>
-            
             <script>
                 function formatPrice(value) {
-                    value = value.replace(/,/g, ''); // Eliminar las comas existentes
+                    value = value.replace(/,/g, ''); // Remove existing commas
                     if (!isNaN(value) && value !== '') {
                         var parts = value.split('.');
                         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -133,18 +167,18 @@
                     }
                     return value;
                 }
-            
+
                 function unformatPrice(value) {
-                    return value.replace(/,/g, ''); // Eliminar las comas existentes
+                    return value.replace(/,/g, ''); // Remove existing commas
                 }
-            
+
                 document.getElementById('formattedPrice').addEventListener('input', function (e) {
                     var formattedValue = formatPrice(e.target.value);
                     e.target.value = formattedValue;
                     document.getElementById('price').value = unformatPrice(formattedValue);
                 });
-            
-                // Formatear el valor inicial si existe
+
+                // Format initial value if it exists
                 document.addEventListener('DOMContentLoaded', function() {
                     var priceInput = document.getElementById('price');
                     var formattedPriceInput = document.getElementById('formattedPrice');
@@ -152,23 +186,26 @@
                     formattedPriceInput.value = formatPrice(initialValue);
                 });
             </script>
-            
+
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
-                <input type="file" id="profile_image" name="profile_image" class="form-control" onchange="previewImage(event)">
+                <input type="file" id="profile_image" name="profile_image" class="form-control @error('profile_image') is-invalid @enderror" onchange="previewImage(event)">
+                @error('profile_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="image-preview-container">
-                {{-- Imagen actual --}}
-                <img id="currentImage" src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen">
-
-                {{-- Vista previa de la nueva imagen --}}
-                <img id="imagePreview" src="#" alt="Vista previa de la nueva imagen" style="display: none;">
+                <img id="currentImage" src="{{ config('app.backend_api') }}/{{ $product['profile_image'] }}" alt="Imagen actual">
+                <img id="imagePreview" src="#" alt="Vista previa de la imagen" style="display: none;">
             </div>
 
             <div class="form-group">
                 <label for="serie">Serie:</label>
-                <input type="text" class="form-control" id="serie" name="serie" value="{{ $product['serie'] }}" {{ $product['serie'] == null ? 'disabled' : '' }}>
+                <input type="text" id="serie" name="serie" value="{{ $product['serie'] }}" class="form-control @error('serie') is-invalid @enderror" {{ $product['serie'] == null ? 'disabled' : '' }}>
+                @error('serie')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -178,7 +215,10 @@
 
             <div class="form-group">
                 <label for="observations">Observaciones:</label>
-                <input type="text" class="form-control" id="observations" name="observations" value="{{ $product['observations'] }}" {{ $product['observations'] == null ? 'disabled' : '' }}>
+                <input type="text" id="observations" name="observations" value="{{ $product['observations'] }}" class="form-control @error('observations') is-invalid @enderror" {{ $product['observations'] == null ? 'disabled' : '' }}>
+                @error('observations')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -188,12 +228,15 @@
 
             <div class="form-group">
                 <label for="location">Ubicación:</label>
-                <input type="text" class="form-control" id="location" name="location" value="{{ $product['location'] }}">
+                <input type="text" id="location" name="location" value="{{ $product['location'] }}" required class="form-control @error('location') is-invalid @enderror">
+                @error('location')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group">
                 <label for="supplier_id">Proveedor:</label>
-                <select class="form-control" id="supplier_id" name="supplier_id" {{ $product['supplier_id'] == null ? 'disabled' : '' }}>
+                <select id="supplier_id" name="supplier_id" class="form-control @error('supplier_id') is-invalid @enderror" {{ $product['supplier_id'] == null ? 'disabled' : '' }}>
                     <option value="">Seleccione un proveedor</option>
                     @if(count($suppliers) > 0)
                         @foreach ($suppliers as $supplier)
@@ -205,6 +248,9 @@
                         <option value="" disabled>No hay proveedores disponibles</option>
                     @endif
                 </select>
+                @error('supplier_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
             <div class="form-group form-check">
@@ -214,16 +260,21 @@
 
             <div class="form-group">
                 <label for="category_id">Categoría:</label>
-                <select class="form-control" id="category_id" name="category_id">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category['id'] }}" {{ $category['id'] == $product['category_id'] ? 'selected' : '' }}>
-                            {{ $category['name'] }}
-                        </option>
-                    @endforeach
+                <select id="category_id" name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
+                    <option value="">Seleccione una categoría</option>
+                    @if(count($categories) > 0)
+                        @foreach ($categories as $category)
+                            <option value="{{ $category['id'] }}" {{ $category['id'] == $product['category_id'] ? 'selected' : '' }}>
+                                {{ $category['name'] }}
+                            </option>
+                        @endforeach
+                    @endif
                 </select>
+                @error('category_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-            {{-- Botón para enviar el formulario --}}
             <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
@@ -239,7 +290,7 @@
                 placeholder: 'Seleccione una categoría',
                 language: {
                     noResults: function() {
-                        return 'No hay categorías disponibles con ese nombre';
+                        return 'No hay resultados';
                     }
                 }
             });
@@ -248,11 +299,10 @@
                 placeholder: 'Seleccione un proveedor',
                 language: {
                     noResults: function() {
-                        return 'No hay proveedores disponibles con ese nombre';
+                        return 'No hay resultados';
                     }
                 }
             });
-
 
             var noSupplierCheck = document.getElementById('noSupplierCheck');
             var supplierSelect = document.getElementById('supplier_id');
@@ -282,7 +332,6 @@
                 output.src = reader.result;
                 output.style.display = 'block';
 
-                // Ocultar la imagen actual cuando se carga una nueva imagen
                 document.getElementById('currentImage').style.display = 'none';
             };
             reader.readAsDataURL(event.target.files[0]);
@@ -293,9 +342,12 @@
                 input.value = '';
                 input.disabled = true;
                 input.removeAttribute('required');
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
             } else {
                 input.disabled = false;
                 input.setAttribute('required', 'required');
+                input.classList.remove('is-valid');
             }
         }
 
@@ -325,61 +377,72 @@
         });
 
         document.querySelector('form').addEventListener('submit', function(event) {
-            var supplierSelect = document.getElementById('supplier_id');
-            var noSupplierCheck = document.getElementById('noSupplierCheck');
-            var measurementUnitInput = document.getElementById('measurement_unit');
-            var noMeasurementUnitCheck = document.getElementById('noMeasurementUnitCheck');
-            var modelInput = document.getElementById('model');
-            var noModelCheck = document.getElementById('noModelCheck');
-            var serieInput = document.getElementById('serie');
-            var noSerieCheck = document.getElementById('noSerieCheck');
-            var observationsInput = document.getElementById('observations');
-            var noObservationsCheck = document.getElementById('noObservationsCheck');
+            var inputs = ['supplier_id', 'measurement_unit', 'model', 'serie', 'observations'];
+            var checkboxes = ['noSupplierCheck', 'noMeasurementUnitCheck', 'noModelCheck', 'noSerieCheck', 'noObservationsCheck'];
 
-            validateInput(supplierSelect, noSupplierCheck);
-            validateInput(measurementUnitInput, noMeasurementUnitCheck);
-            validateInput(modelInput, noModelCheck);
-            validateInput(serieInput, noSerieCheck);
-            validateInput(observationsInput, noObservationsCheck);
+            for (var i = 0; i < inputs.length; i++) {
+                var input = document.getElementById(inputs[i]);
+                var checkbox = document.getElementById(checkboxes[i]);
+
+                if (input.value === '' && !checkbox.checked) {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+
+                if (checkbox.checked) {
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.add('is-valid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            }
+
+            var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
+            for (var i = 0; i < requiredInputs.length; i++) {
+                var input = document.getElementById(requiredInputs[i]);
+                if (input.value === '') {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            }
+
+            var categoryInput = document.getElementById('category_id');
+            if (categoryInput.value === '') {
+                categoryInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                categoryInput.classList.remove('is-invalid');
+                categoryInput.classList.add('is-valid');
+            }
+
+            var supplierInput = document.getElementById('supplier_id');
+            if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
+                supplierInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                supplierInput.classList.remove('is-invalid');
+                supplierInput.classList.add('is-valid');
+            }
 
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
 
-            if (noSupplierCheck.checked) {
-                supplierSelect.removeAttribute('name');
-            }
-
-            if (noMeasurementUnitCheck.checked) {
-                measurementUnitInput.removeAttribute('name');
-            }
-
-            if (noModelCheck.checked) {
-                modelInput.removeAttribute('name');
-            }
-
-            if (noSerieCheck.checked) {
-                serieInput.removeAttribute('name');
-            }
-
-            if (noObservationsCheck.checked) {
-                observationsInput.removeAttribute('name');
-            }
-
             this.classList.add('was-validated');
         });
-
-        function validateInput(input, checkbox) {
-            if (input.value === '' && !checkbox.checked) {
-                input.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                input.classList.remove('is-invalid');
-                input.classList.add('is-valid');
-            }
-        }
     </script>
 </body>
 </html>
