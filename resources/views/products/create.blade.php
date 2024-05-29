@@ -63,12 +63,6 @@
         .form-check-label {
             color: initial;
         }
-        .form-check-input:checked ~ .form-check-label {
-            color: green;
-        }
-        .form-check-input:invalid ~ .form-check-label {
-            color: red;
-        }
         .is-invalid .select2-selection {
             border-color: #dc3545;
         }
@@ -114,7 +108,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noModelCheck" name="noModelCheck">
-                <label class="form-check-label" for="noModelCheck">Sin modelo</label>
+                <label  for="noModelCheck">Sin modelo</label>
             </div>
 
             <div class="form-group">
@@ -128,7 +122,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noMeasurementUnitCheck" name="noMeasurementUnitCheck">
-                <label class="form-check-label" for="noMeasurementUnitCheck">Sin unidad de medida</label>
+                <label for="noMeasurementUnitCheck">Sin unidad de medida</label>
             </div>
 
             <div class="form-group">
@@ -193,7 +187,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck">
-                <label class="form-check-label" for="noSerieCheck">Sin serie</label>
+                <label  for="noSerieCheck">Sin serie</label>
             </div>
 
             <div class="form-group">
@@ -207,7 +201,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noObservationsCheck" name="noObservationsCheck">
-                <label class="form-check-label" for="noObservationsCheck">Sin observaciones</label>
+                <label for="noObservationsCheck">Sin observaciones</label>
             </div>
 
             <div class="form-group">
@@ -239,7 +233,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck">
-                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
+                <label for="noSupplierCheck">Sin proveedor</label>
             </div>
 
             <div class="form-group">
@@ -327,24 +321,11 @@ function toggleInputDisable(checkboxId, inputId) {
             input.disabled = true;
             input.removeAttribute('required');
             input.classList.remove('is-invalid');
-            updateCheckboxLabel(checkbox, true);
         } else {
             input.disabled = false;
             input.setAttribute('required', 'required');
-            updateCheckboxLabel(checkbox, false);
         }
     });
-}
-
-function updateCheckboxLabel(checkbox, isValid) {
-    var label = checkbox.nextElementSibling;
-    if (isValid) {
-        label.classList.add('text-success');
-        label.classList.remove('text-danger');
-    } else {
-        label.classList.add('text-danger');
-        label.classList.remove('text-success');
-    }
 }
 
 document.querySelector('form').addEventListener('submit', function(event) {
@@ -359,17 +340,14 @@ document.querySelector('form').addEventListener('submit', function(event) {
             input.classList.add('is-invalid');
             event.preventDefault();
             event.stopPropagation();
-            updateCheckboxLabel(checkbox, false);
         } else {
             input.classList.remove('is-invalid');
             input.classList.add('is-valid');
-            updateCheckboxLabel(checkbox, true);
         }
 
         if (checkbox.checked) {
             input.disabled = true;
             input.removeAttribute('required');
-            updateCheckboxLabel(checkbox, true);
         } else {
             input.disabled = false;
             input.setAttribute('required', 'required');
@@ -444,8 +422,6 @@ document.getElementById('price').addEventListener('input', function (e) {
         e.target.value = '';
     }
 });
-
-
     </script>
 </body>
 </html>
