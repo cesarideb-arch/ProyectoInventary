@@ -49,6 +49,17 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
     </style>
 </head>
 <body>
@@ -100,18 +111,36 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control">
+                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control" min="1">
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
                 <textarea id="description" name="description" class="form-control">{{ old('description') }}</textarea>
             </div>
-            
-            <div class="form-group">
-                <label for="price">Precio:</label>
-                <input type="number" id="price" name="price" value="{{ old('price') }}" step="0.01" required class="form-control">
-            </div>
+
+          <div class="form-group">
+    <label for="price">Precio:</label>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+        </div>
+        <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" min="0.01" placeholder="0.00">
+    </div>
+</div>
+
+<script>
+    document.getElementById('price').addEventListener('input', function (e) {
+        var value = e.target.value;
+        value = value.replace(/,/g, ''); // Eliminar las comas existentes
+        if (!isNaN(value) && value !== '') {
+            var parts = value.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            e.target.value = parts.join('.');
+        }
+    });
+</script>
+
 
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
@@ -179,6 +208,27 @@
                     @endif
                 </select>
             </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noCategoryCheck" name="noCategoryCheck">
+                <label class="form-check-label" for="noCategoryCheck">Sin categoría</label>
+            </div>
+
+            <script>
+                var categoryCheckbox = document.getElementById('noCategoryCheck');
+                var categorySelect = document.getElementById('category_id');
+
+                categoryCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        categorySelect.value = '';
+                        categorySelect.disabled = true;
+                        categorySelect.classList.add('is-invalid');
+                    } else {
+                        categorySelect.disabled = false;
+                        categorySelect.classList.remove('is-invalid');
+                    }
+                });
+            </script>
 
             <button type="submit" class="btn btn-primary">Crear Producto</button>
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>

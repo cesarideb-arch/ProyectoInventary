@@ -49,6 +49,17 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
     </style>
 </head>
 <body>
@@ -93,7 +104,7 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required>
+                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required min="1">
             </div>
 
             <div class="form-group">
@@ -102,10 +113,46 @@
             </div>
 
             <div class="form-group">
-                <label for="price">Precio:</label>
-                <input type="number" class="form-control" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required>
+                <label for="formattedPrice">Precio:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="text" class="form-control" id="formattedPrice" placeholder="0.00">
+                    <input type="hidden" id="price" name="price" value="{{ $product['price'] }}" step="0.01" required min="1">
+                </div>
             </div>
-
+            
+            <script>
+                function formatPrice(value) {
+                    value = value.replace(/,/g, ''); // Eliminar las comas existentes
+                    if (!isNaN(value) && value !== '') {
+                        var parts = value.split('.');
+                        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return parts.join('.');
+                    }
+                    return value;
+                }
+            
+                function unformatPrice(value) {
+                    return value.replace(/,/g, ''); // Eliminar las comas existentes
+                }
+            
+                document.getElementById('formattedPrice').addEventListener('input', function (e) {
+                    var formattedValue = formatPrice(e.target.value);
+                    e.target.value = formattedValue;
+                    document.getElementById('price').value = unformatPrice(formattedValue);
+                });
+            
+                // Formatear el valor inicial si existe
+                document.addEventListener('DOMContentLoaded', function() {
+                    var priceInput = document.getElementById('price');
+                    var formattedPriceInput = document.getElementById('formattedPrice');
+                    var initialValue = priceInput.value;
+                    formattedPriceInput.value = formatPrice(initialValue);
+                });
+            </script>
+            
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
                 <input type="file" id="profile_image" name="profile_image" class="form-control" onchange="previewImage(event)">
@@ -184,21 +231,28 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn
-
-.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#category_id').select2({
                 placeholder: 'Seleccione una categoría',
-                allowClear: true
+                language: {
+                    noResults: function() {
+                        return 'No hay categorías disponibles con ese nombre';
+                    }
+                }
             });
 
             $('#supplier_id').select2({
                 placeholder: 'Seleccione un proveedor',
-                allowClear: true
+                language: {
+                    noResults: function() {
+                        return 'No hay proveedores disponibles con ese nombre';
+                    }
+                }
             });
+
 
             var noSupplierCheck = document.getElementById('noSupplierCheck');
             var supplierSelect = document.getElementById('supplier_id');
