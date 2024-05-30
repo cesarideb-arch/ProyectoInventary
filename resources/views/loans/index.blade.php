@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -165,7 +164,7 @@
                                 _method: 'PUT',
                                 _token: '{{ csrf_token() }}',
                                 loan_id: loanId,
-                                observations: observations
+                                observations: observations // Asegúrate de que las observaciones se envían
                             },
                             success: function(response) {
                                 Swal.fire({

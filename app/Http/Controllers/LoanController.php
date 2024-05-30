@@ -85,27 +85,22 @@ class LoanController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
-        // URL de la API para actualizar el préstamo
         $apiUrl = $baseApiUrl . '/api/comeBackLoan/' . $id;
-
-        // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
-        // Realiza una solicitud HTTP PUT a la API
-        $response = Http::withToken($token)->put($apiUrl);
+        // Incluye las observaciones en la solicitud
+        $response = Http::withToken($token)->put($apiUrl, [
+            'observations' => $request->input('observations')
+        ]);
 
-        // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
-            // Devuelve la respuesta JSON
             return $response->json();
         } else {
-            // Devuelve un mensaje de error si la solicitud no fue exitosa
             return response()->json(['error' => 'Error al devolver el préstamo.'], $response->status());
         }
     }
+
 
     public function destroy($id, Request $request) {
         // URL base de la API
