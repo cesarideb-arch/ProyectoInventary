@@ -113,6 +113,10 @@
                             <label for="observations">Observaciones</label>
                             <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
                         </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="noObservations">
+                            <label class="form-check-label" for="noObservations">No enviar observaciones</label>
+                        </div>
                         <input type="hidden" id="loanId" name="loanId">
                     </form>
                 </div>
@@ -132,6 +136,14 @@
         $(document).ready(function() {
             var currentLoanId = null;
 
+            $('#noObservations').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#observations').prop('disabled', true);
+                } else {
+                    $('#observations').prop('disabled', false);
+                }
+            });
+
             $('.return-product-btn').click(function() {
                 currentLoanId = $(this).data('loan-id');
                 $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
@@ -139,7 +151,7 @@
             });
 
             $('#confirmReturnProduct').click(function() {
-                var observations = $('#observations').val();
+                var observations = $('#noObservations').is(':checked') ? '' : $('#observations').val();
                 var loanId = $('#loanId').val();
 
                 console.log('Loan ID:', loanId);
