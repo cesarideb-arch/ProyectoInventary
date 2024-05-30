@@ -40,7 +40,7 @@
                 @foreach($categories as $category)
                 <tr>
                 <td>{{ $category['name'] }}</td>
-                <td>{{ $category['description'] }}</td>
+                <td>{{ $category['description'] ?? 'N/A' }}</td>
                 <td style="text-align: center;">
                     <div class="btn-group btn-group-horizontal text-center" role="group">
                     <form action="{{ route('categories.edit', $category['id']) }}" method="GET">

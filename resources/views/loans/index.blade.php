@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -33,6 +34,7 @@
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
+                        <th>Observaciones</th>
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th></th>
@@ -43,7 +45,9 @@
                     <tr>
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
-                        <td>{{ $loan['quantity'] }}</td>
+                        <td>{{ $loan['quantity'] }}</td> 
+                        <td>{{ $loan['observations'] ?? 'N/A' }}</td> 
+
                         <td>
                             @if($loan['status'] == 0)
                                 {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
@@ -92,13 +96,56 @@
         </div>
     </div>
 
+    <!-- Modal para enviar observaciones -->
+    <div class="modal fade" id="returnProductModal" tabindex="-1" role="dialog" aria-labelledby="returnProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnProductModalLabel">Devolver Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="returnProductForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="observations">Observaciones</label>
+                            <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" id="loanId" name="loanId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmReturnProduct">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Tus scripts aquí -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
+            var currentLoanId = null;
+
             $('.return-product-btn').click(function() {
-                var loanId = $(this).data('loan-id');
+                currentLoanId = $(this).data('loan-id');
+                $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
+                $('#returnProductModal').modal('show');
+            });
+
+            $('#confirmReturnProduct').click(function() {
+                var observations = $('#observations').val();
+                var loanId = $('#loanId').val();
+
+                console.log('Loan ID:', loanId);
+                console.log('Observations:', observations);
+
                 Swal.fire({
                     title: '¿Estás seguro?',
                     text: '¿Estás seguro de que deseas regresar este producto?',
@@ -113,10 +160,12 @@
                     if (result.isConfirmed) {
                         $.ajax({
                             url: '/loans/' + loanId,
-                            type: 'PUT',
+                            type: 'POST',
                             data: {
+                                _method: 'PUT',
                                 _token: '{{ csrf_token() }}',
-                                loan_id: loanId
+                                loan_id: loanId,
+                                observations: observations
                             },
                             success: function(response) {
                                 Swal.fire({
