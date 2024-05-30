@@ -24,7 +24,7 @@
         </p>
 
         @php
-            $roleNames = ['Administrador', 'Trabajador Administrador', 'Trabajado'];
+            $roleNames = ['Administrador', 'Trabajador rango 1', 'Trabajador rango 2'];
             $role = session('role', -1);
         @endphp
         <p class="lead"><strong>Rol: </strong> {{ $role >= 0 && $role < count($roleNames) ? $roleNames[$role] : 'Rol no identificado' }}</p>
@@ -35,32 +35,14 @@
             $countData = [
                 'El número de préstamos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos.',
                 'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
-                'El número de entradas es:' => $countEntrances['count'] ?? 'No se pudo obtener el número de entradas.',
-                'El número de salidas es:' => $countOutputs['count'] ?? 'No se pudo obtener el número de salidas.',
+                'El número de entradas de productos es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
+                'El número de salidas de productos es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
             ];
         @endphp
         @foreach($countData as $label => $count)
             <p class="lead"><strong>{{ $label }}</strong> {{ $count }}</p>
         @endforeach
 
-        @php
-            $productData = [
-            'Producto con mayor cantidad de entradas:' => $entranceProduct ?? null,
-            'Producto con mayor cantidad de salidas:' => $outputProduct ?? null,
-            'Producto con mayor cantidad de préstamos:' => $loanProduct ?? null,
-            ];
-        @endphp
-        @foreach($productData as $label => $product)
-            @if($product)
-                <p class="lead">{{ $label }}</p>
-                <ul>
-                    <li>Nombre: {{ $product['name'] ?? 'Nombre no disponible' }}</li>
-                    <li>Cantidad: {{ $product['total_quantity'] ?? 'Cantidad no disponible' }}</li>
-                </ul>
-            @else
-                <p class="lead">No se pudo obtener el {{ strtolower($label) }}</p>
-            @endif
-        @endforeach
     </div>
 </div>
 </body>
