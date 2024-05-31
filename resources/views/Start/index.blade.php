@@ -32,13 +32,20 @@
         <p class="lead"><strong>Email:</strong> {{ session('email', 'No se pudo obtener el email del usuario.') }}</p>
 
         @php
-            $countData = [
-                'El número de préstamos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos.',
-                'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
-                'El número de entradas de productos es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
-                'El número de salidas de productos es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
-            ];
-        @endphp
+        $countData = [
+            'El número de préstamos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos.',
+            'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
+            'El número de entradas de productos es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
+            'El número de salidas de productos es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
+            'El producto con más entradas es:' =>  ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.')  . 
+                ' Cantidad ' . ($countsProductEntrance['total_quantity'] ?? 'No se pudo obtener el número de producto con más entradas.'),
+            'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
+                ' Cantidad ' . ($countsProductOut['total_quantity'] ?? 'No se pudo obtener el número de producto con más salidas.'),
+            'El producto con más existencias es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más existencias.') .
+                ' Cantidad ' . ($countsProductLoan['total_quantity'] ?? 'No se pudo obtener el número de producto con más existencias.'),
+        ];
+    @endphp
+    
         @foreach($countData as $label => $count)
             <p class="lead"><strong>{{ $label }}</strong> {{ $count }}</p>
         @endforeach

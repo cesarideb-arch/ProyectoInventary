@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -15,7 +14,9 @@ class StartController extends Controller {
         $apiUrlProducts = $baseApiUrl . '/api/getCountProducts';
         $apiUrlEntrance = $baseApiUrl . '/api/GetProductEntrance';
         $apiUrlOut = $baseApiUrl . '/api/GetProductOutput';
-
+        $apiUrlCountProductEntrance= $baseApiUrl . '/api/GetProductEntrance';
+        $apiUrlCountProductOut= $baseApiUrl . '/api/GetProductOutput';
+        $apiUrlCountProductLoan= $baseApiUrl . '/api/GetProductLoan';
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
@@ -24,17 +25,31 @@ class StartController extends Controller {
         $responseProducts = Http::withToken($token)->get($apiUrlProducts);
         $responseEntrance = Http::withToken($token)->get($apiUrlEntrance);
         $responseOut = Http::withToken($token)->get($apiUrlOut);
+        $responseCountProductEntrance = Http::withToken($token)->get($apiUrlCountProductEntrance);
+        $responseCountProductOut = Http::withToken($token)->get($apiUrlCountProductOut);
+        $responseCountProductLoan = Http::withToken($token)->get($apiUrlCountProductLoan);
 
         // Verifica si las solicitudes fueron exitosas
-        if ($response->successful() && $responseProducts->successful() && $responseEntrance->successful() && $responseOut->successful()) {
+        if (
+            $response->successful() && 
+            $responseProducts->successful() && 
+            $responseEntrance->successful() && 
+            $responseOut->successful() && 
+            $responseCountProductEntrance->successful() &&
+            $responseCountProductLoan->successful() &&
+            $responseCountProductOut->successful()
+        ) {
             // Decodifica las respuestas JSON en arrays asociativos
             $counts = $response->json();
             $products = $responseProducts->json();
+            $countsProductLoan = $responseCountProductLoan->json();
             $entrance = $responseEntrance->json();
             $out = $responseOut->json();
+            $countsProductEntrance = $responseCountProductEntrance->json();
+            $countsProductOut = $responseCountProductOut->json();
 
             // Pasa los datos a la vista y renderiza la vista
-            return view('start.index', compact('counts', 'products', 'entrance', 'out'));
+            return view('start.index', compact('counts', 'products', 'entrance', 'out', 'countsProductEntrance', 'countsProductOut', 'countsProductLoan'));
         } else {
             // Manejar el caso donde alguna solicitud no fue exitosa
             return view('start.index', ['message' => 'Error al obtener datos de la API']);
