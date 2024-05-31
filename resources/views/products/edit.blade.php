@@ -137,7 +137,7 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required class="form-control @error('quantity') is-invalid @enderror" min="1">
+                <input type="number" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required class="form-control @error('quantity') is-invalid @enderror" min="0">
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror

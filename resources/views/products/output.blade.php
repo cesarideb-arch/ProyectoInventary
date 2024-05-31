@@ -6,6 +6,8 @@
     <title>Detalles del Producto</title>
     <!-- Inclusión de Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Inclusión de Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container mt-3">
@@ -87,47 +89,54 @@
         </div>
     </div>
 
-    <!-- Opcional: Inclusión de JavaScript de Bootstrap -->
+    <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Inclusión de jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Inclusión de Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        // Validación personalizada del lado del cliente
-        document.getElementById('noProjectCheck').addEventListener('change', function() {
-            var projectSelect = document.getElementById('project_id');
-            if (this.checked) {
-                projectSelect.value = '';
-                projectSelect.disabled = true;
-                projectSelect.removeAttribute('required');
-            } else {
-                projectSelect.disabled = false;
-                projectSelect.setAttribute('required', 'required');
-            }
-        });
+        $(document).ready(function() {
+            $('#project_id').select2({
+                placeholder: 'Seleccione un proyecto',
+                allowClear: true
+            });
 
-        document.getElementById('outputForm').addEventListener('submit', function(event) {
-            var form = event.target;
-            var projectSelect = document.getElementById('project_id');
-            var noProjectCheck = document.getElementById('noProjectCheck');
+            $('#noProjectCheck').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#project_id').val(null).trigger('change');
+                    $('#project_id').prop('disabled', true);
+                } else {
+                    $('#project_id').prop('disabled', false);
+                }
+            });
 
-            if (projectSelect.value === '' && !noProjectCheck.checked) {
-                projectSelect.classList.add('is-invalid');
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                projectSelect.classList.remove('is-invalid');
-                projectSelect.classList.add('is-valid');
-            }
+            // Validación personalizada del lado del cliente
+            $('#outputForm').on('submit', function(event) {
+                var form = this;
+                var projectSelect = $('#project_id');
+                var noProjectCheck = $('#noProjectCheck');
 
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+                if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
+                    projectSelect.addClass('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    projectSelect.removeClass('is-invalid').addClass('is-valid');
+                }
 
-            if (noProjectCheck.checked) {
-                projectSelect.removeAttribute('name');
-            }
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
 
-            form.classList.add('was-validated');
+                if (noProjectCheck.is(':checked')) {
+                    projectSelect.removeAttr('name');
+                }
+
+                form.classList.add('was-validated');
+            });
         });
     </script>
 </body>
