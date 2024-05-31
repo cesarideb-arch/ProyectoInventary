@@ -1,6 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,54 +8,163 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .is-invalid .form-control {
+            border-color: #dc3545;
+        }
+        .is-valid .form-control {
+            border-color: #28a745;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Crear Proyecto</h1>
-        <form method="POST" action="{{ route('projects.store') }}">
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('projects.store') }}" novalidate>
             @csrf
             <div class="form-group">
                 <label for="name">Nombre:</label>
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
+                @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el nombre del proyecto.</div>
             </div>
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea class="form-control" id="description" name="description"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description') }}</textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="company_name">Nombre de la Empresa:</label>
-                <input type="text" class="form-control" id="company_name" name="company_name">
+                <input type="text" class="form-control @error('company_name') is-invalid @enderror" id="company_name" name="company_name" value="{{ old('company_name') }}" required>
+                @error('company_name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa.</div>
             </div>
             <div class="form-group">
                 <label for="rfc">RFC:</label>
-                <input type="text" class="form-control" id="rfc" name="rfc">
+                <input type="text" class="form-control @error('rfc') is-invalid @enderror" id="rfc" name="rfc" value="{{ old('rfc') }}" maxlength="13" required>
+                @error('rfc')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el RFC (máximo 13 caracteres).</div>
             </div>
             <div class="form-group">
                 <label for="address">Dirección:</label>
-                <input type="text" class="form-control" id="address" name="address">
+                <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address') }}" required>
+                @error('address')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese la dirección.</div>
             </div>
             <div class="form-group">
                 <label for="phone_number">Teléfono:</label>
-                <input type="text" class="form-control" id="phone_number" name="phone_number">
+                <input type="text" class="form-control @error('phone_number') is-invalid @enderror" id="phone_number" name="phone_number" value="{{ old('phone_number') }}" maxlength="10" required>
+                @error('phone_number')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el número de teléfono (máximo 10 caracteres).</div>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el email.</div>
             </div>
             <div class="form-group">
                 <label for="client_name">Nombre del Cliente:</label>
-                <input type="text" class="form-control" id="client_name" name="client_name">
+                <input type="text" class="form-control @error('client_name') is-invalid @enderror" id="client_name" name="client_name" value="{{ old('client_name') }}" required>
+                @error('client_name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+                <div class="invalid-feedback">Por favor, ingrese el nombre del cliente.</div>
             </div>
             <button type="submit" class="btn btn-primary">Crear Proyecto</button>
             <a href="{{ route('projects.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 
-    <!-- JavaScript para Bootstrap y dependencias -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var requiredInputs = ['name', 'company_name', 'rfc', 'address', 'phone_number', 'email', 'client_name'];
+
+            for (var i = 0; i < requiredInputs.length; i++) {
+                var input = document.getElementById(requiredInputs[i]);
+                if (input.value === '') {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            }
+
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            this.classList.add('was-validated');
+        });
+
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.checkValidity()) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                    this.nextElementSibling.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 
-@endsection
