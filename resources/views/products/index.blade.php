@@ -146,6 +146,9 @@
                             <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-exchange-alt"></i>
                             </a>
+                            <div class="mb-3">
+                                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-success">Descargar PDF</a>
+                            </div>
                         </div>
                     </td>
                     </tr>

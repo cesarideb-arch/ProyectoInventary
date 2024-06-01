@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
+
 
 class ProductController extends Controller {
 
@@ -15,17 +16,17 @@ class ProductController extends Controller {
         $baseApiUrl = config('app.backend_api');
         $apiUrl = $baseApiUrl . '/api/products';
         $searchQuery = $request->input('query');
-
+    
         // Parámetros de paginación
-        $page = $request->input('page', 1); // Página actual, por defecto es 1
-        $perPage = 10; // Número máximo de elementos por página
-
+        $page = $request->input('page', 1);
+        $perPage = 10;
+    
         // Define la URL de búsqueda en la API
         $apiSearchUrl = $baseApiUrl . '/api/search';
-
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -34,37 +35,55 @@ class ProductController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-
+    
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
-            // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-
-            // Verifica si la clave 'data' está presente en la respuesta
+    
             if (is_array($data) && array_key_exists('data', $data)) {
                 $products = $data['data'];
                 $total = $data['total'] ?? 0;
                 $currentPage = $data['current_page'] ?? 1;
                 $lastPage = $data['last_page'] ?? 1;
             } else {
-                // Asume que toda la respuesta es el conjunto de datos
                 $products = array_slice($data, ($page - 1) * $perPage, $perPage);
                 $total = count($data);
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-
-            // Pasa los datos de productos, la consulta de búsqueda y los parámetros de paginación a la vista y renderiza la vista
+    
+            if ($request->has('download') && $request->input('download') === 'pdf') {
+                // Guardar HTML en un archivo temporal en una ubicación accesible
+                $htmlContent = view('products.pdf', compact('products'))->render();
+                $htmlFilePath = storage_path('temp/my_temp_file.html');
+                file_put_contents($htmlFilePath, $htmlContent);
+    
+                // Verificar si el archivo HTML se genera correctamente
+                if (!file_exists($htmlFilePath)) {
+                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                }
+    
+                // Definir la ruta de salida del PDF
+                $pdfFilePath = storage_path('temp/Inventario.pdf');
+                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                // Ejecutar el comando
+                exec($command, $output, $returnVar);
+    
+                // Verificar si el PDF se generó correctamente
+                if ($returnVar === 0) {
+                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                } else {
+                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                }
+            }
+    
             return view('products.index', compact('products', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
-
-        // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
+    
         return redirect()->back()->with('error', 'Error al obtener los productos de la API');
     }
-
-
-
-
+    
 
     public function show($id, Request $request) {
         // URL base de la API
@@ -406,59 +425,59 @@ class ProductController extends Controller {
         // Configurar los datos del formulario
         $formParams = [
             [
-            'name' => '_method',
-            'contents' => 'PUT',
+                'name' => '_method',
+                'contents' => 'PUT',
             ],
             [
-            'name' => 'name',
-            'contents' => $validatedData['name'],
+                'name' => 'name',
+                'contents' => $validatedData['name'],
             ],
             [
-            'name' => 'model',
-            'contents' => $validatedData['model'] ?? null,
+                'name' => 'model',
+                'contents' => $validatedData['model'] ?? null,
             ],
             [
-            'name' => 'measurement_unit',
-            'contents' => $validatedData['measurement_unit'] ?? null,
+                'name' => 'measurement_unit',
+                'contents' => $validatedData['measurement_unit'] ?? null,
             ],
             [
-            'name' => 'brand',
-            'contents' => $validatedData['brand'] ?? null,
+                'name' => 'brand',
+                'contents' => $validatedData['brand'] ?? null,
             ],
             [
-            'name' => 'quantity',
-            'contents' => $validatedData['quantity'],
+                'name' => 'quantity',
+                'contents' => $validatedData['quantity'],
             ],
             [
-            'name' => 'description',
-            'contents' => $validatedData['description'] ?? null,
+                'name' => 'description',
+                'contents' => $validatedData['description'] ?? null,
             ],
             [
-            'name' => 'price',
-            'contents' => $validatedData['price'],
+                'name' => 'price',
+                'contents' => $validatedData['price'],
             ],
             [
-            'name' => 'serie',
-            'contents' => $validatedData['serie'] ?? null,
+                'name' => 'serie',
+                'contents' => $validatedData['serie'] ?? null,
             ],
             [
-            'name' => 'observations',
-            'contents' => $validatedData['observations'] ?? null,
+                'name' => 'observations',
+                'contents' => $validatedData['observations'] ?? null,
             ],
             [
-            'name' => 'location',
-            'contents' => $validatedData['location'] ?? null,
+                'name' => 'location',
+                'contents' => $validatedData['location'] ?? null,
             ],
             [
-            'name' => 'category_id',
-            'contents' => $validatedData['category_id'],
+                'name' => 'category_id',
+                'contents' => $validatedData['category_id'],
             ],
             [
-            'name' => 'supplier_id',
-            'contents' => $validatedData['supplier_id'] ?? null,
+                'name' => 'supplier_id',
+                'contents' => $validatedData['supplier_id'] ?? null,
             ],
         ];
-    
+
 
         // Comprobar si la solicitud contiene una imagen
         if ($request->hasFile('profile_image')) {
