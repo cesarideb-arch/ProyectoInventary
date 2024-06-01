@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -73,8 +74,11 @@
     <div class="container">
         <h1 class="mb-4">Inventario General</h1>
         @if (session('role') === '1' || session('role') === '0')
-            <div class="mb-3">
+            <div class="d-flex justify-content-between mb-3">
                 <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger" style="background-color: red;">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
             </div>
         @endif
         <form method="GET" action="{{ route('products.index') }}">
@@ -146,15 +150,13 @@
                             <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-exchange-alt"></i>
                             </a>
-                            <div class="mb-3">
-                                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-success">Descargar PDF</a>
-                            </div>
                         </div>
                     </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+        </div>
             <div class="pagination">
                 @if($currentPage > 1)
                     <a href="{{ route('products.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
@@ -174,6 +176,8 @@
             <p>No se encontraron productos.</p>
             @endif
         </div>
+
+        
     </div>
 
     @if(session('success'))
@@ -222,7 +226,9 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm
+
+/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
