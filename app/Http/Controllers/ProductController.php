@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductController extends Controller {
 
@@ -60,6 +61,10 @@ class ProductController extends Controller {
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los productos de la API');
     }
+
+
+
+
 
     public function show($id, Request $request) {
         // URL base de la API
