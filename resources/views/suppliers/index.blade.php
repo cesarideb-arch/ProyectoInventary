@@ -19,15 +19,31 @@
         .btn-group-horizontal .btn {
             margin-right: 5px;
         }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Lista de Proveedores</h1>
-        <div class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger">Descargar PDF</a>
-
+            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">
             <div class="input-group mb-3">
