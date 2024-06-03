@@ -69,7 +69,7 @@ class ProjectController extends Controller {
             'name' => 'required|string|max:100',
             'description' => 'nullable|string',
             'company_name' => 'required|string|max:50',
-            'rfc' => 'required|string|max:50',
+            'rfc' => 'nullable|string',
             'address' => 'required|string|max:100',
             'phone_number' => 'required|string|max:50',
             'email' => 'required|string|max:50|email',

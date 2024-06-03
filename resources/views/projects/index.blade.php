@@ -44,9 +44,9 @@
                     @foreach($projects as $project)
                     <tr>
                         <td>{{ $project['name'] }}</td>
-                        <td>{{ $project['description'] }}</td>
+                        <td>{{ $project['description']  ?? 'N/A'}}</td>
                         <td>{{ $project['company_name'] }}</td>
-                        <td>{{ $project['rfc'] }}</td>
+                        <td>{{ $project['rfc']  ?? 'N/A'}}</td>
                         <td>{{ $project['address'] }}</td>
                         <td>{{ $project['phone_number'] }}</td>
                         <td>{{ $project['email'] }}</td>

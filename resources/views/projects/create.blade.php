@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,11 +84,15 @@
             </div>
             <div class="form-group">
                 <label for="rfc">RFC:</label>
-                <input type="text" class="form-control @error('rfc') is-invalid @enderror" id="rfc" name="rfc" value="{{ old('rfc') }}" maxlength="13" required>
+                <input type="text" class="form-control @error('rfc') is-invalid @enderror" id="rfc" name="rfc" value="{{ old('rfc') }}" maxlength="13">
                 @error('rfc')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el RFC (máximo 13 caracteres).</div>
+                <div class="invalid-feedback">Seleccione o rellene RFC, máximo 13 caracteres.</div>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noRfcCheck" name="noRfcCheck">
+                <label for="noRfcCheck">Sin RFC</label>
             </div>
             <div class="form-group">
                 <label for="address">Dirección:</label>
@@ -132,8 +135,30 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        $(document).ready(function() {
+            toggleInputDisable('noRfcCheck', 'rfc');
+        });
+
+        function toggleInputDisable(checkboxId, inputId) {
+            var checkbox = document.getElementById(checkboxId);
+            var input = document.getElementById(inputId);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    input.value = '';
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            });
+        }
+
         document.querySelector('form').addEventListener('submit', function(event) {
-            var requiredInputs = ['name', 'company_name', 'rfc', 'address', 'phone_number', 'email', 'client_name'];
+            var requiredInputs = ['name', 'company_name', 'address', 'phone_number', 'email', 'client_name'];
+            var optionalInputs = ['rfc'];
+            var checkboxes = ['noRfcCheck'];
 
             for (var i = 0; i < requiredInputs.length; i++) {
                 var input = document.getElementById(requiredInputs[i]);
@@ -144,6 +169,28 @@
                 } else {
                     input.classList.remove('is-invalid');
                     input.classList.add('is-valid');
+                }
+            }
+
+            for (var i = 0; i < optionalInputs.length; i++) {
+                var input = document.getElementById(optionalInputs[i]);
+                var checkbox = document.getElementById(checkboxes[i]);
+
+                if (input.value === '' && !checkbox.checked) {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+
+                if (checkbox.checked) {
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
                 }
             }
 
@@ -167,4 +214,3 @@
     </script>
 </body>
 </html>
-
