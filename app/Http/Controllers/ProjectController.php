@@ -131,7 +131,7 @@ class ProjectController extends Controller {
             'name' => 'string|max:100',
             'description' => 'nullable|string',
             'company_name' => 'string|max:50',
-            'rfc' => 'string|max:50',
+            'rfc' => 'nullable|string',
             'address' => 'string|max:100',
             'phone_number' => 'string|max:50',
             'email' => 'string|max:50|email',
