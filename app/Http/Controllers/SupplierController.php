@@ -9,19 +9,19 @@ class SupplierController extends Controller {
     public function index(Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
+    
         // URL de la API de proveedores
         $apiUrl = $baseApiUrl . '/api/suppliers';
         $apiSearchUrl = $baseApiUrl . '/api/searchSupplier';
         $searchQuery = $request->input('query');
-
+    
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 10; // Número máximo de elementos por página
-
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -30,12 +30,12 @@ class SupplierController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-
+    
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-
+    
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $suppliers = $data['data'];
@@ -49,14 +49,42 @@ class SupplierController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-
+    
+            // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
+            if ($request->has('download') && $request->input('download') === 'pdf') {
+                // Guardar HTML en un archivo temporal en una ubicación accesible
+                $htmlContent = view('suppliers.pdf', compact('suppliers'))->render();
+                $htmlFilePath = storage_path('temp/suppliers_temp_file.html');
+                file_put_contents($htmlFilePath, $htmlContent);
+    
+                // Verificar si el archivo HTML se genera correctamente
+                if (!file_exists($htmlFilePath)) {
+                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                }
+    
+                // Definir la ruta de salida del PDF
+                $pdfFilePath = storage_path('temp/Proveedores.pdf');
+                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                // Ejecutar el comando
+                exec($command, $output, $returnVar);
+    
+                // Verificar si el PDF se generó correctamente
+                if ($returnVar === 0) {
+                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                } else {
+                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                }
+            }
+    
             // Pasa los datos de proveedores y los parámetros de paginación a la vista y renderiza la vista
             return view('suppliers.index', compact('suppliers', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
-
+    
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los proveedores de la API');
     }
+    
 
     public function create() {
         return view('suppliers.create');

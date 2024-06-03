@@ -26,6 +26,8 @@
         <h1 class="mb-4">Lista de Proveedores</h1>
         <div class="mb-3">
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger">Descargar PDF</a>
+
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">
             <div class="input-group mb-3">
