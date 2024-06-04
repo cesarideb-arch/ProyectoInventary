@@ -106,7 +106,7 @@
                         <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="fas fa-eye"></i>
+                                <i class="fas fa-eye-slash"></i>
                             </button>
                         </div>
                     </div>
@@ -134,12 +134,12 @@
             var toggleIcon = this.querySelector('i');
             if (passwordFieldType === 'password') {
                 passwordField.setAttribute('type', 'text');
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.setAttribute('type', 'password');
                 toggleIcon.classList.remove('fa-eye-slash');
                 toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordField.setAttribute('type', 'password');
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
             }
         });
     </script>

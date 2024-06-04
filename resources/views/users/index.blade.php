@@ -102,7 +102,14 @@
                         <p>¿Estás seguro de que quieres eliminar este usuario?</p>
                         <div class="form-group">
                             <label for="admin_password">Contraseña de Administrador</label>
-                            <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="admin_password" name="admin_password" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePasswordVisibility('admin_password', this)">
+                                        <i class="fas fa-eye-slash"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
@@ -139,6 +146,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const deleteButtons = document.querySelectorAll('.delete-button');
@@ -194,6 +202,21 @@
             });
         });
     });
+
+    function togglePasswordVisibility(fieldId, toggleButton) {
+        var passwordField = document.getElementById(fieldId);
+        var passwordFieldType = passwordField.getAttribute('type');
+        var toggleIcon = toggleButton.querySelector('i');
+        if (passwordFieldType === 'password') {
+            passwordField.setAttribute('type', 'text');
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        } else {
+            passwordField.setAttribute('type', 'password');
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        }
+    }
     </script>
 </body>
 </html>
