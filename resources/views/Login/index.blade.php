@@ -6,6 +6,8 @@
     <title>Login</title>
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -80,19 +82,15 @@
             color: #fff !important; /* Cambia este color al que prefieras */
         }
     </style>
-    
+</head>
 <body>
     <div class="container">
         <div class="login-form">
             <div class="login-heading">
-                <div class="login-heading">
-                    <div class="login-heading text-center">
-                        <img src="{{ asset('fav.png') }}" alt="Logo" style="margin-left: -10px;">
-                        <link rel="icon" href="/favicon.ico" type="image/x-icon">
-                    </div>
+                <div class="login-heading text-center">
+                    <img src="{{ asset('fav.png') }}" alt="Logo" style="margin-left: -10px;">
                     <link rel="icon" href="/favicon.ico" type="image/x-icon">
                 </div>
-                
                 <link rel="icon" href="/favicon.ico" type="image/x-icon">
             </div>
             <form action="{{ route('login') }}" method="POST">
@@ -104,20 +102,47 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
                     @if ($errors->has('password'))
                         <span class="text-danger">{{ $errors->first('password') }}</span>
                     @endif
                     @if (session('error'))
-                    <span class="error-message font-weight-bold text-danger">{{ session('error') }}</span>
-                @endif
+                        <span class="error-message font-weight-bold text-danger">{{ session('error') }}</span>
+                    @endif
                 </div>
                 <button type="submit" class="btn btn-primary btn-block login-button">Iniciar sesión</button>
             </form>
         </div>
     </div>
 
-    <!-- Include Bootstrap JS -->
+    <!-- Include jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Include Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            var passwordField = document.getElementById('password');
+            var passwordFieldType = passwordField.getAttribute('type');
+            var toggleIcon = this.querySelector('i');
+            if (passwordFieldType === 'password') {
+                passwordField.setAttribute('type', 'text');
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.setAttribute('type', 'password');
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        });
+    </script>
 </body>
 </html>
+
