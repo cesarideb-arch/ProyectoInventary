@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Http;
 class ProjectController extends Controller {
 
     public function index(Request $request) {
+        // Verificación de rol, solo permite acceso a usuarios con rol distinto de 2
+        if (session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
@@ -60,6 +64,9 @@ class ProjectController extends Controller {
     }
 
     public function create() {
+        if (session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
         return view('projects.create');
     }
 
@@ -100,6 +107,9 @@ class ProjectController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        if (session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
