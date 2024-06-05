@@ -23,7 +23,6 @@
         </div>
 
         <div class="mt-4 mb-4">
-            <h1>Proyectos</h1>
             <form id="entranceForm" action="{{ route('products.entrances.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="form-group">

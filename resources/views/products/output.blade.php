@@ -23,7 +23,6 @@
         </div>
 
         <div class="mt-4 mb-4">
-            <h1>Proyectos</h1>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
