@@ -8,58 +8,67 @@ use Illuminate\Support\Facades\Http;
 class CategoryController extends Controller {
 
     public function index(Request $request) {
-        // URL base de la API
-        $baseApiUrl = config('app.backend_api');
-
-        // URL de la API de categorías y búsqueda
-        $apiUrl = $baseApiUrl . '/api/categories';
-        $apiSearchUrl = $baseApiUrl . '/api/searchCategory';
-        $searchQuery = $request->input('query');
-
-        // Parámetros de paginación
-        $page = $request->input('page', 1); // Página actual, por defecto es 1
-        $perPage = 10; // Número máximo de elementos por página
-
-        // Obtener el token de la sesión
-        $token = $request->session()->get('token');
-
-        // Si hay un término de búsqueda, usar la URL de búsqueda
-        if ($searchQuery) {
-            $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
-        } else {
-            $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
-        }
-
-        // Verifica si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Decodifica la respuesta JSON en un array asociativo
-            $data = $response->json();
-
-            // Verifica si la clave 'data' está presente en la respuesta
-            if (is_array($data) && array_key_exists('data', $data)) {
-                $categories = $data['data'];
-                $total = $data['total'] ?? 0;
-                $currentPage = $data['current_page'] ?? 1;
-                $lastPage = $data['last_page'] ?? 1;
-            } else {
-                // Asume que toda la respuesta es el conjunto de datos
-                $categories = array_slice($data, ($page - 1) * $perPage, $perPage);
-                $total = count($data);
-                $currentPage = $page;
-                $lastPage = ceil($total / $perPage);
+            // Verificación de rol, solo permite acceso a usuarios con rol distinto de 2
+            if (session('role') === '2') {
+                return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
             }
-
-            // Pasa los datos de categorías y la página actual a la vista y renderiza la vista
-            return view('categories.index', compact('categories', 'searchQuery', 'total', 'currentPage', 'lastPage'));
-        } else {
-            // Si la solicitud falla, muestra un mensaje de error
-            return 'Error: ' . $response->status();
+    
+            // URL base de la API
+            $baseApiUrl = config('app.backend_api');
+    
+            // URL de la API de categorías y búsqueda
+            $apiUrl = $baseApiUrl . '/api/categories';
+            $apiSearchUrl = $baseApiUrl . '/api/searchCategory';
+            $searchQuery = $request->input('query');
+    
+            // Parámetros de paginación
+            $page = $request->input('page', 1); // Página actual, por defecto es 1
+            $perPage = 10; // Número máximo de elementos por página
+    
+            // Obtener el token de la sesión
+            $token = $request->session()->get('token');
+    
+            // Si hay un término de búsqueda, usar la URL de búsqueda
+            if ($searchQuery) {
+                $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
+                $response = Http::withToken($token)->get($apiSearchUrl);
+            } else {
+                $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
+                $response = Http::withToken($token)->get($apiUrl);
+            }
+    
+            // Verifica si la solicitud fue exitosa
+            if ($response->successful()) {
+                // Decodifica la respuesta JSON en un array asociativo
+                $data = $response->json();
+    
+                // Verifica si la clave 'data' está presente en la respuesta
+                if (is_array($data) && array_key_exists('data', $data)) {
+                    $categories = $data['data'];
+                    $total = $data['total'] ?? 0;
+                    $currentPage = $data['current_page'] ?? 1;
+                    $lastPage = $data['last_page'] ?? 1;
+                } else {
+                    // Asume que toda la respuesta es el conjunto de datos
+                    $categories = array_slice($data, ($page - 1) * $perPage, $perPage);
+                    $total = count($data);
+                    $currentPage = $page;
+                    $lastPage = ceil($total / $perPage);
+                }
+    
+                // Pasa los datos de categorías y la página actual a la vista y renderiza la vista
+                return view('categories.index', compact('categories', 'searchQuery', 'total', 'currentPage', 'lastPage'));
+            } else {
+                // Si la solicitud falla, muestra un mensaje de error
+                return 'Error: ' . $response->status();
+            }
         }
-    }
 
     public function create() {
+            // Verificación de rol, solo permite acceso a usuarios con rol 1 o 2
+            if (session('role') === '2') {
+                return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+            }
         return view('categories.create');
     }
 
@@ -93,6 +102,9 @@ class CategoryController extends Controller {
     }
 
     public function edit($id, Request $request) {
+        if (session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
