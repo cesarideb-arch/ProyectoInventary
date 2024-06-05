@@ -154,8 +154,9 @@
             <span class="bar"></span>
         </div>
         <ul class="nav-list">
-            <li><a href="{{ route('start.index') }}">Inicio</a></li>
+          
             @if (session('role') !== '1' && session('role') !== '2')
+                <li><a href="{{ route('start.index') }}">Inicio</a></li>
                 <li><a href="{{ route('users.index') }}">Usuarios</a></li>
             @endif
             <li><a href="{{ route('products.index') }}">Inventario</a></li>
