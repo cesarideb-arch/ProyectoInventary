@@ -41,8 +41,8 @@
                 ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? 'No se pudo obtener el número de producto con más entradas.'),
             'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
                 ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductOut['total_quantity'] ?? 'No se pudo obtener el número de producto con más salidas.'),
-            'El producto con más existencias es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más existencias.') .
-                ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductLoan['total_quantity'] ?? 'No se pudo obtener el número de producto con más existencias.'),
+            'El producto con más Prestamos es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más prestamos.') .
+                ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductLoan['total_quantity'] ?? 'No se pudo obtener el número de producto con más prestamos.'),
         ];
         @endphp
 
