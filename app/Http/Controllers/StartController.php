@@ -6,8 +6,13 @@ use Illuminate\Support\Facades\Http;
 
 class StartController extends Controller {
     public function index(Request $request) {
-        // Obtener la URL base de la API desde la configuración
+        // URL base de la API
         $baseApiUrl = config('app.backend_api');
+
+        // Verificación de rol, solo permite acceso a usuarios con rol distinto de 1 o 2
+        if (session('role') === '1' || session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
 
         // Construir las URLs completas para las solicitudes API
         $apiUrl = $baseApiUrl . '/api/getCount';
@@ -17,6 +22,7 @@ class StartController extends Controller {
         $apiUrlCountProductEntrance= $baseApiUrl . '/api/GetProductEntrance';
         $apiUrlCountProductOut= $baseApiUrl . '/api/GetProductOutput';
         $apiUrlCountProductLoan= $baseApiUrl . '/api/GetProductLoan';
+        
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
@@ -52,7 +58,7 @@ class StartController extends Controller {
             return view('start.index', compact('counts', 'products', 'entrance', 'out', 'countsProductEntrance', 'countsProductOut', 'countsProductLoan'));
         } else {
             // Manejar el caso donde alguna solicitud no fue exitosa
-            return view('start.index', ['message' => 'Error al obtener datos de la API']);
+            return back()->with('error', 'Hubo un problema al obtener los datos de la API. Inténtalo de nuevo.');
         }
     }
 }
