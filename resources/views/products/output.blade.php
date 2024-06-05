@@ -18,7 +18,8 @@
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
                 <p>{{ $product['description'] }}</p>
-                <p class="fw-bold">Precio: ${{ $product['price'] }}</p>
+                <p class="fw-bold">Precio: ${{ number_format($product['price'], 2, '.', ',') }}</p>
+                <p class="fw-bold">Cantidad de producto: {{ number_format($product['quantity'], 0, '.', ',') }}</p>
             </div>
         </div>
 
