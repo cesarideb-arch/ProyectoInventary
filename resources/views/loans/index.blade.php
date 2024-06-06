@@ -52,7 +52,7 @@
                     <tr>
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
-                        <td>{{ $loan['quantity'] }}</td> 
+                        <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                         <td>{{ $loan['observations'] ?? 'N/A' }}</td> 
 
                         <td>

@@ -100,7 +100,8 @@
                         <td>{{ $output['project']['name'] ?? 'N/A' }}</td>
                         <td>{{ $output['product']['name'] ?? '' }}</td>
                         <td>{{ $output['responsible'] }}</td>
-                        <td>{{ $output['quantity'] }}</td>
+                        <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+
                         <td>{{ $output['description'] ?? 'N/A'}}</td>
                         <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
