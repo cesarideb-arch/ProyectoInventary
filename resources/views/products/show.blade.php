@@ -20,7 +20,6 @@
                 <p>{{ $product['description'] }}</p>
                 <p class="fw-bold">Precio: ${{ number_format($product['price'], 2, '.', ',') }}</p>
                 <p class="fw-bold">Cantidad de producto: {{ number_format($product['quantity'], 0, '.', ',') }}</p>
-
             </div>
         </div>
 
@@ -29,11 +28,11 @@
                 @csrf
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control" required>
+                    <select id="project_id" name="project_id" class="form-control" required {{ old('noProjectCheck') ? 'disabled' : '' }}>
                         <option value="">Seleccione un proyecto</option>
                         @if (count($projects) > 0)
                             @foreach ($projects as $project)
-                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                                <option value="{{ $project['id'] }}" {{ old('project_id') == $project['id'] ? 'selected' : '' }}>{{ $project['name'] }}</option>
                             @endforeach
                         @else
                             <option value="" disabled>No hay proyectos disponibles</option>
@@ -43,7 +42,7 @@
                 </div>
 
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck">
+                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck" {{ old('noProjectCheck') ? 'checked' : '' }}>
                     <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
                 </div>
 
@@ -51,19 +50,24 @@
 
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
-                    <input type="text" name="responsible" id="responsible" class="form-control" required maxlength="100">
+                    <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') }}">
                     <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" required>
-                    <div class="invalid-feedback">Por favor, ingrese una cantidad válida.</div>
+                    <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
+                    @error('quantity')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Descripción (Opcional):</label>
-                    <textarea name="description" id="description" class="form-control" maxlength="100"></textarea>
+                    <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" maxlength="100">{{ old('description') }}</textarea>
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
@@ -73,7 +77,7 @@
             </form>
         </div>
     </div>
-    {{-- @dd($errors)  --}}
+
     <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Inclusión de jQuery -->
@@ -81,7 +85,6 @@
     <!-- Inclusión de Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- Script para inicializar Select2 y manejar el checkbox -->
     <script>
         $(document).ready(function() {
             $('#project_id').select2({
@@ -89,12 +92,23 @@
                 allowClear: true
             });
 
+            // Verifica si el checkbox está marcado y deshabilita el select si es necesario
+            if ($('#noProjectCheck').is(':checked')) {
+                $('#project_id').prop('disabled', true);
+            }
+
             $('#noProjectCheck').on('change', function() {
                 if ($(this).is(':checked')) {
                     $('#project_id').val(null).trigger('change');
-                    $('#project_id').prop('disabled', true);
+                    $('#project_id').prop('disabled', true).removeClass('is-invalid');
                 } else {
                     $('#project_id').prop('disabled', false);
+                }
+            });
+
+            $('#project_id').on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid');
                 }
             });
 
@@ -117,13 +131,39 @@
                     event.stopPropagation();
                 }
 
-                // Si el checkbox está marcado, elimina el valor del campo project_id
                 if (noProjectCheck.is(':checked')) {
                     projectSelect.removeAttr('name');
                 }
 
                 form.classList.add('was-validated');
+
+                // Eliminar comas antes de enviar el formulario
+                var quantityInput = document.getElementById('quantity');
+                quantityInput.value = quantityInput.value.replace(/,/g, '');
             });
+
+            // Separación correcta de la cantidad
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
+                if (value) {
+                    value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    });
+                    e.target.value = value;
+                }
+            });
+
+            // Restaurar la cantidad formateada si existe un valor anterior
+            var oldQuantity = '{{ old('quantity') }}';
+            if (oldQuantity) {
+                var formattedOldQuantity = parseFloat(oldQuantity.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                });
+                $('#quantity').val(formattedOldQuantity);
+            }
         });
     </script>
 </body>

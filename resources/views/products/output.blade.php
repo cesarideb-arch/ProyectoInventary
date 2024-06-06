@@ -24,24 +24,15 @@
         </div>
 
         <div class="mt-4 mb-4">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <form id="outputForm" action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control" required>
+                    <select id="project_id" name="project_id" class="form-control" required {{ old('noProjectCheck') ? 'disabled' : '' }}>
                         <option value="">Seleccione un proyecto</option>
                         @if (count($projects) > 0)
                             @foreach ($projects as $project)
-                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                                <option value="{{ $project['id'] }}" {{ old('project_id') == $project['id'] ? 'selected' : '' }}>{{ $project['name'] }}</option>
                             @endforeach
                         @else
                             <option value="" disabled>No hay proyectos disponibles</option>
@@ -51,7 +42,7 @@
                 </div>
 
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck">
+                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck" {{ old('noProjectCheck') ? 'checked' : '' }}>
                     <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
                 </div>
 
@@ -60,14 +51,12 @@
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') }}">
-                    @error('responsible')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
+                    <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
                     @error('quantity')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -103,12 +92,22 @@
                 allowClear: true
             });
 
+            // Verifica si el checkbox está marcado y deshabilita el select si es necesario
+            if ($('#noProjectCheck').is(':checked')) {
+                $('#project_id').prop('disabled', true);
+            }
+
             $('#noProjectCheck').on('change', function() {
                 if ($(this).is(':checked')) {
-                    $('#project_id').val(null).trigger('change');
-                    $('#project_id').prop('disabled', true);
+                    $('#project_id').prop('disabled', true).removeClass('is-invalid');
                 } else {
                     $('#project_id').prop('disabled', false);
+                }
+            });
+
+            $('#project_id').on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid');
                 }
             });
 
@@ -132,11 +131,38 @@
                 }
 
                 if (noProjectCheck.is(':checked')) {
-                    projectSelect.removeAttr('name');
+                    projectSelect.prop('disabled', true);
                 }
 
                 form.classList.add('was-validated');
+
+                // Eliminar comas antes de enviar el formulario
+                var quantityInput = document.getElementById('quantity');
+                quantityInput.value = quantityInput.value.replace(/,/g, '');
             });
+
+            // Separación correcta de la cantidad
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
+                if (value) {
+                    value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    });
+                    e.target.value = value;
+                }
+            });
+
+            // Restaurar la cantidad formateada si existe un valor anterior
+            var oldQuantity = '{{ old('quantity') }}';
+            if (oldQuantity) {
+                var formattedOldQuantity = parseFloat(oldQuantity.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                });
+                $('#quantity').val(formattedOldQuantity);
+            }
         });
     </script>
 </body>
