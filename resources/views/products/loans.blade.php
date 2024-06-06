@@ -33,11 +33,16 @@
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
-                    @error('quantity')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}" min="1">
+                    <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
+                    <div class="invalid-feedback quantity-error" style="display:none;">La cantidad ingresada excede la cantidad disponible. Cantidad disponible: {{ number_format($product['quantity'], 0, '.', ',') }}.</div>
+                    <div class="invalid-feedback no-stock-error" style="display:none;">No hay existencia.</div>
+
                 </div>
+                <!-- Alerta -->
+    <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+        La cantidad mínima es 1.
+    </div>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>
@@ -47,9 +52,64 @@
         </div>
     </div>
 
-    <!-- Opcional: Inclusión de JavaScript de Bootstrap -->
+    
+
+    <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Inclusión de jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            var maxQuantity = {{ $product['quantity'] }};
+            
+            // Deshabilitar el botón de enviar si no hay existencia
+            if (maxQuantity === 0) {
+                $('#loanForm').find(':input').prop('disabled', true);
+                $('.no-stock-error').show();
+            }
 
+            // Validación personalizada del lado del cliente
+            $('#loanForm').on('submit', function(event) {
+                var form = this;
+                var quantityInput = $('#quantity');
+                var quantityValue = parseFloat(quantityInput.val());
+
+                if (quantityValue > maxQuantity) {
+                    quantityInput.addClass('is-invalid');
+                    $('.quantity-error').show();
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    quantityInput.removeClass('is-invalid').addClass('is-valid');
+                    $('.quantity-error').hide();
+                }
+
+                if (quantityValue <= 0) {
+                    quantityInput.addClass('is-invalid');
+                    $('.quantity-zero-error').show();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#alertaCantidad').removeClass('d-none'); // Mostrar la alerta
+                } else {
+                    $('.quantity-zero-error').hide();
+                    $('#alertaCantidad').addClass('d-none'); // Ocultar la alerta
+                }
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            });
+
+            // Restaurar la cantidad formateada si existe un valor anterior
+            var oldQuantity = '{{ old('quantity') }}';
+            if (oldQuantity) {
+                $('#quantity').val(oldQuantity);
+            }
+        });
+    </script>
 </body>
 </html>

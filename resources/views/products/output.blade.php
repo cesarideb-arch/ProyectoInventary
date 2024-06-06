@@ -57,11 +57,15 @@
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
                     <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
-                    @error('quantity')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
+                    <div class="invalid-feedback quantity-error" style="display:none;">La cantidad ingresada excede la cantidad disponible. Cantidad disponible: {{ number_format($product['quantity'], 0, '.', ',') }}.</div>
+                    <div class="invalid-feedback no-stock-error" style="display:none;">No hay existencia.</div>
                 </div>
-
+  
+    <!-- Alerta -->
+    <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+        La cantidad mínima es 1.
+    </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Descripción (Opcional):</label>
                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" maxlength="100">{{ old('description') }}</textarea>
@@ -78,6 +82,7 @@
         </div>
     </div>
 
+
     <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Inclusión de jQuery -->
@@ -87,6 +92,14 @@
 
     <script>
         $(document).ready(function() {
+            var maxQuantity = {{ $product['quantity'] }};
+            
+            // Deshabilitar el botón de enviar si no hay existencia
+            if (maxQuantity === 0) {
+                $('#outputForm').find(':input').prop('disabled', true);
+                $('.no-stock-error').show();
+            }
+
             $('#project_id').select2({
                 placeholder: 'Seleccione un proyecto',
                 allowClear: true
@@ -116,6 +129,8 @@
                 var form = this;
                 var projectSelect = $('#project_id');
                 var noProjectCheck = $('#noProjectCheck');
+                var quantityInput = $('#quantity');
+                var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
 
                 if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
                     projectSelect.addClass('is-invalid');
@@ -134,16 +149,35 @@
                     projectSelect.prop('disabled', true);
                 }
 
+                if (quantityValue > maxQuantity) {
+                    quantityInput.addClass('is-invalid');
+                    $('.quantity-error').show();
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    quantityInput.removeClass('is-invalid').addClass('is-valid');
+                    $('.quantity-error').hide();
+                }
+
+                if (quantityValue <= 0) {
+                    quantityInput.addClass('is-invalid');
+                    $('.quantity-zero-error').show();
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#alertaCantidad').removeClass('d-none'); // Mostrar la alerta
+                } else {
+                    $('.quantity-zero-error').hide();
+                    $('#alertaCantidad').addClass('d-none'); // Ocultar la alerta
+                }
+
                 form.classList.add('was-validated');
 
                 // Eliminar comas antes de enviar el formulario
-                var quantityInput = document.getElementById('quantity');
-                quantityInput.value = quantityInput.value.replace(/,/g, '');
+                quantityInput.val(quantityInput.val().replace(/,/g, ''));
             });
 
             // Separación correcta de la cantidad
-            var quantityInput = document.getElementById('quantity');
-            quantityInput.addEventListener('input', function(e) {
+            $('#quantity').on('input', function(e) {
                 var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
                 if (value) {
                     value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {

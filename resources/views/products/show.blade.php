@@ -57,9 +57,11 @@
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
                     <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
-                    @error('quantity')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese la cantidad</div>
+                </div>
+
+                <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+                    La cantidad mínima es 1.
                 </div>
 
                 <div class="mb-3">
@@ -117,6 +119,15 @@
                 var form = this;
                 var projectSelect = $('#project_id');
                 var noProjectCheck = $('#noProjectCheck');
+                var quantityInput = $('#quantity');
+                var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
+
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    quantityInput.addClass('is-invalid');
+                    event.preventDefault();
+                    return false;
+                }
 
                 if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
                     projectSelect.addClass('is-invalid');
@@ -138,8 +149,7 @@
                 form.classList.add('was-validated');
 
                 // Eliminar comas antes de enviar el formulario
-                var quantityInput = document.getElementById('quantity');
-                quantityInput.value = quantityInput.value.replace(/,/g, '');
+                quantityInput.val(quantityInput.val().replace(/,/g, ''));
             });
 
             // Separación correcta de la cantidad
@@ -152,6 +162,18 @@
                         maximumFractionDigits: 2
                     });
                     e.target.value = value;
+                }
+            });
+
+            // Validación para no permitir ceros
+            $('#quantity').on('blur', function() {
+                var quantityValue = parseFloat($(this).val().replace(/,/g, ''));
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    $(this).addClass('is-invalid');
+                } else {
+                    $('#alertaCantidad').addClass('d-none');
+                    $(this).removeClass('is-invalid');
                 }
             });
 
