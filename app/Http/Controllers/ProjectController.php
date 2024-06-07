@@ -149,6 +149,46 @@ class ProjectController extends Controller {
             // Agregar otras validaciones si es necesario
         ]);
 
+        // Configurar los datos del formulario
+        $formParams = [
+            [
+                'name' => '_method',
+                'contents' => 'PUT',
+            ],
+            [
+                'name' => 'name',
+                'contents' => $validatedData['name'],
+            ],
+            [
+                'name' => 'description',
+                'contents' => $validatedData['description'] ?? null,
+            ],
+            [
+                'name' => 'company_name',
+                'contents' => $validatedData['company_name'],
+            ],
+            [
+                'name' => 'rfc',
+                'contents' => $validatedData['rfc'] ?? null,
+            ],
+            [
+                'name' => 'address',
+                'contents' => $validatedData['address'],
+            ],
+            [
+                'name' => 'phone_number',
+                'contents' => $validatedData['phone_number'],
+            ],
+            [
+                'name' => 'email',
+                'contents' => $validatedData['email'],
+            ],
+            [
+                'name' => 'client_name',
+                'contents' => $validatedData['client_name'],
+            ],
+        ];
+
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
@@ -158,18 +198,32 @@ class ProjectController extends Controller {
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
-        // Realizar una solicitud HTTP PUT para actualizar el proyecto
-        $response = Http::withToken($token)->put($apiUrl, $validatedData);
+        // Crear un cliente Guzzle
+        $client = new \GuzzleHttp\Client();
 
-        // Verificar si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Redirigir a una página de éxito o mostrar un mensaje de éxito
-            return redirect()->route('projects.index')->with('success', 'Proyecto actualizado exitosamente.');
-        } else {
-            // Manejar errores si la solicitud no fue exitosa
-            return back()->withInput()->withErrors('Error al actualizar el proyecto. Por favor, inténtalo de nuevo más tarde.');
+        // Realizar una solicitud HTTP POST con _method=PUT para actualizar el proyecto
+        try {
+            $response = $client->post($apiUrl, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept' => 'application/json',
+                ],
+                'multipart' => $formParams,
+            ]);
+
+            // Verificar si la solicitud fue exitosa
+            if ($response->getStatusCode() == 200) {
+                // Redirigir a una página de éxito o mostrar un mensaje de éxito
+                return redirect()->route('projects.index')->with('success', 'Proyecto actualizado exitosamente.');
+            } else {
+                // Manejar errores si la solicitud no fue exitosa
+                return back()->withInput()->withErrors('Error al actualizar el proyecto. Por favor, inténtalo de nuevo más tarde.');
+            }
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors('Error al actualizar el proyecto: ' . $e->getMessage());
         }
     }
+
 
     public function destroy($id, Request $request) {
         // URL base de la API
