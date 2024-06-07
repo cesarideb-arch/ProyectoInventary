@@ -105,7 +105,12 @@
                 @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el email del proveedor.</div>
+                <div class="invalid-feedback">Por favor, ingrese el email del proveedor o Seleccione sin email.</div>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck">
+                <label for="noEmailCheck">Sin Email</label>
             </div>
 
             <div class="form-group">
@@ -114,7 +119,12 @@
                 @error('address')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor.</div>
+                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor Seleccione sin dirección.</div>
+            </div>
+
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck">
+                <label for="noAddressCheck">Sin dirección</label>
             </div>
 
             <button type="submit" class="btn btn-primary">Guardar</button>
@@ -131,43 +141,64 @@
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         }
 
-        document.querySelector('form').addEventListener('submit', function(event) {
-            var requiredInputs = ['article', 'price', 'company', 'phone', 'email', 'address'];
+        function toggleInputDisable(checkboxId, inputId) {
+            var checkbox = document.getElementById(checkboxId);
+            var input = document.getElementById(inputId);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    input.value = '';
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            });
+        }
 
-            for (var i = 0; i < requiredInputs.length; i++) {
-                var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '') {
-                    input.classList.add('is-invalid');
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleInputDisable('noEmailCheck', 'email');
+            toggleInputDisable('noAddressCheck', 'address');
+
+            document.querySelector('form').addEventListener('submit', function(event) {
+                var requiredInputs = ['article', 'price', 'company', 'phone', 'email', 'address'];
+
+                for (var i = 0; i < requiredInputs.length; i++) {
+                    var input = document.getElementById(requiredInputs[i]);
+                    if (input.value === '' && !input.disabled) {
+                        input.classList.add('is-invalid');
+                        event.preventDefault();
+                        event.stopPropagation();
+                    } else {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                    }
+                }
+
+                var priceInput = document.getElementById('price');
+                priceInput.value = priceInput.value.replace(/,/g, '');
+
+                if (!this.checkValidity()) {
                     event.preventDefault();
                     event.stopPropagation();
-                } else {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
                 }
-            }
 
-            var priceInput = document.getElementById('price');
-            priceInput.value = priceInput.value.replace(/,/g, '');
+                this.classList.add('was-validated');
+            });
 
-            if (!this.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+            document.getElementById('price').addEventListener('input', function() {
+                formatPrice(this);
+            });
 
-            this.classList.add('was-validated');
-        });
-
-        document.getElementById('price').addEventListener('input', function() {
-            formatPrice(this);
-        });
-
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('input', function () {
-                if (this.checkValidity()) {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                    this.nextElementSibling.style.display = 'none';
-                }
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                        this.nextElementSibling.style.display = 'none';
+                    }
+                });
             });
         });
     </script>

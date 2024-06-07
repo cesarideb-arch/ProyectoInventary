@@ -74,8 +74,8 @@
                     <td>${{ number_format($supplier['price'], 2, '.', ',') }}</td>
                     <td>{{ $supplier['company'] }}</td>
                     <td>{{ $supplier['phone'] }}</td>
-                    <td>{{ $supplier['email'] }}</td>
-                    <td>{{ $supplier['address'] }}</td>
+                    <td>{{ $supplier['email'] ?? 'N/A'}}</td>
+                    <td>{{ $supplier['address'] ?? 'N/A' }}</td>
                     <td>
                         <div class="btn-group btn-group-horizontal text-center" role="group">
                         <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">

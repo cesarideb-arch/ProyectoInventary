@@ -105,8 +105,8 @@ class SupplierController extends Controller {
             'price' => 'required|numeric|between:0,999999.99',
             'company' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'address' => 'required|string|max:100',
+            'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string|max:100',
             // Otros campos de proveedor que puedan existir en tu API
         ]);
 
@@ -169,9 +169,8 @@ class SupplierController extends Controller {
             'price' => 'numeric|between:0,999999.99',
             'company' => 'string|max:255',
             'phone' => 'string|max:255',
-            'email' => 'email|max:255',
-            'address' => 'string|max:100' // Nueva validación para el campo address
-        ]);
+            'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string|max:100',]);
 
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
