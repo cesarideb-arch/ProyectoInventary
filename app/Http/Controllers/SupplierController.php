@@ -169,8 +169,8 @@ class SupplierController extends Controller {
             'price' => 'numeric|between:0,999999.99',
             'company' => 'string|max:255',
             'phone' => 'string|max:255',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string|max:100',]);
+            'email' => 'nullable|email',
+            'address' => 'nullable|string|max:255',]);
 
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
