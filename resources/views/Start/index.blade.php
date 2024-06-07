@@ -38,11 +38,11 @@
             'El número de entradas de productos es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
             'El número de salidas de productos es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
             'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.')  . 
-                ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? 'No se pudo obtener el número de producto con más entradas.'),
+            ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
             'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
-                ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductOut['total_quantity'] ?? 'No se pudo obtener el número de producto con más salidas.'),
+            ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductOut['total_quantity'] ?? ''),
             'El producto con más Prestamos es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más prestamos.') .
-                ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductLoan['total_quantity'] ?? 'No se pudo obtener el número de producto con más prestamos.'),
+            ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductLoan['total_quantity'] ?? ''),
         ];
         @endphp
 

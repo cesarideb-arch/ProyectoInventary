@@ -15,50 +15,34 @@ class StartController extends Controller {
         }
 
         // Construir las URLs completas para las solicitudes API
-        $apiUrl = $baseApiUrl . '/api/getCount';
-        $apiUrlProducts = $baseApiUrl . '/api/getCountProducts';
-        $apiUrlEntrance = $baseApiUrl . '/api/GetProductEntrance';
-        $apiUrlOut = $baseApiUrl . '/api/GetProductOutput';
-        $apiUrlCountProductEntrance= $baseApiUrl . '/api/GetProductEntrance';
-        $apiUrlCountProductOut= $baseApiUrl . '/api/GetProductOutput';
-        $apiUrlCountProductLoan= $baseApiUrl . '/api/GetProductLoan';
+        $apiUrls = [
+            'getCount' => $baseApiUrl . '/api/getCount',
+            'getCountProducts' => $baseApiUrl . '/api/getCountProducts',
+            'GetProductEntrance' => $baseApiUrl . '/api/GetProductEntrance',
+            'GetProductOutput' => $baseApiUrl . '/api/GetProductOutput',
+            'GetProductLoan' => $baseApiUrl . '/api/GetProductLoan'
+        ];
         
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
         // Realiza solicitudes HTTP GET a la API y obtén las respuestas
-        $response = Http::withToken($token)->get($apiUrl);
-        $responseProducts = Http::withToken($token)->get($apiUrlProducts);
-        $responseEntrance = Http::withToken($token)->get($apiUrlEntrance);
-        $responseOut = Http::withToken($token)->get($apiUrlOut);
-        $responseCountProductEntrance = Http::withToken($token)->get($apiUrlCountProductEntrance);
-        $responseCountProductOut = Http::withToken($token)->get($apiUrlCountProductOut);
-        $responseCountProductLoan = Http::withToken($token)->get($apiUrlCountProductLoan);
-
-        // Verifica si las solicitudes fueron exitosas
-        if (
-            $response->successful() && 
-            $responseProducts->successful() && 
-            $responseEntrance->successful() && 
-            $responseOut->successful() && 
-            $responseCountProductEntrance->successful() &&
-            $responseCountProductLoan->successful() &&
-            $responseCountProductOut->successful()
-        ) {
-            // Decodifica las respuestas JSON en arrays asociativos
-            $counts = $response->json();
-            $products = $responseProducts->json();
-            $countsProductLoan = $responseCountProductLoan->json();
-            $entrance = $responseEntrance->json();
-            $out = $responseOut->json();
-            $countsProductEntrance = $responseCountProductEntrance->json();
-            $countsProductOut = $responseCountProductOut->json();
-
-            // Pasa los datos a la vista y renderiza la vista
-            return view('start.index', compact('counts', 'products', 'entrance', 'out', 'countsProductEntrance', 'countsProductOut', 'countsProductLoan'));
-        } else {
-            // Manejar el caso donde alguna solicitud no fue exitosa
-            return back()->with('error', 'Hubo un problema al obtener los datos de la API. Inténtalo de nuevo.');
+        $responses = [];
+        foreach ($apiUrls as $key => $url) {
+            $responses[$key] = Http::withToken($token)->get($url);
         }
+
+        // Inicializar datos con valores por defecto
+        $data = [
+            'counts' => $responses['getCount']->json() ?? ['count' => 'No se pudo obtener el número de préstamos.'],
+            'products' => $responses['getCountProducts']->json() ?? ['count' => 'No se pudo obtener el número de productos.'],
+            'entrance' => $responses['GetProductEntrance']->json() ?? ['total_quantity' => 'No se pudo obtener el número de entradas de productos.'],
+            'out' => $responses['GetProductOutput']->json() ?? ['total_quantity' => 'No se pudo obtener el número de salidas de productos.'],
+            'countsProductEntrance' => $responses['GetProductEntrance']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
+            'countsProductOut' => $responses['GetProductOutput']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
+            'countsProductLoan' => $responses['GetProductLoan']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']
+        ];
+
+        return view('start.index', $data);
     }
 }
