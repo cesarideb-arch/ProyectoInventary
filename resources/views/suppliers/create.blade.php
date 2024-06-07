@@ -92,11 +92,11 @@
 
             <div class="form-group">
                 <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" name="phone" value="{{ old('phone') }}" required class="form-control @error('phone') is-invalid @enderror">
+                <input type="text" id="phone" name="phone" value="{{ old('phone') }}" maxlength="10" required class="form-control @error('phone') is-invalid @enderror">
                 @error('phone')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el número de teléfono.</div>
+                <div class="invalid-feedback">Por favor, ingrese el número de teléfono (máximo 10 caracteres).</div>
             </div>
 
             <div class="form-group">
@@ -105,7 +105,7 @@
                 @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el email del proveedor o Seleccione sin email.</div>
+                <div class="invalid-feedback">Por favor, ingrese el email del proveedor o seleccione sin email.</div>
             </div>
 
             <div class="form-group form-check">
@@ -119,7 +119,7 @@
                 @error('address')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor Seleccione sin dirección.</div>
+                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor o seleccione sin dirección.</div>
             </div>
 
             <div class="form-group form-check">

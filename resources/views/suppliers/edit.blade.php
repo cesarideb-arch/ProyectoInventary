@@ -76,142 +76,143 @@
                     </div>
                     <input type="text" id="price" name="price" value="{{ number_format($supplier['price'], 2) }}" required class="form-control @error('price') is-invalid @enderror">
                     @error('price')
+                     <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="invalid-feedback">Por favor, ingrese el precio del artículo.</div>
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="company">Empresa:</label>
+                    <input type="text" id="company" name="company" value="{{ $supplier['company'] }}" required class="form-control @error('company') is-invalid @enderror">
+                    @error('company')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="invalid-feedback">Por favor, ingrese el precio del artículo.</div>
+                    <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa.</div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="company">Empresa:</label>
-                <input type="text" id="company" name="company" value="{{ $supplier['company'] }}" required class="form-control @error('company') is-invalid @enderror">
-                @error('company')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" name="phone" value="{{ $supplier['phone'] }}" required class="form-control @error('phone') is-invalid @enderror">
-                @error('phone')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el número de teléfono.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ $supplier['email'] }}" required class="form-control @error('email') is-invalid @enderror">
-                @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el email del proveedor o seleccione "Sin Email".</div>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck" {{ $supplier['email'] == '' ? 'checked' : '' }}>
-                <label for="noEmailCheck">Sin Email</label>
-            </div>
-
-            <div class="form-group">
-                <label for="address">Dirección:</label>
-                <input type="text" id="address" name="address" value="{{ $supplier['address'] }}" required class="form-control @error('address') is-invalid @enderror">
-                @error('address')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor o seleccione "Sin dirección".</div>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck" {{ $supplier['address'] == '' ? 'checked' : '' }}>
-                <label for="noAddressCheck">Sin dirección</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">Cancelar</a>
-        </form>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function formatPrice(input) {
-            var value = input.value.replace(/,/g, '');
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
-
-        function toggleInputDisable(checkboxId, inputId) {
-            var checkbox = document.getElementById(checkboxId);
-            var input = document.getElementById(inputId);
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    input.value = '';
-                    input.disabled = true;
-                    input.removeAttribute('required');
-                    input.classList.remove('is-invalid');
-                } else {
-                    input.disabled = false;
-                    input.setAttribute('required', 'required');
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            toggleInputDisable('noEmailCheck', 'email');
-            toggleInputDisable('noAddressCheck', 'address');
-
-            document.querySelector('form').addEventListener('submit', function(event) {
-                var requiredInputs = ['article', 'price', 'company', 'phone', 'email', 'address'];
-
-                for (var i = 0; i < requiredInputs.length; i++) {
-                    var input = document.getElementById(requiredInputs[i]);
-                    if (input.value === '' && !input.disabled) {
-                        input.classList.add('is-invalid');
-                        event.preventDefault();
-                        event.stopPropagation();
-                    } else {
+    
+                <div class="form-group">
+                    <label for="phone">Teléfono:</label>
+                    <input type="text" id="phone" name="phone" value="{{ $supplier['phone'] }}" maxlength="10" required class="form-control @error('phone') is-invalid @enderror">
+                    @error('phone')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese el número de teléfono (máximo 10 caracteres).</div>
+                </div>
+    
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ $supplier['email'] }}" required class="form-control @error('email') is-invalid @enderror">
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese el email del proveedor o seleccione "Sin Email".</div>
+                </div>
+    
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck" {{ $supplier['email'] == '' ? 'checked' : '' }}>
+                    <label for="noEmailCheck">Sin Email</label>
+                </div>
+    
+                <div class="form-group">
+                    <label for="address">Dirección:</label>
+                    <input type="text" id="address" name="address" value="{{ $supplier['address'] }}" required class="form-control @error('address') is-invalid @enderror">
+                    @error('address')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor o seleccione "Sin dirección".</div>
+                </div>
+    
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck" {{ $supplier['address'] == '' ? 'checked' : '' }}>
+                    <label for="noAddressCheck">Sin dirección</label>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+                <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            function formatPrice(input) {
+                var value = input.value.replace(/,/g, '');
+                input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+    
+            function toggleInputDisable(checkboxId, inputId) {
+                var checkbox = document.getElementById(checkboxId);
+                var input = document.getElementById(inputId);
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        input.value = '';
+                        input.disabled = true;
+                        input.removeAttribute('required');
                         input.classList.remove('is-invalid');
-                        input.classList.add('is-valid');
-                    }
-                }
-
-                var priceInput = document.getElementById('price');
-                priceInput.value = priceInput.value.replace(/,/g, '');
-
-                if (!this.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-
-                this.classList.add('was-validated');
-            });
-
-            document.getElementById('price').addEventListener('input', function() {
-                formatPrice(this);
-            });
-
-            document.querySelectorAll('.form-control').forEach(input => {
-                input.addEventListener('input', function () {
-                    if (this.checkValidity()) {
-                        this.classList.remove('is-invalid');
-                        this.classList.add('is-valid');
-                        this.nextElementSibling.style.display = 'none';
+                    } else {
+                        input.disabled = false;
+                        input.setAttribute('required', 'required');
                     }
                 });
+            }
+    
+            document.addEventListener('DOMContentLoaded', function() {
+                toggleInputDisable('noEmailCheck', 'email');
+                toggleInputDisable('noAddressCheck', 'address');
+    
+                document.querySelector('form').addEventListener('submit', function(event) {
+                    var requiredInputs = ['article', 'price', 'company', 'phone', 'email', 'address'];
+    
+                    for (var i = 0; i < requiredInputs.length; i++) {
+                        var input = document.getElementById(requiredInputs[i]);
+                        if (input.value === '' && !input.disabled) {
+                            input.classList.add('is-invalid');
+                            event.preventDefault();
+                            event.stopPropagation();
+                        } else {
+                            input.classList.remove('is-invalid');
+                            input.classList.add('is-valid');
+                        }
+                    }
+    
+                    var priceInput = document.getElementById('price');
+                    priceInput.value = priceInput.value.replace(/,/g, '');
+    
+                    if (!this.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+    
+                    this.classList.add('was-validated');
+                });
+    
+                document.getElementById('price').addEventListener('input', function() {
+                    formatPrice(this);
+                });
+    
+                document.querySelectorAll('.form-control').forEach(input => {
+                    input.addEventListener('input', function () {
+                        if (this.checkValidity()) {
+                            this.classList.remove('is-invalid');
+                            this.classList.add('is-valid');
+                            this.nextElementSibling.style.display = 'none';
+                        }
+                    });
+                });
+    
+                // Initialize the toggles based on initial checkbox states
+                if (document.getElementById('noEmailCheck').checked) {
+                    document.getElementById('email').disabled = true;
+                    document.getElementById('email').removeAttribute('required');
+                }
+                if (document.getElementById('noAddressCheck').checked) {
+                    document.getElementById('address').disabled = true;
+                    document.getElementById('address').removeAttribute('required');
+                }
             });
-
-            // Initialize the toggles based on initial checkbox states
-            if (document.getElementById('noEmailCheck').checked) {
-                document.getElementById('email').disabled = true;
-                document.getElementById('email').removeAttribute('required');
-            }
-            if (document.getElementById('noAddressCheck').checked) {
-                document.getElementById('address').disabled = true;
-                document.getElementById('address').removeAttribute('required');
-            }
-        });
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+    </html>
+    
