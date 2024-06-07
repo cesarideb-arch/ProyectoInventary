@@ -33,16 +33,15 @@
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}" min="1">
+                    <input type="text" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}" min="1">
                     <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
                     <div class="invalid-feedback quantity-error" style="display:none;">La cantidad ingresada excede la cantidad disponible. Cantidad disponible: {{ number_format($product['quantity'], 0, '.', ',') }}.</div>
                     <div class="invalid-feedback no-stock-error" style="display:none;">No hay existencia.</div>
-
                 </div>
                 <!-- Alerta -->
-    <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
-        La cantidad mínima es 1.
-    </div>
+                <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+                    La cantidad mínima es 1.
+                </div>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>
@@ -51,8 +50,6 @@
             </form>
         </div>
     </div>
-
-    
 
     <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -69,11 +66,21 @@
                 $('.no-stock-error').show();
             }
 
+            // Formatear el número con comas como separadores de miles
+            function formatNumberWithCommas(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
+            // Quitar las comas del número
+            function removeCommas(number) {
+                return number.replace(/,/g, '');
+            }
+
             // Validación personalizada del lado del cliente
             $('#loanForm').on('submit', function(event) {
                 var form = this;
                 var quantityInput = $('#quantity');
-                var quantityValue = parseFloat(quantityInput.val());
+                var quantityValue = parseFloat(removeCommas(quantityInput.val()));
 
                 if (quantityValue > maxQuantity) {
                     quantityInput.addClass('is-invalid');
@@ -101,13 +108,24 @@
                     event.stopPropagation();
                 }
 
+                // Quitar las comas antes de enviar el formulario
+                quantityInput.val(removeCommas(quantityInput.val()));
+
                 form.classList.add('was-validated');
+            });
+
+            // Formatear el valor del input cuando cambia
+            $('#quantity').on('input', function() {
+                var value = $(this).val().replace(/,/g, '');
+                if (value) {
+                    $(this).val(formatNumberWithCommas(value));
+                }
             });
 
             // Restaurar la cantidad formateada si existe un valor anterior
             var oldQuantity = '{{ old('quantity') }}';
             if (oldQuantity) {
-                $('#quantity').val(oldQuantity);
+                $('#quantity').val(formatNumberWithCommas(oldQuantity.replace(/,/g, '')));
             }
         });
     </script>
