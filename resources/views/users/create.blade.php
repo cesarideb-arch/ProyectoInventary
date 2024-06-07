@@ -26,11 +26,11 @@
             @csrf
             <div class="form-group">
                 <label for="name">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
@@ -47,8 +47,8 @@
                 <label for="role">Rol</label>
                 <select class="form-control" id="role" name="role" required>
                     <option value="">Selecciona un rol</option>
-                    <option value="1">Admin Trabajador</option>
-                    <option value="2">Trabajador</option>
+                    <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Admin Trabajador</option>
+                    <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Trabajador</option>
                 </select>
             </div>
             <div class="form-group">
