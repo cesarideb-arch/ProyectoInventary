@@ -39,8 +39,8 @@
                     <td>${{ $supplier['price'] }}</td>
                     <td>{{ $supplier['company'] }}</td>
                     <td>{{ $supplier['phone'] }}</td>
-                    <td>{{ $supplier['email'] }}</td>
-                    <td>{{ $supplier['address'] }}</td>
+                    <td>{{ $supplier['email'] ?? 'N/A' }}</td>
+                    <td>{{ $supplier['address'] ?? 'N/A'}}</td>
                 </tr>
             @endforeach
         </tbody>
