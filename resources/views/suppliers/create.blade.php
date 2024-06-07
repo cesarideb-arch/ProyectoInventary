@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,11 +69,16 @@
 
             <div class="form-group">
                 <label for="price">Precio:</label>
-                <input type="number" id="price" name="price" value="{{ old('price') }}" step="0.01" required class="form-control @error('price') is-invalid @enderror">
-                @error('price')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el precio del artículo.</div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control @error('price') is-invalid @enderror">
+                    @error('price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="invalid-feedback">Por favor, ingrese el precio del artículo.</div>
+                </div>
             </div>
 
             <div class="form-group">
@@ -122,6 +126,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        function formatPrice(input) {
+            var value = input.value.replace(/,/g, '');
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
         document.querySelector('form').addEventListener('submit', function(event) {
             var requiredInputs = ['article', 'price', 'company', 'phone', 'email', 'address'];
 
@@ -137,12 +146,19 @@
                 }
             }
 
+            var priceInput = document.getElementById('price');
+            priceInput.value = priceInput.value.replace(/,/g, '');
+
             if (!this.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
             }
 
             this.classList.add('was-validated');
+        });
+
+        document.getElementById('price').addEventListener('input', function() {
+            formatPrice(this);
         });
 
         document.querySelectorAll('.form-control').forEach(input => {
