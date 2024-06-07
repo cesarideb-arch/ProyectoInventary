@@ -137,12 +137,40 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required class="form-control @error('quantity') is-invalid @enderror" min="0">
+                <input type="text" id="formattedQuantity" class="form-control" value="{{ number_format($product['quantity']) }}" required>
+                <input type="hidden" id="quantity" name="quantity" value="{{ $product['quantity'] }}" required>
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <div class="invalid-feedback">Por favor, ingrese la cantidad del producto.</div>
             </div>
+            <script>
+                function formatNumber(value) {
+                    value = value.replace(/,/g, ''); // Remove existing commas
+                    if (!isNaN(value) && value !== '') {
+                        return parseInt(value).toLocaleString();
+                    }
+                    return value;
+                }
+
+                function unformatNumber(value) {
+                    return value.replace(/,/g, ''); // Remove existing commas
+                }
+
+                document.getElementById('formattedQuantity').addEventListener('input', function (e) {
+                    var formattedValue = formatNumber(e.target.value);
+                    e.target.value = formattedValue;
+                    document.getElementById('quantity').value = unformatNumber(formattedValue);
+                });
+
+                // Format initial value if it exists
+                document.addEventListener('DOMContentLoaded', function() {
+                    var quantityInput = document.getElementById('quantity');
+                    var formattedQuantityInput = document.getElementById('formattedQuantity');
+                    var initialValue = quantityInput.value;
+                    formattedQuantityInput.value = formatNumber(initialValue);
+                });
+            </script>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
@@ -208,9 +236,7 @@
                 <img id="imagePreview" src="#" alt="Vista previa de la imagen" style="display: none;">
             </div>
 
-            <div class="
-
-form-group">
+            <div class="form-group">
                 <label for="serie">Serie:</label>
                 <input type="text" id="serie" name="serie" value="{{ $product['serie'] }}" class="form-control @error('serie') is-invalid @enderror">
                 @error('serie')
@@ -404,7 +430,7 @@ form-group">
             var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
             for (var i = 0; i < requiredInputs.length; i++) {
                 var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '') {
+                if (input.value === '' || (input.id !== 'quantity' && parseFloat(input.value.replace(/,/g, '')) <= 0)) {
                     input.classList.add('is-invalid');
                     event.preventDefault();
                     event.stopPropagation();
@@ -426,9 +452,7 @@ form-group">
 
             var supplierInput = document.getElementById('supplier_id');
             if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
-                supplierInput.classList.add
-
-('is-invalid');
+                supplierInput.classList.add('is-invalid');
                 event.preventDefault();
                 event.stopPropagation();
             } else {
@@ -436,9 +460,12 @@ form-group">
                 supplierInput.classList.add('is-valid');
             }
 
-            // Remove commas from price before submitting the form
+            // Remove commas from price and quantity before submitting the form
             var priceInput = document.getElementById('price');
             priceInput.value = priceInput.value.replace(/,/g, '');
+
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.value = quantityInput.value.replace(/,/g, '');
 
             if (!this.checkValidity()) {
                 event.preventDefault();
@@ -455,21 +482,6 @@ form-group">
                     this.nextElementSibling.style.display = 'none';
                 }
             });
-        });
-
-        // Function to format number as currency with commas
-        function formatNumberWithCommas(number) {
-            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // Event listener to format price input with commas
-        document.getElementById('price').addEventListener('input', function (e) {
-            var value = e.target.value.replace(/,/g, '');
-            if (!isNaN(value) && value !== '') {
-                e.target.value = formatNumberWithCommas(value);
-            } else {
-                e.target.value = '';
-            }
         });
     </script>
 </body>

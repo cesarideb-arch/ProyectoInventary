@@ -108,7 +108,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noModelCheck" name="noModelCheck">
-                <label  for="noModelCheck">Sin modelo</label>
+                <label for="noModelCheck">Sin modelo</label>
             </div>
 
             <div class="form-group">
@@ -136,11 +136,11 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="number" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control @error('quantity') is-invalid @enderror" min="1">
+                <input type="text" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control @error('quantity') is-invalid @enderror">
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese la cantidad del producto.</div>
+                <div class="invalid-feedback">Por favor, ingrese la cantidad del producto. El valor mínimo es 1.</div>
             </div>
 
             <div class="form-group">
@@ -160,7 +160,7 @@
                     </div>
                     <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
                 </div>
-                <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
+                <div class="invalid-feedback">Por favor, ingrese el precio del producto. El valor mínimo es 1.</div>
             </div>
 
             <div class="form-group">
@@ -187,7 +187,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck">
-                <label  for="noSerieCheck">Sin serie</label>
+                <label for="noSerieCheck">Sin serie</label>
             </div>
 
             <div class="form-group">
@@ -262,166 +262,178 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
- $(document).ready(function() {
-    $('#category_id').select2({
-        placeholder: 'Seleccione una categoría',
-        language: {
-            noResults: function() {
-                return 'No hay resultados';
+        $(document).ready(function() {
+            $('#category_id').select2({
+                placeholder: 'Seleccione una categoría',
+                language: {
+                    noResults: function() {
+                        return 'No hay resultados';
+                    }
+                }
+            }).on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    $(this).next('.invalid-feedback').hide();
+                }
+            });
+
+            $('#supplier_id').select2({
+                placeholder: 'Seleccione un proveedor',
+                language: {
+                    noResults: function() {
+                        return 'No hay resultados';
+                    }
+                }
+            }).on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    $(this).next('.invalid-feedback').hide();
+                }
+            });
+
+            toggleInputDisable('noSupplierCheck', 'supplier_id');
+            toggleInputDisable('noMeasurementUnitCheck', 'measurement_unit');
+            toggleInputDisable('noModelCheck', 'model');
+            toggleInputDisable('noSerieCheck', 'serie');
+            toggleInputDisable('noObservationsCheck', 'observations');
+        });
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function toggleInputDisable(checkboxId, inputId) {
+            var checkbox = document.getElementById(checkboxId);
+            var input = document.getElementById(inputId);
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    if ($(input).hasClass('select2-hidden-accessible')) {
+                        $(input).val(null).trigger('change');
+                    } else {
+                        input.value = '';
+                    }
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                    input.classList.remove('is-invalid');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
+            });
+        }
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            var inputs = ['supplier_id', 'measurement_unit', 'model', 'serie', 'observations'];
+            var checkboxes = ['noSupplierCheck', 'noMeasurementUnitCheck', 'noModelCheck', 'noSerieCheck', 'noObservationsCheck'];
+
+            for (var i = 0; i < inputs.length; i++) {
+                var input = document.getElementById(inputs[i]);
+                var checkbox = document.getElementById(checkboxes[i]);
+
+                if (input.value === '' && !checkbox.checked) {
+                    input.classList.add('is-invalid');
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+
+                if (checkbox.checked) {
+                    input.disabled = true;
+                    input.removeAttribute('required');
+                } else {
+                    input.disabled = false;
+                    input.setAttribute('required', 'required');
+                }
             }
-        }
-    }).on('change', function() {
-        if ($(this).val() !== '') {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-            $(this).next('.invalid-feedback').hide();
-        }
-    });
 
-    $('#supplier_id').select2({
-        placeholder: 'Seleccione un proveedor',
-        language: {
-            noResults: function() {
-                return 'No hay resultados';
+            var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
+            for (var i = 0; i < requiredInputs.length; i++) {
+                var input = document.getElementById(requiredInputs[i]);
+                if (input.value === '' || parseFloat(input.value.replace(/,/g, '')) <= 0) {
+                    input.classList.add('is-invalid');
+                    if (input.id === 'quantity' && parseFloat(input.value.replace(/,/g, '')) <= 0) {
+                        input.nextElementSibling.textContent = 'La cantidad mínima es 1.';
+                    }
+                    if (input.id === 'price' && parseFloat(input.value.replace(/,/g, '')) <= 0) {
+                        input.nextElementSibling.textContent = 'El precio mínimo es 1.';
+                    }
+                    event.preventDefault();
+                    event.stopPropagation();
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
             }
-        }
-    }).on('change', function() {
-        if ($(this).val() !== '') {
-            $(this).removeClass('is-invalid').addClass('is-valid');
-            $(this).next('.invalid-feedback').hide();
-        }
-    });
 
-    toggleInputDisable('noSupplierCheck', 'supplier_id');
-    toggleInputDisable('noMeasurementUnitCheck', 'measurement_unit');
-    toggleInputDisable('noModelCheck', 'model');
-    toggleInputDisable('noSerieCheck', 'serie');
-    toggleInputDisable('noObservationsCheck', 'observations');
-});
-
-function previewImage(event) {
-    var reader = new FileReader();
-    reader.onload = function(){
-        var output = document.getElementById('imagePreview');
-        output.src = reader.result;
-        output.style.display = 'block';
-    };
-    reader.readAsDataURL(event.target.files[0]);
-}
-
-function toggleInputDisable(checkboxId, inputId) {
-    var checkbox = document.getElementById(checkboxId);
-    var input = document.getElementById(inputId);
-    checkbox.addEventListener('change', function() {
-        if (this.checked) {
-            if ($(input).hasClass('select2-hidden-accessible')) {
-                $(input).val(null).trigger('change');
+            var categoryInput = document.getElementById('category_id');
+            if (categoryInput.value === '') {
+                categoryInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
             } else {
-                input.value = '';
+                categoryInput.classList.remove('is-invalid');
+                categoryInput.classList.add('is-valid');
             }
-            input.disabled = true;
-            input.removeAttribute('required');
-            input.classList.remove('is-invalid');
-        } else {
-            input.disabled = false;
-            input.setAttribute('required', 'required');
+
+            var supplierInput = document.getElementById('supplier_id');
+            if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
+                supplierInput.classList.add('is-invalid');
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                supplierInput.classList.remove('is-invalid');
+                supplierInput.classList.add('is-valid');
+            }
+
+            // Remove commas from price and quantity before submitting the form
+            var priceInput = document.getElementById('price');
+            priceInput.value = priceInput.value.replace(/,/g, '');
+
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.value = quantityInput.value.replace(/,/g, '');
+
+            if (!this.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            this.classList.add('was-validated');
+        });
+
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.checkValidity()) {
+                    this.classList.remove('is-invalid');
+                    this.nextElementSibling.style.display = 'none';
+                }
+            });
+        });
+
+        // Function to format number as currency with commas
+        function formatNumberWithCommas(number) {
+            return number.replace(/\D/g, "")
+                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-    });
-}
 
-document.querySelector('form').addEventListener('submit', function(event) {
-    var inputs = ['supplier_id', 'measurement_unit', 'model', 'serie', 'observations'];
-    var checkboxes = ['noSupplierCheck', 'noMeasurementUnitCheck', 'noModelCheck', 'noSerieCheck', 'noObservationsCheck'];
-
-    for (var i = 0; i < inputs.length; i++) {
-        var input = document.getElementById(inputs[i]);
-        var checkbox = document.getElementById(checkboxes[i]);
-
-        if (input.value === '' && !checkbox.checked) {
-            input.classList.add('is-invalid');
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
-        }
-
-        if (checkbox.checked) {
-            input.disabled = true;
-            input.removeAttribute('required');
-        } else {
-            input.disabled = false;
-            input.setAttribute('required', 'required');
-        }
-    }
-
-    var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
-    for (var i = 0; i < requiredInputs.length; i++) {
-        var input = document.getElementById(requiredInputs[i]);
-        if (input.value === '') {
-            input.classList.add('is-invalid');
-            event.preventDefault();
-            event.stopPropagation();
-        } else {
-            input.classList.remove('is-invalid');
-            input.classList.add('is-valid');
-        }
-    }
-
-    var categoryInput = document.getElementById('category_id');
-    if (categoryInput.value === '') {
-        categoryInput.classList.add('is-invalid');
-        event.preventDefault();
-        event.stopPropagation();
-    } else {
-        categoryInput.classList.remove('is-invalid');
-        categoryInput.classList.add('is-valid');
-    }
-
-    var supplierInput = document.getElementById('supplier_id');
-    if (supplierInput.value === '' && !document.getElementById('noSupplierCheck').checked) {
-        supplierInput.classList.add('is-invalid');
-        event.preventDefault();
-        event.stopPropagation();
-    } else {
-        supplierInput.classList.remove('is-invalid');
-        supplierInput.classList.add('is-valid');
-    }
-
-    // Remove commas from price before submitting the form
-    var priceInput = document.getElementById('price');
-    priceInput.value = priceInput.value.replace(/,/g, '');
-
-    if (!this.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    this.classList.add('was-validated');
-});
-
-document.querySelectorAll('.form-control').forEach(input => {
-    input.addEventListener('input', function () {
-        if (this.checkValidity()) {
-            this.classList.remove('is-invalid');
-            this.nextElementSibling.style.display = 'none';
-        }
-    });
-});
-
-// Function to format number as currency with commas
-function formatNumberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-// Event listener to format price input with commas
-document.getElementById('price').addEventListener('input', function (e) {
-    var value = e.target.value.replace(/,/g, '');
-    if (!isNaN(value) && value !== '') {
-        e.target.value = formatNumberWithCommas(value);
-    } else {
-        e.target.value = '';
-    }
-});
+        // Event listener to format price and quantity inputs with commas
+        document.querySelectorAll('#price, #quantity').forEach(input => {
+            input.addEventListener('input', function (e) {
+                var value = e.target.value.replace(/,/g, '');
+                if (!isNaN(value) && value !== '') {
+                    e.target.value = formatNumberWithCommas(value);
+                } else {
+                    e.target.value = '';
+                }
+            });
+        });
     </script>
 </body>
 </html>
