@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -26,21 +25,26 @@ class StartController extends Controller {
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
 
-        // Realiza solicitudes HTTP GET a la API y obtén las respuestas
-        $responses = [];
+        // Crear promesas para cada solicitud
+        $promises = [];
         foreach ($apiUrls as $key => $url) {
-            $responses[$key] = Http::withToken($token)->get($url);
+            $promises[$key] = Http::withToken($token)->async()->get($url);
         }
 
-        // Inicializar datos con valores por defecto
+        // Esperar a que todas las promesas se resuelvan
+        $responses = collect($promises)->map(function ($promise) {
+            return $promise->wait();
+        });
+
+        // Procesar las respuestas
         $data = [
-            'counts' => $responses['getCount']->json() ?? ['count' => 'No se pudo obtener el número de préstamos.'],
-            'products' => $responses['getCountProducts']->json() ?? ['count' => 'No se pudo obtener el número de productos.'],
-            'entrance' => $responses['GetProductEntrance']->json() ?? ['total_quantity' => 'No se pudo obtener el número de entradas de productos.'],
-            'out' => $responses['GetProductOutput']->json() ?? ['total_quantity' => 'No se pudo obtener el número de salidas de productos.'],
-            'countsProductEntrance' => $responses['GetProductEntrance']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
-            'countsProductOut' => $responses['GetProductOutput']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
-            'countsProductLoan' => $responses['GetProductLoan']->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']
+            'counts' => $responses->get('getCount')->json() ?? ['count' => 'No se pudo obtener el número de préstamos.'],
+            'products' => $responses->get('getCountProducts')->json() ?? ['count' => 'No se pudo obtener el número de productos.'],
+            'entrance' => $responses->get('GetProductEntrance')->json() ?? ['total_quantity' => 'No se pudo obtener el número de entradas de productos.'],
+            'out' => $responses->get('GetProductOutput')->json() ?? ['total_quantity' => 'No se pudo obtener el número de salidas de productos.'],
+            'countsProductEntrance' => $responses->get('GetProductEntrance')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
+            'countsProductOut' => $responses->get('GetProductOutput')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
+            'countsProductLoan' => $responses->get('GetProductLoan')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']
         ];
 
         return view('start.index', $data);
