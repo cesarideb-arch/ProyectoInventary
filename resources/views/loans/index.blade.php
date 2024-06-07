@@ -11,7 +11,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Tus estilos aquí */
+        /* Estilos personalizados */
         .modal-dialog-centered {
             display: flex;
             align-items: center;
@@ -54,7 +54,6 @@
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                         <td>{{ $loan['observations'] ?? 'N/A' }}</td> 
-
                         <td>
                             @if($loan['status'] == 0)
                                 {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
