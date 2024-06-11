@@ -36,7 +36,7 @@
             @foreach($suppliers as $supplier)
                 <tr>
                     <td>{{ $supplier['article'] }}</td>
-                    <td>${{ $supplier['price'] }}</td>
+                    <td>${{ number_format($supplier['price'], 2, '.', ',') }}</td>
                     <td>{{ $supplier['company'] }}</td>
                     <td>{{ $supplier['phone'] }}</td>
                     <td>{{ $supplier['email'] ?? 'N/A' }}</td>
