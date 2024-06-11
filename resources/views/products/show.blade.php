@@ -91,7 +91,12 @@
         $(document).ready(function() {
             $('#project_id').select2({
                 placeholder: 'Seleccione un proyecto',
-                allowClear: true
+                allowClear: true,
+                language: {
+                    noResults: function() {
+                        return "No hay resultados";
+                    }
+                }
             });
 
             // Verifica si el checkbox está marcado y deshabilita el select si es necesario
