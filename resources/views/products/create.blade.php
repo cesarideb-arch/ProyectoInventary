@@ -158,7 +158,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                     </div>
-                    <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
+                    <input type="text" id="price" name="price" value="{{ old('price', '0.00') }}" required class="form-control" placeholder="0.00" data-type="currency">
                 </div>
                 <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
             </div>
