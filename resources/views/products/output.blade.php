@@ -24,7 +24,7 @@
         </div>
 
         <div class="mt-4 mb-4">
-            <form id="outputForm" action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
+            <form id="entranceForm" action="{{ route('products.outputs.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
@@ -57,15 +57,21 @@
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
                     <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
-                    <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
-                    <div class="invalid-feedback quantity-error" style="display:none;">La cantidad ingresada excede la cantidad disponible. Cantidad disponible: {{ number_format($product['quantity'], 0, '.', ',') }}.</div>
-                    <div class="invalid-feedback no-stock-error" style="display:none;">No hay existencia.</div>
+                    <div class="invalid-feedback">Por favor, ingrese la cantidad</div>
                 </div>
-  
-    <!-- Alerta -->
-    <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
-        La cantidad mínima es 1.
-    </div>
+
+                <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+                    La cantidad mínima es 1.
+                </div>
+
+                <div id="alertaCantidadExcedida" class="alert alert-warning d-none" role="alert">
+                    Cantidad excedida. La cantidad disponible es {{ number_format($product['quantity'], 0, '.', ',') }}.
+                </div>
+
+                <div id="alertaSinStock" class="alert alert-danger d-none" role="alert">
+                    No hay stock disponible.
+                </div>
+
                 <div class="mb-3">
                     <label for="description" class="form-label">Descripción (Opcional):</label>
                     <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" maxlength="100">{{ old('description') }}</textarea>
@@ -82,7 +88,6 @@
         </div>
     </div>
 
-
     <!-- Inclusión de JavaScript de Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Inclusión de jQuery -->
@@ -92,18 +97,23 @@
 
     <script>
         $(document).ready(function() {
-            var maxQuantity = {{ $product['quantity'] }};
-            
-            // Deshabilitar el botón de enviar si no hay existencia
-            if (maxQuantity === 0) {
-                $('#outputForm').find(':input').prop('disabled', true);
-                $('.no-stock-error').show();
-            }
-
             $('#project_id').select2({
                 placeholder: 'Seleccione un proyecto',
-                allowClear: true
+                allowClear: true,
+                language: {
+                    noResults: function() {
+                        return "No hay resultados";
+                    }
+                }
             });
+
+            var maxQuantity = {{ $product['quantity'] }};
+            
+            // Verifica si hay stock disponible y deshabilita los campos si no lo hay
+            if (maxQuantity === 0) {
+                $('#alertaSinStock').removeClass('d-none');
+                $('#entranceForm :input').prop('disabled', true);
+            }
 
             // Verifica si el checkbox está marcado y deshabilita el select si es necesario
             if ($('#noProjectCheck').is(':checked')) {
@@ -112,6 +122,7 @@
 
             $('#noProjectCheck').on('change', function() {
                 if ($(this).is(':checked')) {
+                    $('#project_id').val(null).trigger('change');
                     $('#project_id').prop('disabled', true).removeClass('is-invalid');
                 } else {
                     $('#project_id').prop('disabled', false);
@@ -125,12 +136,30 @@
             });
 
             // Validación personalizada del lado del cliente
-            $('#outputForm').on('submit', function(event) {
+            $('#entranceForm').on('submit', function(event) {
                 var form = this;
                 var projectSelect = $('#project_id');
                 var noProjectCheck = $('#noProjectCheck');
                 var quantityInput = $('#quantity');
                 var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
+
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    quantityInput.addClass('is-invalid');
+                    event.preventDefault();
+                    return false;
+                } else if (quantityValue > maxQuantity) {
+                    $('#alertaCantidadExcedida').removeClass('d-none');
+                    $('#alertaCantidad').addClass('d-none');
+                    quantityInput.addClass('is-invalid');
+                    event.preventDefault();
+                    return false;
+                } else {
+                    $('#alertaCantidad').addClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    quantityInput.removeClass('is-invalid');
+                }
 
                 if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
                     projectSelect.addClass('is-invalid');
@@ -146,28 +175,7 @@
                 }
 
                 if (noProjectCheck.is(':checked')) {
-                    projectSelect.prop('disabled', true);
-                }
-
-                if (quantityValue > maxQuantity) {
-                    quantityInput.addClass('is-invalid');
-                    $('.quantity-error').show();
-                    event.preventDefault();
-                    event.stopPropagation();
-                } else {
-                    quantityInput.removeClass('is-invalid').addClass('is-valid');
-                    $('.quantity-error').hide();
-                }
-
-                if (quantityValue <= 0) {
-                    quantityInput.addClass('is-invalid');
-                    $('.quantity-zero-error').show();
-                    event.preventDefault();
-                    event.stopPropagation();
-                    $('#alertaCantidad').removeClass('d-none'); // Mostrar la alerta
-                } else {
-                    $('.quantity-zero-error').hide();
-                    $('#alertaCantidad').addClass('d-none'); // Ocultar la alerta
+                    projectSelect.removeAttr('name');
                 }
 
                 form.classList.add('was-validated');
@@ -177,7 +185,8 @@
             });
 
             // Separación correcta de la cantidad
-            $('#quantity').on('input', function(e) {
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.addEventListener('input', function(e) {
                 var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
                 if (value) {
                     value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
@@ -185,6 +194,24 @@
                         maximumFractionDigits: 2
                     });
                     e.target.value = value;
+                }
+            });
+
+            // Validación para no permitir ceros y cantidades superiores a las disponibles
+            $('#quantity').on('blur', function() {
+                var quantityValue = parseFloat($(this).val().replace(/,/g, ''));
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    $(this).addClass('is-invalid');
+                } else if (quantityValue > maxQuantity) {
+                    $('#alertaCantidadExcedida').removeClass('d-none');
+                    $('#alertaCantidad').addClass('d-none');
+                    $(this).addClass('is-invalid');
+                } else {
+                    $('#alertaCantidad').addClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    $(this).removeClass('is-invalid');
                 }
             });
 
