@@ -160,7 +160,7 @@
                     </div>
                     <input type="text" id="price" name="price" value="{{ old('price') }}" required class="form-control" placeholder="0.00" data-type="currency">
                 </div>
-                <div class="invalid-feedback">Por favor, ingrese el precio del producto. El valor mínimo es 1.</div>
+                <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
             </div>
 
             <div class="form-group">
@@ -357,13 +357,13 @@
             var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
             for (var i = 0; i < requiredInputs.length; i++) {
                 var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '' || parseFloat(input.value.replace(/,/g, '')) <= 0) {
+                if (input.value === '' || parseFloat(input.value.replace(/,/g, '')) < 0) {
                     input.classList.add('is-invalid');
                     if (input.id === 'quantity' && parseFloat(input.value.replace(/,/g, '')) <= 0) {
                         input.nextElementSibling.textContent = 'La cantidad mínima es 1.';
                     }
-                    if (input.id === 'price' && parseFloat(input.value.replace(/,/g, '')) <= 0) {
-                        input.nextElementSibling.textContent = 'El precio mínimo es 1.';
+                    if (input.id === 'price' && parseFloat(input.value.replace(/,/g, '')) < 0) {
+                        input.nextElementSibling.textContent = 'El precio no puede ser negativo.';
                     }
                     event.preventDefault();
                     event.stopPropagation();

@@ -430,8 +430,11 @@
             var requiredInputs = ['name', 'quantity', 'price', 'brand', 'location'];
             for (var i = 0; i < requiredInputs.length; i++) {
                 var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '' || (input.id !== 'quantity' && parseFloat(input.value.replace(/,/g, '')) <= 0)) {
+                if (input.value === '' || (input.id !== 'quantity' && parseFloat(input.value.replace(/,/g, '')) < 0)) {
                     input.classList.add('is-invalid');
+                    if (input.id === 'price' && parseFloat(input.value.replace(/,/g, '')) < 0) {
+                        input.nextElementSibling.textContent = 'El precio no puede ser negativo.';
+                    }
                     event.preventDefault();
                     event.stopPropagation();
                 } else {
