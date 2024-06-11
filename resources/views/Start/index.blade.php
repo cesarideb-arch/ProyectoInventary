@@ -35,8 +35,8 @@
         $countData = [
             'El número de préstamos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos.',
             'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
-            'El número de entradas de productos es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
-            'El número de salidas de productos es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
+            'El número de entradas es:' => $entrance['total_quantity'] ?? 'No se pudo obtener el número de entradas de productos.',
+            'El número de salidas es:' => $out['total_quantity'] ?? 'No se pudo obtener el número de salidas de productos.',
             'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.')  . 
             ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
             'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
