@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,17 +14,18 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <h1>Préstamo</h1>
+                <h1>Salida</h1>
             </div>
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
+                <p>{{ $product['description'] }}</p>
                 <p class="fw-bold">Precio: ${{ number_format($product['price'], 2, '.', ',') }}</p>
                 <p class="fw-bold">Cantidad de producto: {{ number_format($product['quantity'], 0, '.', ',') }}</p>
             </div>
         </div>
 
         <div class="mt-4 mb-4">
-            <form id="loanForm" action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
+            <form id="entranceForm" action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
@@ -33,14 +37,20 @@
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="text" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}" min="1">
-                    <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
-                    <div class="invalid-feedback quantity-error" style="display:none;">La cantidad ingresada excede la cantidad disponible. Cantidad disponible: {{ number_format($product['quantity'], 0, '.', ',') }}.</div>
-                    <div class="invalid-feedback no-stock-error" style="display:none;">No hay existencia.</div>
+                    <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
+                    <div class="invalid-feedback">Por favor, ingrese la cantidad</div>
                 </div>
-                <!-- Alerta -->
+
+                <div id="alertaSinStock" class="alert alert-danger d-none" role="alert">
+                    No hay stock disponible.
+                </div>
+
                 <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
                     La cantidad mínima es 1.
+                </div>
+
+                <div id="alertaCantidadExcedida" class="alert alert-warning d-none" role="alert">
+                    Cantidad excedida. La cantidad disponible es {{ number_format($product['quantity'], 0, '.', ',') }}.
                 </div>
 
                 <div class="mb-3">
@@ -60,47 +70,34 @@
         $(document).ready(function() {
             var maxQuantity = {{ $product['quantity'] }};
             
-            // Deshabilitar el botón de enviar si no hay existencia
+            // Verifica si hay stock disponible y deshabilita los campos si no lo hay
             if (maxQuantity === 0) {
-                $('#loanForm').find(':input').prop('disabled', true);
-                $('.no-stock-error').show();
-            }
-
-            // Formatear el número con comas como separadores de miles
-            function formatNumberWithCommas(number) {
-                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
-
-            // Quitar las comas del número
-            function removeCommas(number) {
-                return number.replace(/,/g, '');
+                $('#alertaSinStock').removeClass('d-none');
+                $('#entranceForm :input').prop('disabled', true);
             }
 
             // Validación personalizada del lado del cliente
-            $('#loanForm').on('submit', function(event) {
+            $('#entranceForm').on('submit', function(event) {
                 var form = this;
                 var quantityInput = $('#quantity');
-                var quantityValue = parseFloat(removeCommas(quantityInput.val()));
+                var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
 
-                if (quantityValue > maxQuantity) {
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
                     quantityInput.addClass('is-invalid');
-                    $('.quantity-error').show();
                     event.preventDefault();
-                    event.stopPropagation();
-                } else {
-                    quantityInput.removeClass('is-invalid').addClass('is-valid');
-                    $('.quantity-error').hide();
-                }
-
-                if (quantityValue <= 0) {
+                    return false;
+                } else if (quantityValue > maxQuantity) {
+                    $('#alertaCantidadExcedida').removeClass('d-none');
+                    $('#alertaCantidad').addClass('d-none');
                     quantityInput.addClass('is-invalid');
-                    $('.quantity-zero-error').show();
                     event.preventDefault();
-                    event.stopPropagation();
-                    $('#alertaCantidad').removeClass('d-none'); // Mostrar la alerta
+                    return false;
                 } else {
-                    $('.quantity-zero-error').hide();
-                    $('#alertaCantidad').addClass('d-none'); // Ocultar la alerta
+                    $('#alertaCantidad').addClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    quantityInput.removeClass('is-invalid');
                 }
 
                 if (!form.checkValidity()) {
@@ -108,24 +105,51 @@
                     event.stopPropagation();
                 }
 
-                // Quitar las comas antes de enviar el formulario
-                quantityInput.val(removeCommas(quantityInput.val()));
-
                 form.classList.add('was-validated');
+
+                // Eliminar comas antes de enviar el formulario
+                quantityInput.val(quantityInput.val().replace(/,/g, ''));
             });
 
-            // Formatear el valor del input cuando cambia
-            $('#quantity').on('input', function() {
-                var value = $(this).val().replace(/,/g, '');
+            // Separación correcta de la cantidad
+            var quantityInput = document.getElementById('quantity');
+            quantityInput.addEventListener('input', function(e) {
+                var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
                 if (value) {
-                    $(this).val(formatNumberWithCommas(value));
+                    value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 2
+                    });
+                    e.target.value = value;
+                }
+            });
+
+            // Validación para no permitir ceros y cantidades superiores a las disponibles
+            $('#quantity').on('blur', function() {
+                var quantityValue = parseFloat($(this).val().replace(/,/g, ''));
+                if (quantityValue < 1) {
+                    $('#alertaCantidad').removeClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    $(this).addClass('is-invalid');
+                } else if (quantityValue > maxQuantity) {
+                    $('#alertaCantidadExcedida').removeClass('d-none');
+                    $('#alertaCantidad').addClass('d-none');
+                    $(this).addClass('is-invalid');
+                } else {
+                    $('#alertaCantidad').addClass('d-none');
+                    $('#alertaCantidadExcedida').addClass('d-none');
+                    $(this).removeClass('is-invalid');
                 }
             });
 
             // Restaurar la cantidad formateada si existe un valor anterior
             var oldQuantity = '{{ old('quantity') }}';
             if (oldQuantity) {
-                $('#quantity').val(formatNumberWithCommas(oldQuantity.replace(/,/g, '')));
+                var formattedOldQuantity = parseFloat(oldQuantity.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                });
+                $('#quantity').val(formattedOldQuantity);
             }
         });
     </script>
