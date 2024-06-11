@@ -2,23 +2,30 @@
 
 @section('content')
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Préstamos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* Estilos personalizados */
         .modal-dialog-centered {
             display: flex;
             align-items: center;
+            justify-content: center; /* Asegura que el modal esté centrado horizontalmente */
             min-height: calc(100% - 1rem);
         }
         .modal-content {
             margin: auto;
+        }
+        .swal2-popup {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Asegura que las alertas estén centradas horizontalmente */
+            min-height: calc(80% - 1rem);
         }
     </style>
 </head>
@@ -135,7 +142,6 @@
         </div>
     </div>
 
-    <!-- Tus scripts aquí -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -161,52 +167,70 @@
                 var observations = $('#noObservations').is(':checked') ? '' : $('#observations').val();
                 var loanId = $('#loanId').val();
 
-                console.log('Loan ID:', loanId);
-                console.log('Observations:', observations);
-
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: '¿Estás seguro de que deseas regresar este producto?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, regresar',
-                    cancelButtonText: 'Cancelar',
-                    background: '#fff'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: '/loans/' + loanId,
-                            type: 'POST',
-                            data: {
-                                _method: 'PUT',
-                                _token: '{{ csrf_token() }}',
-                                loan_id: loanId,
-                                observations: observations // Asegúrate de que las observaciones se envían
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    title: '¡Regresado!',
-                                    text: 'El producto ha sido regresado exitosamente.',
-                                    icon: 'success',
-                                    background: '#fff'
-                                }).then(() => {
-                                    window.location.href = '{{ route('loans.index') }}';
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Hubo un problema al regresar el producto.',
-                                    icon: 'error',
-                                    background: '#fff'
-                                });
-                                console.error('Error al devolver el préstamo:', error);
-                            }
-                        });
-                    }
-                });
+                if ($('#noObservations').is(':checked') || observations.trim() !== '') {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¿Estás seguro de que deseas regresar este producto?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, regresar',
+                        cancelButtonText: 'Cancelar',
+                        background: '#fff',
+                        customClass: {
+                            popup: 'swal2-popup'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/loans/' + loanId,
+                                type: 'POST',
+                                data: {
+                                    _method: 'PUT',
+                                    _token: '{{ csrf_token() }}',
+                                    loan_id: loanId,
+                                    observations: observations // Asegúrate de que las observaciones se envían
+                                },
+                                success: function(response) {
+                                    Swal.fire({
+                                        title: '¡Regresado!',
+                                        text: 'El producto ha sido regresado exitosamente.',
+                                        icon: 'success',
+                                        background: '#fff',
+                                        customClass: {
+                                            popup: 'swal2-popup'
+                                        }
+                                    }).then(() => {
+                                        window.location.href = '{{ route('loans.index') }}';
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'Hubo un problema al regresar el producto.',
+                                        icon: 'error',
+                                        background: '#fff',
+                                        customClass: {
+                                            popup: 'swal2-popup'
+                                        }
+                                    });
+                                    console.error('Error al devolver el préstamo:', error);
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Debe seleccionar "No enviar observaciones" o escribir alguna observación.',
+                        icon: 'error',
+                        background: '#fff',
+                        customClass: {
+                            popup: 'swal2-popup'
+                        }
+                    });
+                }
             });
         });
     </script>
