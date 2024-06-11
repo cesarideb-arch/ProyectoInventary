@@ -162,7 +162,7 @@
             <li><a href="{{ route('products.index') }}">Inventario</a></li>
             @if (session('role') === '0' || session('role') === '1')
             <li><a href="{{ route('categories.index') }}">Categorías</a></li>
-            <li><a href="{{ route('suppliers.index') }}">Proveedor</a></li>
+            <li><a href="{{ route('suppliers.index') }}">Proveedores</a></li>
             <li><a href="{{ route('projects.index') }}">Proyectos</a></li>
             @endif
             <li><a href="{{ route('entrances.index') }}">Lista de Entradas</a></li>
