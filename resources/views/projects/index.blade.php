@@ -16,6 +16,7 @@
         <h1 class="mb-4">Lista de Proyectos</h1>
         <div class="mb-3">
             <a href="{{ route('projects.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+            <a href="{{ route('projects.index', ['download' => 'pdf']) }}" class="btn btn-danger btn-custom-size">Descargar PDF</a>
         </div>
         <form method="GET" action="{{ route('projects.index') }}">
             <div class="input-group mb-3">
