@@ -88,9 +88,15 @@
     <div class="container">
         <h1 class="mb-4">Listado de Entradas</h1>
         <div class="d-flex justify-content-between mb-3">
-            <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
-                <i class="fas fa-file-pdf"></i> Descargar PDF
-            </a>
+            {{-- <a href="{{ route('entrances.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
+            <div>
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF del Mes
+                </a>
+            </div>
         </div>
         <form method="GET" action="{{ route('entrances.index') }}">
             <div class="input-group mb-3">
