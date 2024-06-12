@@ -119,7 +119,12 @@ class UserController extends Controller {
         if (session('role') === '1' || session('role') === '2') {
             return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
         }
-        
+
+        // Verificación de que el user id no sea 1
+        if ($id == 1) {
+            return redirect()->back()->with('error', 'No puedes editar a este usuario');
+        }
+
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 
@@ -139,8 +144,12 @@ class UserController extends Controller {
 
             // Pasar los datos del usuario a la vista y renderizar la vista de edición
             return view('users.edit', compact('user'));
+        } else {
+            // Manejo de error si la solicitud no fue exitosa
+            return redirect()->back()->with('error', 'No se pudo obtener la información del usuario');
         }
     }
+
 
 
 
@@ -154,7 +163,7 @@ class UserController extends Controller {
             'role' => 'required|string',
             'admin_password' => 'required|string',
         ]);
-    
+
         // Configurar los datos del formulario
         $formParams = [
             [
@@ -178,7 +187,7 @@ class UserController extends Controller {
                 'contents' => $validatedData['admin_password'],
             ],
         ];
-    
+
         // Si se proporciona una nueva contraseña, agregarla antes de actualizar
         if ($request->filled('password')) {
             $formParams[] = [
@@ -186,22 +195,22 @@ class UserController extends Controller {
                 'contents' => $request->password,
             ];
         }
-    
+
         // Realizar un dd para ver los datos que se enviarán
         // dd($formParams);
-    
+
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-    
+
         // URL de la API para actualizar un usuario específico
         $apiUrl = $baseApiUrl . '/api/users/' . $id;
-    
+
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-    
+
         // Crear un cliente Guzzle
         $client = new Client();
-    
+
         // Realizar una solicitud HTTP POST con _method=PUT para actualizar el usuario
         try {
             $response = $client->post($apiUrl, [
@@ -211,7 +220,7 @@ class UserController extends Controller {
                 ],
                 'multipart' => $formParams,
             ]);
-    
+
             // Verificar si la solicitud fue exitosa
             if ($response->getStatusCode() == 200) {
                 // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -224,7 +233,7 @@ class UserController extends Controller {
             return back()->withInput()->withErrors('Error al actualizar el usuario: ' . 'Contraseña Incorrecta');
         }
     }
-    
+
 
 
     public function destroy(Request $request, $id) {
