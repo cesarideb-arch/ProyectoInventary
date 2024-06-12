@@ -67,12 +67,31 @@
         .btn-group-horizontal .btn {
             margin-right: 5px;
         }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Salidas</h1>
-
+        <div class="d-flex justify-content-between mb-3">
+            <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+        </div>
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Salidas..." value="{{ request('query') }}">
@@ -101,7 +120,6 @@
                         <td>{{ $output['product']['name'] ?? '' }}</td>
                         <td>{{ $output['responsible'] }}</td>
                         <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-
                         <td>{{ $output['description'] ?? 'N/A'}}</td>
                         <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
@@ -120,7 +138,8 @@
                 @endif
                 <a href="{{ route('outputs.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
+            </div>
             @else
             <p>No se encontraron salidas.</p>
             @endif
