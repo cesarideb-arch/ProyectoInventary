@@ -10,13 +10,40 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .btn-group-horizontal {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group-horizontal .btn {
+            margin-right: 5 px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Lista de Proyectos</h1>
-        <div class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('projects.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-            <a href="{{ route('projects.index', ['download' => 'pdf']) }}" class="btn btn-danger btn-custom-size">Descargar PDF</a>
+            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
         </div>
         <form method="GET" action="{{ route('projects.index') }}">
             <div class="input-group mb-3">
@@ -24,6 +51,7 @@
                 <button class="btn" type="submit" style="background-color: #333; color: #fff;">
                     <i class="fas fa-search"></i> Buscar
                 </button>
+            </div>
         </form>
         <div class="table-responsive">
             @if(isset($projects) && count($projects) > 0)
@@ -45,9 +73,9 @@
                     @foreach($projects as $project)
                     <tr>
                         <td>{{ $project['name'] }}</td>
-                        <td>{{ $project['description']  ?? 'N/A'}}</td>
+                        <td>{{ $project['description'] ?? 'N/A' }}</td>
                         <td>{{ $project['company_name'] }}</td>
-                        <td>{{ $project['rfc']  ?? 'N/A'}}</td>
+                        <td>{{ $project['rfc'] ?? 'N/A' }}</td>
                         <td>{{ $project['address'] }}</td>
                         <td>{{ $project['phone_number'] }}</td>
                         <td>{{ $project['email'] }}</td>
