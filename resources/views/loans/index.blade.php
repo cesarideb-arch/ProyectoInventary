@@ -2,7 +2,6 @@
 
 @section('content')
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -27,11 +26,39 @@
             justify-content: center; /* Asegura que las alertas estén centradas horizontalmente */
             min-height: calc(80% - 1rem);
         }
+        .btn-group-horizontal {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group-horizontal .btn {
+            margin-right: 5px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Préstamos</h1>
+        <div class="d-flex justify-content-between mb-3">
+            <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+        </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar préstamo..." value="{{ request('query') }}">

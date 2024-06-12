@@ -50,6 +50,33 @@ class LoanController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
 
+            // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
+            if ($request->has('download') && $request->input('download') === 'pdf') {
+                // Guardar HTML en un archivo temporal en una ubicación accesible
+                $htmlContent = view('loans.pdf', compact('loans'))->render();
+                $htmlFilePath = storage_path('temp/loans_temp_file.html');
+                file_put_contents($htmlFilePath, $htmlContent);
+
+                // Verificar si el archivo HTML se genera correctamente
+                if (!file_exists($htmlFilePath)) {
+                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                }
+
+                // Definir la ruta de salida del PDF
+                $pdfFilePath = storage_path('temp/Prestamos.pdf');
+                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+
+                // Ejecutar el comando
+                exec($command, $output, $returnVar);
+
+                // Verificar si el PDF se generó correctamente
+                if ($returnVar === 0) {
+                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                } else {
+                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                }
+            }
+
             // Pasa los datos de préstamos y los parámetros de paginación a la vista y renderiza la vista
             return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
