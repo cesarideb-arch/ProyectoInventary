@@ -14,7 +14,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <h1>Salida</h1>
+                <h1>Préstamos</h1>
             </div>
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
