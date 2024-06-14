@@ -16,6 +16,7 @@
                         <th>Proyecto</th>
                         <th>Producto</th>
                         <th>Responsable</th>
+                        <th>Ubicación</th>
                         <th>Cantidad</th>
                         <th>Descripción</th>
                         <th>Fecha</th>
@@ -27,6 +28,7 @@
                         <td>{{ $entrance['project']['name'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                         <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
+                        <td>{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                         <td>{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                         <td>{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
