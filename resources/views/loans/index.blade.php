@@ -27,12 +27,12 @@
         }
         
         .btn-custom-size {
-    margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
-    }
+            margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+        }
 
-    .btn-custom-size:last-child {
-    margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
-    }
+        .btn-custom-size:last-child {
+            margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
+        }
     </style>
 </head>
 <body>
@@ -99,7 +99,7 @@
                             @if($loan['status'] == 1)
                                 <div class="btn-group btn-group-horizontal" role="group">
                                     <!-- Botón de Regresar Producto -->
-                                    <button type="button" class="btn btn-primary btn-sm return-product-btn" data-loan-id="{{ $loan['id'] }}">
+                                    <button type="button" class="btn btn-primary btn-sm return-product-btn" data-loan-id="{{ $loan['id'] }}" data-loan-observations="{{ $loan['observations'] }}">
                                         Regresar Producto
                                     </button>
                                 </div>
@@ -144,7 +144,7 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                            <label for="observations">Observaciones</label>
+                            <label for="observations">Observaciones (Cambiar Opcional)</label>
                             <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
                         </div>
                         <div class="form-group form-check">
@@ -168,93 +168,83 @@
     <script>
         $(document).ready(function() {
             var currentLoanId = null;
+            var previousObservations = null;
 
             $('#noObservations').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#observations').prop('disabled', true);
+                if($(this).is(':checked')) {
+                    $('#observations').val('');
                 } else {
-                    $('#observations').prop('disabled', false);
+                    $('#observations').val(previousObservations);
                 }
             });
 
             $('.return-product-btn').click(function() {
                 currentLoanId = $(this).data('loan-id');
+                previousObservations = $(this).data('loan-observations');
                 $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
+                $('#observations').val(previousObservations); // Carga las observaciones previas en el modal
                 $('#returnProductModal').modal('show');
             });
 
             $('#confirmReturnProduct').click(function() {
-                var observations = $('#noObservations').is(':checked') ? '' : $('#observations').val();
+                var observations = $('#noObservations').is(':checked') ? null : $('#observations').val();
                 var loanId = $('#loanId').val();
 
-                if ($('#noObservations').is(':checked') || observations.trim() !== '') {
-                    Swal.fire({
-                        title: '¿Estás seguro?',
-                        text: '¿Estás seguro de que deseas regresar este producto?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sí, regresar',
-                        cancelButtonText: 'Cancelar',
-                        background: '#fff',
-                        customClass: {
-                            popup: 'swal2-popup'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: '/loans/' + loanId,
-                                type: 'POST',
-                                data: {
-                                    _method: 'PUT',
-                                    _token: '{{ csrf_token() }}',
-                                    loan_id: loanId,
-                                    observations: observations // Asegúrate de que las observaciones se envían
-                                },
-                                success: function(response) {
-                                    Swal.fire({
-                                        title: '¡Regresado!',
-                                        text: 'El producto ha sido regresado exitosamente.',
-                                        icon: 'success',
-                                        background: '#fff',
-                                        customClass: {
-                                            popup: 'swal2-popup'
-                                        }
-                                    }).then(() => {
-                                        window.location.href = '{{ route('loans.index') }}';
-                                    });
-                                },
-                                error: function(xhr, status, error) {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'Hubo un problema al regresar el producto.',
-                                        icon: 'error',
-                                        background: '#fff',
-                                        customClass: {
-                                            popup: 'swal2-popup'
-                                        }
-                                    });
-                                    console.error('Error al devolver el préstamo:', error);
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'Debe seleccionar "No enviar observaciones" o escribir alguna observación.',
-                        icon: 'error',
-                        background: '#fff',
-                        customClass: {
-                            popup: 'swal2-popup'
-                        }
-                    });
-                }
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: '¿Estás seguro de que deseas regresar este producto?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, regresar',
+                    cancelButtonText: 'Cancelar',
+                    background: '#fff',
+                    customClass: {
+                        popup: 'swal2-popup'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/loans/' + loanId,
+                            type: 'POST',
+                            data: {
+                                _method: 'PUT',
+                                _token: '{{ csrf_token() }}',
+                                loan_id: loanId,
+                                observations: observations // Enviar null si el checkbox está marcado
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: '¡Regresado!',
+                                    text: 'El producto ha sido regresado exitosamente.',
+                                    icon: 'success',
+                                    background: '#fff',
+                                    customClass: {
+                                        popup: 'swal2-popup'
+                                    }
+                                }).then(() => {
+                                    window.location.href = '{{ route('loans.index') }}';
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Hubo un problema al regresar el producto.',
+                                    icon: 'error',
+                                    background: '#fff',
+                                    customClass: {
+                                        popup: 'swal2-popup'
+                                    }
+                                });
+                                console.error('Error al devolver el préstamo:', error);
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
 </body>
 </html>
 @endsection
-
