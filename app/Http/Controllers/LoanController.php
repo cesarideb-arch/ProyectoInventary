@@ -6,22 +6,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class LoanController extends Controller {
+ 
     public function index(Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
+    
         // URL de la API de préstamos
         $apiUrl = $baseApiUrl . '/api/loans';
         $apiSearchUrl = $baseApiUrl . '/api/searchLoan';
+        $apiGetCountMonthLoanUrl = $baseApiUrl . '/api/GetCountMonthLoan';
+    
         $searchQuery = $request->input('query');
-
+    
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 15; // Número máximo de elementos por página
-
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -30,12 +33,12 @@ class LoanController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-
+    
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-
+    
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $loans = $data['data'];
@@ -49,41 +52,70 @@ class LoanController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-
+    
             // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
-            if ($request->has('download') && $request->input('download') === 'pdf') {
-                // Guardar HTML en un archivo temporal en una ubicación accesible
-                $htmlContent = view('loans.pdf', compact('loans'))->render();
-                $htmlFilePath = storage_path('temp/loans_temp_file.html');
-                file_put_contents($htmlFilePath, $htmlContent);
-
-                // Verificar si el archivo HTML se genera correctamente
-                if (!file_exists($htmlFilePath)) {
-                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
-                }
-
-                // Definir la ruta de salida del PDF
-                $pdfFilePath = storage_path('temp/Prestamos.pdf');
-                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
-
-                // Ejecutar el comando
-                exec($command, $output, $returnVar);
-
-                // Verificar si el PDF se generó correctamente
-                if ($returnVar === 0) {
-                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'Error al generar el PDF');
+            if ($request->has('download')) {
+                $downloadType = $request->input('download');
+    
+                if ($downloadType === 'pdf') {
+                    // Generar PDF para todos los préstamos
+                    $htmlContent = view('loans.pdf', compact('loans'))->render();
+                    $htmlFilePath = storage_path('temp/loans_temp_file.html');
+                    file_put_contents($htmlFilePath, $htmlContent);
+    
+                    if (!file_exists($htmlFilePath)) {
+                        return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                    }
+    
+                    $pdfFilePath = storage_path('temp/Prestamos.pdf');
+                    $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                    exec($command, $output, $returnVar);
+    
+                    if ($returnVar === 0) {
+                        return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al generar el PDF');
+                    }
+                } elseif ($downloadType === 'month_pdf') {
+                    // Generar PDF para los préstamos del mes actual
+                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthLoanUrl);
+    
+                    if ($monthResponse->successful()) {
+                        $monthData = $monthResponse->json();
+    
+                        $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
+                        $htmlFilePath = storage_path('temp/loans_month_temp_file.html');
+                        file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener los préstamos del mes de la API');
+                    }
                 }
             }
-
+    
             // Pasa los datos de préstamos y los parámetros de paginación a la vista y renderiza la vista
             return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
-
+    
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los préstamos de la API');
     }
+    
 
     public function edit($id, Request $request) {
         // URL base de la API
