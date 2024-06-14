@@ -10,12 +10,40 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .btn-group-horizontal {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-group-horizontal .btn {
+            margin-right: 5px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Usuarios</h1>
-        <div class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('users.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+            <a href="{{ route('users.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <i class="fas fa-file-pdf"></i> PDF
+            </a>
         </div>
         <form method="GET" action="{{ route('users.index') }}">
             <div class="input-group mb-3">
@@ -48,17 +76,19 @@
                             Trabajador
                         @endif
                     </td>
-                    <td class="text-center">
-                        <div class="btn-group btn-group-horizontal" role="group">
+                    <td>
+                        <div class="btn-group btn-group-horizontal text-center" role="group">
                             <form action="{{ route('users.edit', $user['id']) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-custom-size">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                            <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <form action="{{ route('users.destroy', $user['id']) }}" method="POST" class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                            </form>
                         </div>
                     </td>
                     </tr>
@@ -142,63 +172,26 @@
     @endif
 
     <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const deleteButtons = document.querySelectorAll('.delete-button');
+    const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const userId = this.getAttribute('data-id');
-                const form = document.getElementById('deleteForm');
-                form.action = `/users/${userId}`;
-                $('#deleteModal').modal('show');
-            });
-        });
-
-        document.getElementById('deleteForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = this;
-            const data = new FormData(form);
-
-            // Realizar solicitud AJAX para eliminar el usuario
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': data.get('_token'),
-                    'Accept': 'application/json',
-                },
-                body: data,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'Usuario eliminado con éxito') {
-                    $('#deleteModal').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Éxito!',
-                        text: data.message,
-                    }).then(() => {
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: '¡Error!',
-                        text: data.message,
-                    });
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Previene la acción predeterminada del formulario
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Quieres eliminar este usuario?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Si confirma, enviar el formulario
+                    form.submit();
                 }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: '¡Error!',
-                    text: 'Error al eliminar el usuario. Por favor, inténtalo de nuevo más tarde.',
-                });
             });
         });
     });
@@ -218,6 +211,10 @@
         }
     }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
 @endsection
