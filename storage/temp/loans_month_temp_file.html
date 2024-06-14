@@ -5,170 +5,549 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Préstamos del Mes - PDF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Préstamos del Mes</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Responsable</th>
-                        <th>Cantidad</th>
-                        <th>ubicación</th>
-                        <th>Observaciones</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                                        <tr>
-                        <td>Clavo</td>
-                        <td>Josue</td>
-                        <td>1,000</td>
-                        <td>ZONA2</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-14 10:05:01
-                                                    </td>
-                        <td>
-                                                            Producto Prestado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Josue</td>
-                        <td>2,000</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-13 18:08:48
-                                                    </td>
-                        <td>
-                                                            Producto Prestado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>1</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-12 13:32:38
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>1</td>
-                        <td>ZONA1</td>
-                        <td>Ninguna</td>
-                        <td>
-                                                            2024-06-12 13:32:57
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>1</td>
-                        <td>ZONA1</td>
-                        <td>Hola</td>
-                        <td>
-                                                            2024-06-13 18:08:07
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>1</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-11 14:07:09
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>501</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-11 14:05:32
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>501</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-11 13:37:32
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>501</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-11 13:35:50
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>500</td>
-                        <td>ZONA1</td>
-                        <td>kedksk</td>
-                        <td>
-                                                            2024-06-11 13:35:26
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                        <tr>
-                        <td>Martillo</td>
-                        <td>Jose</td>
-                        <td>1</td>
-                        <td>ZONA1</td>
-                        <td>N/A</td>
-                        <td>
-                                                            2024-06-11 13:31:31
-                                                    </td>
-                        <td>
-                                                            Producto Regresado
-                                                    </td>
-                    </tr>
-                                    </tbody>
-            </table>
-        </div>
-    </div>
+                                        <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Responsable</th>
+                            <th>Cantidad</th>
+                            <th>Ubicación</th>
+                            <th>Observaciones</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>500</td>
+                                <td>ZONA2</td>
+                                <td>Hola</td>
+                                <td>
+                                                                            2024-06-14 11:38:31
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>500</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:35:26
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:32:51
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>499</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:31:44
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:27:25
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>LSDX</td>
+                                <td>
+                                                                            2024-06-14 11:25:34
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>The best Projectt 1.0</td>
+                                <td>
+                                                                            2024-06-14 11:25:07
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>HOLSAS AMIGOS</td>
+                                <td>
+                                                                            2024-06-14 11:21:37
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:20:52
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:46
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>1</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>Jiosue</td>
+                                <td>
+                                                                            2024-06-14 11:17:28
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:41
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>2</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:14:18
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>5</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:04:38
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>knodnrijwenrijk</td>
+                                <td>
+                                                                            2024-06-14 11:04:46
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 10:57:06
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+                                    <div class="page-break"></div>
+                        <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Responsable</th>
+                            <th>Cantidad</th>
+                            <th>Ubicación</th>
+                            <th>Observaciones</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:13
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 10:54:47
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:17:54
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:04
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:19
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>2</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:26
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:09
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 10:39:50
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>Nada</td>
+                                <td>
+                                                                            2024-06-14 10:40:09
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:18:37
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>Josue</td>
+                                <td>1,000</td>
+                                <td>ZONA2</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:41:38
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Josue</td>
+                                <td>2,000</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-14 11:41:45
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>Ninguna</td>
+                                <td>
+                                                                            2024-06-12 13:32:57
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-12 13:32:38
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>Hola</td>
+                                <td>
+                                                                            2024-06-13 18:08:07
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-11 14:07:09
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+                                    <div class="page-break"></div>
+                        <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Responsable</th>
+                            <th>Cantidad</th>
+                            <th>Ubicación</th>
+                            <th>Observaciones</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>501</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-11 14:05:32
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>501</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-11 13:37:32
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>501</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-11 13:35:50
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>500</td>
+                                <td>ZONA1</td>
+                                <td>kedksk</td>
+                                <td>
+                                                                            2024-06-11 13:35:26
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>Jose</td>
+                                <td>1</td>
+                                <td>ZONA1</td>
+                                <td>N/A</td>
+                                <td>
+                                                                            2024-06-11 13:31:31
+                                                                    </td>
+                                <td>
+                                                                            Producto Regresado
+                                                                    </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+            </div>
 </body>
 </html>
