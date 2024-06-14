@@ -88,9 +88,15 @@
     <div class="container">
         <h1 class="mb-4">Listado de Salidas</h1>
         <div class="d-flex justify-content-between mb-3">
-            <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
-                <i class="fas fa-file-pdf"></i> Descargar PDF
-            </a>
+            {{-- <a href="{{ route('outputs.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
+            <div>
+                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF del Mes
+                </a>
+            </div>
         </div>
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
@@ -117,10 +123,10 @@
                     @foreach($outputs as $output)
                     <tr>
                         <td>{{ $output['project']['name'] ?? 'N/A' }}</td>
-                        <td>{{ $output['product']['name'] ?? '' }}</td>
-                        <td>{{ $output['responsible'] }}</td>
+                        <td>{{ $output['product']['name'] ?? 'N/A' }}</td>
+                        <td>{{ $output['responsible'] ?? 'N/A' }}</td>
                         <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td>{{ $output['description'] ?? 'N/A'}}</td>
+                        <td>{{ $output['description'] ?? 'N/A' }}</td>
                         <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
                     @endforeach

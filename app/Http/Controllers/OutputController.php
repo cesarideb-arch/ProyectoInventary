@@ -13,6 +13,8 @@ class OutputController extends Controller {
         // URL de la API de salidas
         $apiUrl = $baseApiUrl . '/api/outputs';
         $apiSearchUrl = $baseApiUrl . '/api/searchOutput';
+        $apiGetCountMonthOutputUrl = $baseApiUrl . '/api/GetCountMonthOutput';
+    
         $searchQuery = $request->input('query');
     
         // Parámetros de paginación
@@ -51,33 +53,61 @@ class OutputController extends Controller {
             }
     
             // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
-            if ($request->has('download') && $request->input('download') === 'pdf') {
-                // Guardar HTML en un archivo temporal en una ubicación accesible
-                $htmlContent = view('outputs.pdf', compact('outputs'))->render();
-                $htmlFilePath = storage_path('temp/outputs_temp_file.html');
-                file_put_contents($htmlFilePath, $htmlContent);
+            if ($request->has('download')) {
+                $downloadType = $request->input('download');
     
-                // Verificar si el archivo HTML se genera correctamente
-                if (!file_exists($htmlFilePath)) {
-                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
-                }
+                if ($downloadType === 'pdf') {
+                    // Generar PDF para todas las salidas
+                    $htmlContent = view('outputs.pdf', compact('outputs'))->render();
+                    $htmlFilePath = storage_path('temp/outputs_temp_file.html');
+                    file_put_contents($htmlFilePath, $htmlContent);
     
-                // Definir la ruta de salida del PDF
-                $pdfFilePath = storage_path('temp/Salidas.pdf');
-                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+                    if (!file_exists($htmlFilePath)) {
+                        return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                    }
     
-                // Ejecutar el comando
-                exec($command, $output, $returnVar);
+                    $pdfFilePath = storage_path('temp/Salidas.pdf');
+                    $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
     
-                // Verificar si el PDF se generó correctamente
-                if ($returnVar === 0) {
-                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                    exec($command, $output, $returnVar);
+    
+                    if ($returnVar === 0) {
+                        return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al generar el PDF');
+                    }
+                } elseif ($downloadType === 'month_pdf') {
+                    // Generar PDF para las salidas del mes actual
+                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthOutputUrl);
+    
+                    if ($monthResponse->successful()) {
+                        $monthData = $monthResponse->json();
+    
+                        $htmlContent = view('outputs.month_pdf', compact('monthData'))->render();
+                        $htmlFilePath = storage_path('temp/outputs_month_temp_file.html');
+                        file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Salidas_Mes.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener las salidas del mes de la API');
+                    }
                 }
             }
     
-            // Pasa los datos de salidas y los parámetros de paginación a la vista y renderiza la vista
+            // Pasa los datos de salidas y la página actual a la vista y renderiza la vista
             return view('outputs.index', compact('outputs', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
     
