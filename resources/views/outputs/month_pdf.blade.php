@@ -17,6 +17,7 @@
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
+                        <th>ubicación</th>
                         <th>Descripción</th>
                         <th>Fecha</th>
                     </tr>
@@ -28,6 +29,7 @@
                         <td>{{ $output['product']['name'] ?? 'N/A' }}</td>
                         <td>{{ $output['responsible'] ?? 'N/A' }}</td>
                         <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td>{{ $output['product']['location'] ?? 'N/A' }}</td>
                         <td>{{ $output['description'] ?? 'N/A' }}</td>
                         <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
