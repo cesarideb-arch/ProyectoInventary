@@ -37,6 +37,7 @@
                 'El número de entradas es:' => $entrance['count'] ?? 'No se pudo obtener el número de entradas.',
                 'El número de salidas es:' => $out['count'] ?? 'No se pudo obtener el número de salidas.',
                 'El número de préstamos activos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos activos.',
+                'El número de préstamos finalizados es:' => $countsFinished['count'] ?? 'No se pudo obtener el número de préstamos finalizados.',
                 'El número total de préstamos es:' => $countsAll['count'] ?? 'No se pudo obtener el número total de préstamos.',
                 'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.') . ' <strong>cantidad:</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
                 'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') . ' <strong>cantidad:</strong> ' . ($countsProductOut['total_quantity'] ?? ''),
