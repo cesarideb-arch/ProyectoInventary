@@ -65,6 +65,7 @@
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
+                        <th>ubicación</th>
                         <th>Observaciones</th>
                         <th>Fecha</th>
                         <th>Estado</th>
@@ -77,6 +78,8 @@
                         <td>{{ $loan['product']['name'] }}</td>
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td>{{ $loan['product']['location'] ?? 'N/A' }}</td>
+
                         <td>{{ $loan['observations'] ?? 'N/A' }}</td> 
                         <td>
                             @if($loan['status'] == 0)
