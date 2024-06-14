@@ -175,7 +175,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" style="background-color: transparent; border: none; margin-top: 10px; outline: none;">
-                        <i class="fas fa-sign-out-alt" style="color: red; font-size: 24px; border-radius: 15px; padding: 5px; background-color: rgba(255, 0, 0, 0.1);"></i>
+                        <i class="fas fa-sign-out-alt" style="color: red; font-size: 30px; border-radius: 20px; padding: 5px; background-color: rgba(255, 0, 0, 0.1); width: 40px; height: 40px;"></i>
                     </button>
                 </form>
             </li>
