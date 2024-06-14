@@ -54,6 +54,7 @@
             align-items: center;
             justify-content: center;
             flex: 1;
+            transition: all 0.3s ease-in-out;
         }
 
         .nav-list li {
@@ -85,6 +86,7 @@
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .logout-form button:hover {
@@ -108,7 +110,7 @@
                 background-color: #333;
                 display: none;
                 flex-direction: column;
-                align-items: flex-start; /* Alinea el menú a la izquierda */
+                align-items: flex-start;
                 width: 100%;
                 z-index: 1000;
                 padding: 0;
@@ -116,6 +118,7 @@
                 border-radius: 5px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
+
             .nav-list.active {
                 display: flex;
             }
@@ -139,7 +142,22 @@
                 margin-right: 0;
             }
         }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
     </style>
+    <!-- Incluir Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <!-- Incluir SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -169,8 +187,6 @@
             <li><a href="{{ route('outputs.index') }}">Lista de Salidas</a></li>
             <li><a href="{{ route('loans.index') }}">Lista de Préstamos</a></li>
 
-          
-
             <li class="logout-form">
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -192,12 +208,14 @@
         
         mobileMenu.addEventListener('click', () => {
             navList.classList.toggle('active');
+            navList.classList.toggle('animate__animated');
+            navList.classList.toggle('animate__fadeIn');
         });
 
-        const logoutButton = document.querySelector('.logout-form button'); // Selecciona el botón de cerrar sesión
+        const logoutButton = document.querySelector('.logout-form button');
 
         logoutButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Previene la acción predeterminada del formulario
+            event.preventDefault();
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¿Quieres cerrar sesión?",
@@ -209,7 +227,6 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si confirma, enviar el formulario
                     logoutButton.closest("form").submit();
                 }
             });
