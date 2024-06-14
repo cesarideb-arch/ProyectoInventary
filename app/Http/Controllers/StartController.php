@@ -22,6 +22,7 @@ class StartController extends Controller {
             'GetProductLoan' => $baseApiUrl . '/api/GetProductLoan',
             'GetEntrancesCount' => $baseApiUrl . '/api/GetEntrancesCount',
             'GetOutputsCount' => $baseApiUrl . '/api/GetOutputsCount',
+            'getCountAll' => $baseApiUrl . '/api/getCountAll'
             
         ];
         
@@ -45,6 +46,7 @@ class StartController extends Controller {
             'entrance' => $responses->get('GetEntrancesCount')->json() ?? ['count' => 'No se pudo obtener el número de entradas.'],
             'out' => $responses->get('GetOutputsCount')->json() ?? ['count' => 'No se pudo obtener el número de salidas.'],
             'counts' => $responses->get('getCount')->json() ?? ['count' => 'No se pudo obtener el número de préstamos activos.'],
+            'countsAll' => $responses->get('getCountAll')->json() ?? ['count' => 'No se pudo obtener el número de Prestamos en total.'],
             'countsProductEntrance' => $responses->get('GetProductEntrance')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
             'countsProductOut' => $responses->get('GetProductOutput')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
             'countsProductLoan' => $responses->get('GetProductLoan')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']

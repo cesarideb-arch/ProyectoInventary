@@ -31,20 +31,18 @@
 
         <p class="lead"><strong>Email:</strong> {{ session('email', 'No se pudo obtener el email del usuario.') }}</p>
 
-           @php
-                $countData = [
-                    'El número de productos es:' => $products['count'] ?? ($products['count'] === 0 ? 'No se pudo obtener el número de productos.' : ''),
-                    'El número de entradas es:' => $entrance['count'] ?? 'No se pudo obtener el número de entradas de productos.',
-                    'El número de salidas es:' => $out['count'] ?? 'No se pudo obtener el número de salidas de productos.',
-                    'El número de préstamos activos es:' => $counts['count'] ?? ($counts['count'] === 0 ? 'No se pudo obtener el número de préstamos activos.' : ''),
-                    'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.')  . 
-                    ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
-                    'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
-                    ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductOut['total_quantity'] ?? ''),
-                    'El producto con más Prestamos es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más prestamos.') .
-                    ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductLoan['total_quantity'] ?? ''),
-                ];
-                @endphp
+        @php
+            $countData = [
+                'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
+                'El número de entradas es:' => $entrance['count'] ?? 'No se pudo obtener el número de entradas.',
+                'El número de salidas es:' => $out['count'] ?? 'No se pudo obtener el número de salidas.',
+                'El número de préstamos activos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos activos.',
+                'El número total de préstamos es:' => $countsAll['count'] ?? 'No se pudo obtener el número total de préstamos.',
+                'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.') . ' <strong>cantidad:</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
+                'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') . ' <strong>cantidad:</strong> ' . ($countsProductOut['total_quantity'] ?? ''),
+                'El producto con más préstamos es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más préstamos.') . ' <strong>cantidad:</strong> ' . ($countsProductLoan['total_quantity'] ?? ''),
+            ];
+        @endphp
 
         @foreach($countData as $label => $count)
             <p class="lead"><strong>{{ $label }}</strong> {!! $count !!}</p>
