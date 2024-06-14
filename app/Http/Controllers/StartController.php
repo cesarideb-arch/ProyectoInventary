@@ -41,10 +41,10 @@ class StartController extends Controller {
 
         // Procesar las respuestas
         $data = [
-            'counts' => $responses->get('getCount')->json() ?? ['count' => 'No se pudo obtener el número de préstamos.'],
             'products' => $responses->get('getCountProducts')->json() ?? ['count' => 'No se pudo obtener el número de productos.'],
             'entrance' => $responses->get('GetEntrancesCount')->json() ?? ['count' => 'No se pudo obtener el número de entradas.'],
             'out' => $responses->get('GetOutputsCount')->json() ?? ['count' => 'No se pudo obtener el número de salidas.'],
+            'counts' => $responses->get('getCount')->json() ?? ['count' => 'No se pudo obtener el número de préstamos activos.'],
             'countsProductEntrance' => $responses->get('GetProductEntrance')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
             'countsProductOut' => $responses->get('GetProductOutput')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
             'countsProductLoan' => $responses->get('GetProductLoan')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']

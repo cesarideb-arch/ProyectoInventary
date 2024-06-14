@@ -33,10 +33,10 @@
 
            @php
                 $countData = [
-                    'El número de préstamos es:' => $counts['count'] ?? ($counts['count'] === 0 ? 'No se pudo obtener el número de préstamos.' : ''),
                     'El número de productos es:' => $products['count'] ?? ($products['count'] === 0 ? 'No se pudo obtener el número de productos.' : ''),
                     'El número de entradas es:' => $entrance['count'] ?? 'No se pudo obtener el número de entradas de productos.',
                     'El número de salidas es:' => $out['count'] ?? 'No se pudo obtener el número de salidas de productos.',
+                    'El número de préstamos activos es:' => $counts['count'] ?? ($counts['count'] === 0 ? 'No se pudo obtener el número de préstamos activos.' : ''),
                     'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.')  . 
                     ' <strong>' . 'cantidad' . '</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
                     'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') .
