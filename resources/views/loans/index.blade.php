@@ -34,10 +34,10 @@
         <div class="d-flex justify-content-between mb-3">
             {{-- <a href="{{ route('loans.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
             <div>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
                     <i class="fas fa-file-pdf"></i> Descargar PDF
                 </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
                     <i class="fas fa-file-pdf"></i> Descargar PDF del Mes
                 </a>
             </div>
