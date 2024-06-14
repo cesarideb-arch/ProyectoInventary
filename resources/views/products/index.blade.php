@@ -77,7 +77,7 @@
             <div class="d-flex justify-content-between mb-3">
                 <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
                 <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger" style="background-color: red;">
-                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                    <i class="fas fa-file-pdf"></i> PDF
                 </a>
             </div>
         @endif
