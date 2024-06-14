@@ -3,40 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Productos</title>
+    <title>Lista de Productos - PDF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Inventario General</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
-                        <th>Categoría</th>
-                        <th>Proveedor</th>
-                        <th>Ubicación</th>
-                        <th>Imagen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                                            <tr>
-                            <td>Metal</td>
-                            <td>N/A</td>
-                            <td>$2,000.00</td>
-                            <td>Metales</td>
-                            <td>N/A</td>
-                            <td>Zona 1</td>
-                            <td>
-                                <img src="http://192.168.1.25:8000/images/1718050636_1.jpeg" alt="Sin Imagen" width="100" style="border-radius: 10px;">
-                            </td>
+                                        <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Proveedor</th>
+                            <th>Ubicación</th>
+                            <th>Imagen</th>
                         </tr>
-                                    </tbody>
-            </table>
-        </div>
-    </div>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>Clavo</td>
+                                <td>N/A</td>
+                                <td>$2.00</td>
+                                <td>Metales</td>
+                                <td>N/A</td>
+                                <td>ZONA2</td>
+                                <td>
+                                    <img src="http://192.168.1.25:8000/ruta_por_defecto_de_la_imagen.jpg" alt="Sin Imagen" width="100" style="border-radius: 10px;">
+                                </td>
+                            </tr>
+                                                    <tr>
+                                <td>Martillo</td>
+                                <td>N/A</td>
+                                <td>$0.00</td>
+                                <td>Metales</td>
+                                <td>N/A</td>
+                                <td>ZONA1</td>
+                                <td>
+                                    <img src="http://192.168.1.25:8000/images/1718216183_1.png" alt="Sin Imagen" width="100" style="border-radius: 10px;">
+                                </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+            </div>
 </body>
 </html>
