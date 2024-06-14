@@ -21,7 +21,7 @@
             margin: auto;
         }
         .swal2-popup {
-            width: 100% !important; /* Ajusta el ancho de la alerta */
+            width: 35% !important; /* Ajusta el ancho de la alerta */
             max-width: 650px; /* Puedes ajustar este valor según tus necesidades */
             padding: 40px; /* Ajusta el padding si es necesario */
             text-align: center; /* Centrar el contenido del modal */
