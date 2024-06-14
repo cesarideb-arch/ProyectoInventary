@@ -25,6 +25,14 @@
             max-width: 600px; /* Puedes ajustar este valor según tus necesidades */
             padding: 20px; /* Ajusta el padding si es necesario */
         }
+        
+        .btn-custom-size {
+    margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+    }
+
+    .btn-custom-size:last-child {
+    margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
+    }
     </style>
 </head>
 <body>
@@ -32,12 +40,12 @@
         <h1 class="mb-4">Listado de Préstamos</h1>
         <div class="d-flex justify-content-between mb-3">
             {{-- <a href="{{ route('loans.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
-            <div>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
-                    <i class="fas fa-file-pdf"></i> Descargar PDF
+            <div style="display: flex; justify-content: flex-end;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF
                 </a>
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
-                    <i class="fas fa-file-pdf"></i> Descargar PDF del Mes
+                    <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>
         </div>
