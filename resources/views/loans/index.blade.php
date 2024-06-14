@@ -14,17 +14,16 @@
         .modal-dialog-centered {
             display: flex;
             align-items: center;
-            justify-content: center; /* Asegura que el modal esté centrado horizontalmente */
+            justify-content: center;
             min-height: calc(100% - 1rem);
         }
         .modal-content {
             margin: auto;
         }
         .swal2-popup {
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Asegura que las alertas estén centradas horizontalmente */
-            min-height: calc(80% - 1rem);
+            width: auto !important; /* Ajusta el ancho de la alerta */
+            max-width: 600px; /* Puedes ajustar este valor según tus necesidades */
+            padding: 20px; /* Ajusta el padding si es necesario */
         }
     </style>
 </head>
@@ -247,3 +246,4 @@
 </body>
 </html>
 @endsection
+
