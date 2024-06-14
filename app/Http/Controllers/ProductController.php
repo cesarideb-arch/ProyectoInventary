@@ -549,7 +549,7 @@ class ProductController extends Controller {
             return redirect()->route('products.index')->with('success', 'Producto eliminado exitosamente.');
         } else {
             // Si la solicitud no fue exitosa, redirigir de vuelta con un mensaje de error
-            return redirect()->back()->with('error', 'No se pudo eliminar el producto. Por favor, inténtalo de nuevo.');
+            return redirect()->back()->with('error', 'No se pudo eliminar el producto. Porque tiene entradas, salidas o préstamos.');
         }
     }
 }
