@@ -30,27 +30,37 @@
         <p class="lead"><strong>Rol: </strong> {{ $role >= 0 && $role < count($roleNames) ? $roleNames[$role] : 'Rol no identificado' }}</p>
 
         <p class="lead"><strong>Email:</strong> {{ session('email', 'No se pudo obtener el email del usuario.') }}</p>
-
-        @php
-            $countData = [
-                'El número de productos es:' => $products['count'] ?? 'No se pudo obtener el número de productos.',
-                'El número de entradas es:' => $entrance['count'] ?? 'No se pudo obtener el número de entradas.',
-                'El número de salidas es:' => $out['count'] ?? 'No se pudo obtener el número de salidas.',
-                'El número de préstamos activos es:' => $counts['count'] ?? 'No se pudo obtener el número de préstamos activos.',
-                'El número de préstamos finalizados es:' => $countsFinished['count'] ?? 'No se pudo obtener el número de préstamos finalizados.',
-                'El número total de préstamos es:' => $countsAll['count'] ?? 'No se pudo obtener el número total de préstamos.',
-                'El producto con más entradas es:' => ($countsProductEntrance['name'] ?? 'No se pudo obtener el nombre del producto con más entradas.') . ' <strong>cantidad:</strong> ' . ($countsProductEntrance['total_quantity'] ?? ''),
-                'El producto con más salidas es:' => ($countsProductOut['name'] ?? 'No se pudo obtener el nombre del producto con más salidas.') . ' <strong>cantidad:</strong> ' . ($countsProductOut['total_quantity'] ?? ''),
-                'El producto con más préstamos es:' => ($countsProductLoan['name'] ?? 'No se pudo obtener el nombre del producto con más préstamos.') . ' <strong>cantidad:</strong> ' . ($countsProductLoan['total_quantity'] ?? ''),
-            ];
-        @endphp
-
-        @foreach($countData as $label => $count)
-            <p class="lead"><strong>{{ $label }}</strong> {!! $count !!}</p>
-        @endforeach
-
+        <div id="data-container">
+            <!-- Aquí se cargarán los datos -->
+            <p class="lead">Cargando datos...</p>
+        </div>
     </div>
 </div>
-</body>
-</html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '{{ route('start.getData') }}',
+            method: 'GET',
+            success: function(data) {
+                let content = '';
+                content += `<p class="lead"><strong>El número de productos es:</strong> ${data.products.count}</p>`;
+                content += `<p class="lead"><strong>El número de entradas es:</strong> ${data.entrance.count}</p>`;
+                content += `<p class="lead"><strong>El número de salidas es:</strong> ${data.out.count}</p>`;
+                content += `<p class="lead"><strong>El número de préstamos activos es:</strong> ${data.counts.count}</p>`;
+                content += `<p class="lead"><strong>El número de préstamos finalizados es:</strong> ${data.countsFinished.count}</p>`;
+                content += `<p class="lead"><strong>El número total de préstamos es:</strong> ${data.countsAll.count}</p>`;
+                content += `<p class="lead"><strong>El producto con más entradas es:</strong> ${data.countsProductEntrance.name} <strong>cantidad:</strong> ${data.countsProductEntrance.total_quantity}</p>`;
+                content += `<p class="lead"><strong>El producto con más salidas es:</strong> ${data.countsProductOut.name} <strong>cantidad:</strong> ${data.countsProductOut.total_quantity}</p>`;
+                content += `<p class="lead"><strong>El producto con más préstamos es:</strong> ${data.countsProductLoan.name} <strong>cantidad:</strong> ${data.countsProductLoan.total_quantity}</p>`;
+                
+                $('#data-container').html(content);
+            },
+            error: function() {
+                $('#data-container').html('<p>No se pudo cargar los datos.</p>');
+            }
+        });
+    });
+</script>
 @endsection

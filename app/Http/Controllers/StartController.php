@@ -5,13 +5,20 @@ use Illuminate\Support\Facades\Http;
 
 class StartController extends Controller {
     public function index(Request $request) {
-        // URL base de la API
-        $baseApiUrl = config('app.backend_api');
-
         // Verificación de rol, solo permite acceso a usuarios con rol distinto de 1 o 2
         if (session('role') === '1' || session('role') === '2') {
             return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
         }
+
+        return view('start.index');
+    }
+
+    public function getData(Request $request) {
+        // URL base de la API
+        $baseApiUrl = config('app.backend_api');
+
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
 
         // Construir las URLs completas para las solicitudes API
         $apiUrls = [
@@ -25,9 +32,6 @@ class StartController extends Controller {
             'getCountAll' => $baseApiUrl . '/api/getCountAll',
             'getCountFinished' => $baseApiUrl . '/api/getCountFinish'
         ];
-        
-        // Obtener el token de la sesión
-        $token = $request->session()->get('token');
 
         // Crear promesas para cada solicitud
         $promises = [];
@@ -53,7 +57,6 @@ class StartController extends Controller {
             'countsProductLoan' => $responses->get('GetProductLoan')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más préstamos.', 'total_quantity' => '']
         ];
 
-        return view('start.index', $data);
+        return response()->json($data);
     }
 }
-

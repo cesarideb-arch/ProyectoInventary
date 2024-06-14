@@ -32,6 +32,8 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware('auth.api')->get('/Start', [StartController::class, 'index'])->name('start.index');
+Route::middleware('auth.api')->get('/start/get-data', [StartController::class, 'getData'])->name('start.getData');
+
 
 // Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
