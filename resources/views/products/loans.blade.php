@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +11,7 @@
     <div class="container mt-3">
         <div class="card">
             <div class="card-header">
-                <h1>Préstamos</h1>
+                <h1>Préstamo</h1>
             </div>
             <div class="card-body">
                 <h2>{{ $product['name'] }}</h2>
@@ -51,6 +48,12 @@
 
                 <div id="alertaCantidadExcedida" class="alert alert-warning d-none" role="alert">
                     Cantidad excedida. La cantidad disponible es {{ number_format($product['quantity'], 0, '.', ',') }}.
+                </div>
+
+                <div class="mb-3">
+                    <label for="observations" class="form-label">Observaciones:</label>
+                    <textarea name="observations" id="observations" class="form-control @error('observations') is-invalid @enderror" maxlength="255">{{ old('observations') }}</textarea>
+                    <div class="invalid-feedback">Por favor, ingrese observaciones válidas.</div>
                 </div>
 
                 <div class="mb-3">
