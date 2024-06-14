@@ -19,7 +19,10 @@ class StartController extends Controller {
             'getCountProducts' => $baseApiUrl . '/api/getCountProducts',
             'GetProductEntrance' => $baseApiUrl . '/api/GetProductEntrance',
             'GetProductOutput' => $baseApiUrl . '/api/GetProductOutput',
-            'GetProductLoan' => $baseApiUrl . '/api/GetProductLoan'
+            'GetProductLoan' => $baseApiUrl . '/api/GetProductLoan',
+            'GetEntrancesCount' => $baseApiUrl . '/api/GetEntrancesCount',
+            'GetOutputsCount' => $baseApiUrl . '/api/GetOutputsCount',
+            
         ];
         
         // Obtener el token de la sesión
@@ -40,8 +43,8 @@ class StartController extends Controller {
         $data = [
             'counts' => $responses->get('getCount')->json() ?? ['count' => 'No se pudo obtener el número de préstamos.'],
             'products' => $responses->get('getCountProducts')->json() ?? ['count' => 'No se pudo obtener el número de productos.'],
-            'entrance' => $responses->get('GetProductEntrance')->json() ?? ['total_quantity' => 'No se pudo obtener el número de entradas.'],
-            'out' => $responses->get('GetProductOutput')->json() ?? ['total_quantity' => 'No se pudo obtener el número de salidas.'],
+            'entrance' => $responses->get('GetEntrancesCount')->json() ?? ['count' => 'No se pudo obtener el número de entradas.'],
+            'out' => $responses->get('GetOutputsCount')->json() ?? ['count' => 'No se pudo obtener el número de salidas.'],
             'countsProductEntrance' => $responses->get('GetProductEntrance')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más entradas.', 'total_quantity' => ''],
             'countsProductOut' => $responses->get('GetProductOutput')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más salidas.', 'total_quantity' => ''],
             'countsProductLoan' => $responses->get('GetProductLoan')->json() ?? ['name' => 'No se pudo obtener el nombre del producto con más prestamos.', 'total_quantity' => '']
