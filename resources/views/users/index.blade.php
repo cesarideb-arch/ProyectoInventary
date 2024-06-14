@@ -56,7 +56,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                            <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}">
+                            <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}" style="background-color: red;">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" class="btn btn-danger" style="background-color: red;">Eliminar</button>
                     </div>
                 </form>
             </div>
