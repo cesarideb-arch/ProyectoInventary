@@ -42,6 +42,10 @@
         .btn-custom-size:last-child {
             margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
         }
+         /* Centrar textos */
+          p, th, td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -50,20 +54,20 @@
         <div class="d-flex justify-content-between mb-3">
             {{-- <a href="{{ route('loans.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
             <div style="display: flex; justify-content: flex-end;">
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-                    <i class="fas fa-file-pdf"></i> PDF
-                </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-                    <i class="fas fa-file-pdf"></i> PDF del Mes
-                </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-                    <i class="fas fa-file-pdf"></i> PDF Finalizados
-                </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
-                    <i class="fas fa-file-pdf"></i> PDF Iniciados
-                </a>
-            </div>
-            
+    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
+        <i class="fas fa-file-pdf"></i> PDF
+    </a>
+    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
+        <i class="fas fa-file-pdf"></i> PDF del Mes
+    </a>
+    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
+        <i class="fas fa-file-pdf"></i> PDF Finalizados
+    </a>
+    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
+        <i class="fas fa-file-pdf"></i> PDF Iniciados
+    </a>
+</div>
+
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
@@ -95,7 +99,7 @@
                         <td>{{ $loan['responsible'] }}</td>
                         <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                         <td>{{ $loan['product']['location'] ?? 'N/A' }}</td>
-                        <td>{{ $loan['observations'] ?? 'N/A' }}</td>
+                        <td style="text-align: center;">{{ $loan['observations'] ?? 'N/A' }}</td>
                         <td>
                             @if($loan['status'] == 0)
                                 {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
