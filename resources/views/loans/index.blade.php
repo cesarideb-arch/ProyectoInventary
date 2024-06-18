@@ -192,9 +192,9 @@
 
         $('#noObservations').change(function() {
             if($(this).is(':checked')) {
-                $('#observations').val('');
+                $('#observations').val('').prop('disabled', true); // Deshabilitar el campo de observaciones
             } else {
-                $('#observations').val(previousObservations);
+                $('#observations').val(previousObservations).prop('disabled', false); // Habilitar el campo de observaciones
             }
         });
 
@@ -202,7 +202,8 @@
             currentLoanId = $(this).data('loan-id');
             previousObservations = $(this).data('loan-observations');
             $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
-            $('#observations').val(previousObservations); // Carga las observaciones previas en el modal
+            $('#observations').val(previousObservations).prop('disabled', false); // Carga las observaciones previas en el modal y habilitar el campo
+            $('#noObservations').prop('checked', false); // Desmarcar la casilla de verificación
             $('#returnProductModal').modal('show');
         });
 
