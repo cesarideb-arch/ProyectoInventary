@@ -21,8 +21,8 @@
             margin: auto;
         }
         .swal2-popup {
-            width: 35% !important; /* Ajusta el ancho de la alerta */
-            max-width: 650px; /* Puedes ajustar este valor según tus necesidades */
+            width: 90% !important; /* Ajusta el ancho de la alerta */
+            max-width: 600px; /* Puedes ajustar este valor según tus necesidades */
             padding: 40px; /* Ajusta el padding si es necesario */
             text-align: center; /* Centrar el contenido del modal */
         }
@@ -36,38 +36,58 @@
             text-align: center; /* Centrar el contenido del modal */
         }
         .btn-custom-size {
-            margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+            margin: 0 10px 10px 0; /* Ajusta el margen para separar los botones */
+            text-align: left; /* Alinea el texto a la izquierda */
         }
 
-        .btn-custom-size:last-child {
-            margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
-        }
-         /* Centrar textos */
-          p, th, td {
+        /* Centrar textos */
+        p, th, td {
             text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .swal2-popup {
+                width: 100% !important; /* Ajusta el ancho de la alerta en móviles */
+            }
+            .btn-custom-size {
+                margin-bottom: 10px; /* Añade espacio debajo de cada botón en móviles */
+                width: 100%; /* Botones a pantalla completa en móviles */
+            }
+            .btn-custom-size:last-child {
+                margin-bottom: 0; /* Remueve el margen del último botón para que no tenga espacio extra abajo */
+            }
+            .btn-group-left,
+            .btn-group-right {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
+            .d-flex.flex-wrap {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Préstamos</h1>
-        <div class="d-flex justify-content-between mb-3">
-            {{-- <a href="{{ route('loans.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
-            <div style="display: flex; justify-content: flex-end;">
-    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-        <i class="fas fa-file-pdf"></i> PDF
-    </a>
-    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-        <i class="fas fa-file-pdf"></i> PDF del Mes
-    </a>
-    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
-        <i class="fas fa-file-pdf"></i> PDF Finalizados
-    </a>
-    <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
-        <i class="fas fa-file-pdf"></i> PDF Iniciados
-    </a>
-</div>
-
+        <div class="d-flex justify-content-start mb-3 flex-wrap">
+            <div class="btn-group-left" style="flex-wrap: wrap;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </a>
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF del Mes
+                </a>
+            </div>
+            <div class="btn-group-right" style="flex-wrap: wrap;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF Finalizados
+                </a>
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF Iniciados
+                </a>
+            </div>
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
@@ -149,123 +169,137 @@
     </div>
 
     <!-- Modal para enviar observaciones -->
-    <div class="modal fade" id="returnProductModal" tabindex="-1" role="dialog" aria-labelledby
-    el="returnProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-    <div class="modal-header">
-    <h5 class="modal-title" id="returnProductModalLabel">Devolver Producto</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">×</span>
-    </button>
-    </div>
-    <div class="modal-body">
-    <form id="returnProductForm">
-    @csrf
-    @method('PUT')
-    <div class="form-group">
-    <label for="observations">Observaciones (Cambiar Opcional)</label>
-    <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
-    </div>
-    <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="noObservations">
-    <label class="form-check-label" for="noObservations">No enviar observaciones</label>
-    </div>
-    <input type="hidden" id="loanId" name="loanId">
-    </form>
-    </div>
-    <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-    <button type="button" class="btn btn-primary" id="confirmReturnProduct">Confirmar</button>
-    </div>
-    </div>
-    </div>
+    <div class="modal fade" id="returnProductModal" tabindex="-1" role="dialog" aria-labelledby="returnProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnProductModalLabel">Devolver Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="returnProductForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="observations">Observaciones (Cambiar Opcional)</label>
+                            <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="noObservations">
+                            <label class="form-check-label" for="noObservations">No enviar observaciones</label>
+                        </div>
+                        <input type="hidden" id="loanId" name="loanId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmReturnProduct">Confirmar</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        var currentLoanId = null;
-        var previousObservations = null;
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var currentLoanId = null;
+            var previousObservations = null;
 
-        $('#noObservations').change(function() {
-            if($(this).is(':checked')) {
-                $('#observations').val('').prop('disabled', true); // Deshabilitar el campo de observaciones
-            } else {
-                $('#observations').val(previousObservations).prop('disabled', false); // Habilitar el campo de observaciones
-            }
-        });
-
-        $('.return-product-btn').click(function() {
-            currentLoanId = $(this).data('loan-id');
-            previousObservations = $(this).data('loan-observations');
-            $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
-            $('#observations').val(previousObservations).prop('disabled', false); // Carga las observaciones previas en el modal y habilitar el campo
-            $('#noObservations').prop('checked', false); // Desmarcar la casilla de verificación
-            $('#returnProductModal').modal('show');
-        });
-
-        $('#confirmReturnProduct').click(function() {
-            var observations = $('#noObservations').is(':checked') ? null : $('#observations').val();
-            var loanId = $('#loanId').val();
-
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: '¿Estás seguro de que deseas regresar este producto?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, regresar',
-                cancelButtonText: 'Cancelar',
-                background: '#fff',
-                customClass: {
-                    popup: 'swal2-popup'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '/loans/' + loanId,
-                        type: 'POST',
-                        data: {
-                            _method: 'PUT',
-                            _token: '{{ csrf_token() }}',
-                            loan_id: loanId,
-                            observations: observations // Enviar null si el checkbox está marcado
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                title: '¡Regresado!',
-                                text: 'El producto ha sido regresado exitosamente.',
-                                icon: 'success',
-                                background: '#fff',
-                                customClass: {
-                                    popup: 'swal2-popup'
-                                }
-                            }).then(() => {
-                                window.location.href = '{{ route('loans.index') }}';
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'Hubo un problema al regresar el producto.',
-                                icon: 'error',
-                                background: '#fff',
-                                customClass: {
-                                    popup: 'swal2-popup'
-                                }
-                            });
-                            console.error('Error al devolver el préstamo:', error);
-                        }
-                    });
+            $('#noObservations').change(function() {
+                if($(this).is(':checked')) {
+                    $('#observations').val('').prop('disabled', true); // Deshabilitar el campo de observaciones
+                } else {
+                    $('#observations').val(previousObservations).prop('disabled', false); // Habilitar el campo de observaciones
                 }
             });
+
+            $('.return-product-btn').click(function() {
+                currentLoanId = $(this).data('loan-id');
+                previousObservations = $(this).data('loan-observations');
+                $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
+                $('#observations').val(previousObservations).prop('disabled', false); // Carga las observaciones previas en el modal y habilitar el campo
+                $('#noObservations').prop('checked', false); // Desmarcar la casilla de verificación
+                $('#returnProductModal').modal('show');
+            });
+
+            $('#confirmReturnProduct').click(function() {
+                var observations = $('#noObservations').is(':checked') ? null : $('#observations').val();
+                var loanId = $('#loanId').val();
+
+                // Validación para asegurar que se seleccione una opción
+                if (!$('#noObservations').is(':checked') && !observations) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Debes ingresar observaciones o marcar la opción de no enviar observaciones.',
+                        icon: 'error',
+                        background: '#fff',
+                        customClass: {
+                            popup: 'swal2-popup'
+                        }
+                    });
+                    return; // Salir si no se cumple la condición
+                }
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: '¿Estás seguro de que deseas regresar este producto?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, regresar',
+                    cancelButtonText: 'Cancelar',
+                    background: '#fff',
+                    customClass: {
+                        popup: 'swal2-popup'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/loans/' + loanId,
+                            type: 'POST',
+                            data: {
+                                _method: 'PUT',
+                                _token: '{{ csrf_token() }}',
+                                loan_id: loanId,
+                                observations: observations // Enviar null si el checkbox está marcado
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: '¡Regresado!',
+                                    text: 'El producto ha sido regresado exitosamente.',
+                                    icon: 'success',
+                                    background: '#fff',
+                                    customClass: {
+                                        popup: 'swal2-popup'
+                                    }
+                                }).then(() => {
+                                    window.location.href = '{{ route('loans.index') }}';
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Hubo un problema al regresar el producto.',
+                                    icon: 'error',
+                                    background: '#fff',
+                                    customClass: {
+                                        popup: 'swal2-popup'
+                                    }
+                                });
+                                console.error('Error al devolver el préstamo:', error);
+                            }
+                        });
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
+
 </body> 
 </html>
 @endsection
