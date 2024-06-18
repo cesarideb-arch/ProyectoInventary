@@ -53,10 +53,17 @@
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; margin-right: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF Finalizados
+                </a>
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red;">
+                    <i class="fas fa-file-pdf"></i> PDF Iniciados
+                </a>
             </div>
+            
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
