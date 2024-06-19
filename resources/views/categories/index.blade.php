@@ -10,11 +10,37 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .btn-group-horizontal {
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center;
+        }
+
+        .btn-group-horizontal .btn {
+            margin-right: 5px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Lista de Categorías</h1>
-        <div class="mb-3">
+        <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('categories.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
         </div>
         <form method="GET" action="{{ route('categories.index') }}">
@@ -25,40 +51,39 @@
                 </button>
             </div>
         </form>
-
         <div class="table-responsive">
             @if(isset($categories) && count($categories) > 0)
             <table class="table table-striped">
-            <thead>
+                <thead>
                 <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th style="text-align: center;" colspan="2">Acciones</th>
+                    <th style="text-align: center;">Nombre</th>
+                    <th style="text-align: center;">Descripción</th>
+                    <th style="text-align: center;" colspan="2">Acciones</th>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach($categories as $category)
-                <tr>
-                <td>{{ $category['name'] }}</td>
-                <td>{{ $category['description'] ?? 'N/A' }}</td>
-                <td style="text-align: center;">
-                    <div class="btn-group btn-group-horizontal text-center" role="group">
-                    <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
-                        @csrf
-                        <button type="submit" class="btn btn-primary btn-custom-size">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </form>
-                    <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
-                    </form>
-                    </div>
-                </td>
-                </tr>
-                @endforeach
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach($categories as $category)
+                        <tr>
+                            <td style="text-align: center;">{{ $category['name'] }}</td>
+                            <td style="text-align: center;">{{ $category['description'] ?? 'N/A' }}</td>
+                            <td style="text-align: center;">
+                                <div class="btn-group btn-group-horizontal" role="group">
+                                    <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary btn-custom-size">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('categories.destroy', $category['id']) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
             <div class="pagination">
                 @if($currentPage > 1)
@@ -72,7 +97,7 @@
                 @endif
                 <a href="{{ route('categories.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
-                </a>            </div>
+                </a>
             </div>
             @else
             <p>No se encontraron categorías.</p>
@@ -100,6 +125,7 @@
     </script>
     @endif
 
+    <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script>
     const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
 
@@ -125,6 +151,8 @@
     });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- JavaScript para Bootstrap y dependencias -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
