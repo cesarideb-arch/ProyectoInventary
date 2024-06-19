@@ -182,7 +182,7 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="observations">Observaciones (Cambiar Opcional)</label>
-                            <textarea class="form-control" id="observations" name="observations" rows="3"></textarea>
+                            <textarea class="form-control" id="observations" name="observations" rows="3" disabled></textarea>
                         </div>
                         <div class="form-group form-check">
                             <input type="checkbox" class="form-check-input" id="noObservations">
@@ -209,9 +209,9 @@
 
             $('#noObservations').change(function() {
                 if($(this).is(':checked')) {
-                    $('#observations').val('').prop('disabled', true); // Deshabilitar el campo de observaciones
+                    $('#observations').prop('disabled', true); // Deshabilitar el campo de observaciones
                 } else {
-                    $('#observations').val(previousObservations).prop('disabled', false); // Habilitar el campo de observaciones
+                    $('#observations').prop('disabled', false); // Habilitar el campo de observaciones
                 }
             });
 
