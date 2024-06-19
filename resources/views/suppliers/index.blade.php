@@ -13,6 +13,7 @@
     <style>
         .btn-group-horizontal {
             display: flex;
+            justify-content: center; /* Centra horizontalmente */
             align-items: center;
         }
 
@@ -44,7 +45,6 @@
             <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
             </a>
-            </a>
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">
             <div class="input-group mb-3">
@@ -59,41 +59,41 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Artículo</th>
-                    <th>Precio</th>
-                    <th>Empresa</th>
-                    <th>Teléfono</th>
-                    <th>Email</th>
-                    <th>Dirección</th>
+                    <th style="text-align: center;">Artículo</th>
+                    <th style="text-align: center;">Precio</th>
+                    <th style="text-align: center;">Empresa</th>
+                    <th style="text-align: center;">Teléfono</th>
+                    <th style="text-align: center;">Email</th>
+                    <th style="text-align: center;">Dirección</th>
                     <th style="text-align: center;" colspan="2">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($suppliers as $supplier)
-                    <tr>
-                    <td>{{ $supplier['article'] }}</td>
-                    <td>${{ number_format($supplier['price'], 2, '.', ',') }}</td>
-                    <td>{{ $supplier['company'] }}</td>
-                    <td>{{ $supplier['phone'] }}</td>
-                    <td>{{ $supplier['email'] ?? 'N/A'}}</td>
-                    <td>{{ $supplier['address'] ?? 'N/A' }}</td>
-                    <td>
-                        <div class="btn-group btn-group-horizontal text-center" role="group">
-                        <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-custom-size">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                        </form>
-                        <form action="{{ route('suppliers.destroy', $supplier['id']) }}" method="POST" class="delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
-                        </form>
-                        </div>
-                    </td>
-                    </tr>
-                @endforeach
+                    @foreach($suppliers as $supplier)
+                        <tr>
+                            <td style="text-align: center;">{{ $supplier['article'] }}</td>
+                            <td style="text-align: center;">${{ number_format($supplier['price'], 2, '.', ',') }}</td>
+                            <td style="text-align: center;">{{ $supplier['company'] }}</td>
+                            <td style="text-align: center;">{{ $supplier['phone'] }}</td>
+                            <td style="text-align: center;">{{ $supplier['email'] ?? 'N/A'}}</td>
+                            <td style="text-align: center;">{{ $supplier['address'] ?? 'N/A' }}</td>
+                            <td style="text-align: center;">
+                                <div class="btn-group btn-group-horizontal" role="group">
+                                    <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary btn-custom-size">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('suppliers.destroy', $supplier['id']) }}" method="POST" class="delete-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
             <div class="pagination">
