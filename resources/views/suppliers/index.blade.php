@@ -41,8 +41,9 @@
         <h1 class="mb-4">Lista de Proveedores</h1>
         <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
+            </a>
             </a>
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">

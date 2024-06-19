@@ -98,10 +98,10 @@
         <div class="d-flex justify-content-between mb-3">
             {{-- <a href="{{ route('entrances.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
             <div style="display: flex; justify-content: flex-end;">
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>

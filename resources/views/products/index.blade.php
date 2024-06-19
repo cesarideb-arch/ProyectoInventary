@@ -76,7 +76,7 @@
         @if (session('role') === '1' || session('role') === '0')
             <div class="d-flex justify-content-between mb-3">
                 <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger" style="background-color: red;">
+                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
             </div>

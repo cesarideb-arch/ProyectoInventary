@@ -50,11 +50,8 @@
                 width: 100% !important; /* Ajusta el ancho de la alerta en móviles */
             }
             .btn-custom-size {
-                margin-bottom: 10px; /* Añade espacio debajo de cada botón en móviles */
-                width: 100%; /* Botones a pantalla completa en móviles */
-            }
-            .btn-custom-size:last-child {
-                margin-bottom: 0; /* Remueve el margen del último botón para que no tenga espacio extra abajo */
+                margin-bottom: 15px; /* Añade más espacio debajo de cada botón en móviles */
+                width: calc(100% - 8px); /* Botones a pantalla completa en móviles con espacio entre ellos */
             }
             .btn-group-left,
             .btn-group-right {
@@ -64,6 +61,7 @@
             }
             .d-flex.flex-wrap {
                 flex-direction: row;
+                justify-content: space-between; /* Espacio entre los botones */
             }
         }
     </style>

@@ -41,7 +41,7 @@
         <h1 class="mb-4">Lista de Proyectos</h1>
         <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('projects.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
+            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
             </a>
         </div>
