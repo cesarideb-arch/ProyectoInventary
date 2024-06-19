@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -12,61 +11,29 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Estilos para la ventana emergente */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .modal-content i {
-            color: red;
-            font-size: 24px;
-        }
-
-        .modal-buttons {
-            margin-top: 20px;
-        }
-
-        .modal-buttons button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .modal-buttons button.cancel {
-            background-color: #ccc;
-        }
-
-        .modal-buttons button.confirm {
-            background-color: #ff3b30;
-            color: white;
-        }
-
         .btn-group-horizontal {
             display: flex;
+            justify-content: center; /* Centra horizontalmente */
             align-items: center;
         }
 
         .btn-group-horizontal .btn {
             margin-right: 5px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
         }
     </style>
 </head>
@@ -76,7 +43,7 @@
         @if (session('role') === '1' || session('role') === '0')
             <div class="d-flex justify-content-between mb-3">
                 <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
             </div>
@@ -92,7 +59,6 @@
             </div>
         </form>
         <div class="table-responsive">
-            <!-- Tabla de productos -->
             @if(isset($products) && count($products) > 0)
             <table class="table table-striped">
                 <thead>
@@ -119,35 +85,28 @@
                     <td>
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <div class="btn-group btn-group-horizontal" role="group">
-                            <!-- Botón de Edición -->
                             @if (session('role') === '1' || session('role') === '0')
                             <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
                                 @csrf
-                                <button type="submit" class="btn btn-primary btn-sm">
+                                <button type="submit" class="btn btn-primary btn-custom-size">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                            <!-- Botón de Eliminación -->
-                            <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form" style="margin-right: 5px;">
+                            <form action="{{ route('products.destroy', $product['id']) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                                <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
                             </form>
                             @endif
-                            <!-- Botón adicional, por ejemplo, Entradas -->
-                            <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                            <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-custom-size" style="margin-right: 5px;">
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
-                            <!-- Botón de Salida -->
-                            <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                            <a href="{{ route('products.output.get', $product['id']) }}" class="btn btn-info btn-custom-size" style="margin-right: 5px;">
                                 <i class="fas fa-sign-out-alt" style="color: red;"></i>
                             </a>
-                            <!-- Botón de Préstamos -->
-                            <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-sm">
+                            <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-custom-size">
                                 <i class="fas fa-exchange-alt"></i>
                             </a>
                         </div>
@@ -156,7 +115,6 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
             <div class="pagination">
                 @if($currentPage > 1)
                     <a href="{{ route('products.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
@@ -176,8 +134,6 @@
             <p>No se encontraron productos.</p>
             @endif
         </div>
-
-        
     </div>
 
     @if(session('success'))
@@ -225,10 +181,10 @@
     });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm
 
-/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <!-- JavaScript para Bootstrap y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
