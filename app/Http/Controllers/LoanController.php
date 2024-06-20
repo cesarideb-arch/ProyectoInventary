@@ -10,23 +10,24 @@ class LoanController extends Controller {
     public function index(Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-    
+
         // URL de la API de préstamos
         $apiUrl = $baseApiUrl . '/api/loans';
         $apiSearchUrl = $baseApiUrl . '/api/searchLoan';
         $apiGetCountMonthLoanUrl = $baseApiUrl . '/api/GetCountMonthLoan';
         $apiGetFinished = $baseApiUrl . '/api/GetFinished';
         $apiGetStarted = $baseApiUrl . '/api/GetStarted';
-        
+        $apiGetLoanCountMonthNumber = $baseApiUrl . '/api/GetLoanCountMonthNumber';
+
         $searchQuery = $request->input('query');
-    
+
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
         $perPage = 100; // Número máximo de elementos por página
-    
+
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-    
+
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
@@ -35,12 +36,12 @@ class LoanController extends Controller {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
             $response = Http::withToken($token)->get($apiUrl);
         }
-    
+
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
             // Decodifica la respuesta JSON en un array asociativo
             $data = $response->json();
-    
+
             // Verifica si la clave 'data' está presente en la respuesta
             if (is_array($data) && array_key_exists('data', $data)) {
                 $loans = $data['data'];
@@ -54,28 +55,26 @@ class LoanController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
-    
+
+            // Obtener el número total de préstamos del mes actual
+            $monthResponse = Http::withToken($token)->get($apiGetLoanCountMonthNumber);
+            $monthData = $monthResponse->successful() ? $monthResponse->json() : ['count' => 0];
+
             // Si el parámetro 'download' está presente, generar el PDF correspondiente
             if ($request->has('download')) {
                 $downloadType = $request->input('download');
                 $htmlFilePath = storage_path('temp/loans_temp_file.html');
                 $pdfFilePath = storage_path('temp/Prestamos.pdf');
-    
+
                 if ($downloadType === 'pdf') {
                     // Generar PDF para todos los préstamos
                     $htmlContent = view('loans.pdf', compact('loans'))->render();
                     file_put_contents($htmlFilePath, $htmlContent);
                 } elseif ($downloadType === 'month_pdf') {
                     // Generar PDF para los préstamos del mes actual
-                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthLoanUrl);
-                    if ($monthResponse->successful()) {
-                        $monthData = $monthResponse->json();
-                        $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
-                        $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
-                        file_put_contents($htmlFilePath, $htmlContent);
-                    } else {
-                        return redirect()->back()->with('error', 'Error al obtener los préstamos del mes de la API');
-                    }
+                    $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
+                    $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
+                    file_put_contents($htmlFilePath, $htmlContent);
                 } elseif ($downloadType === 'finished_pdf') {
                     // Generar PDF para los préstamos finalizados
                     $finishedResponse = Http::withToken($token)->get($apiGetFinished);
@@ -99,30 +98,30 @@ class LoanController extends Controller {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos iniciados de la API');
                     }
                 }
-    
+
                 if (!file_exists($htmlFilePath)) {
                     return redirect()->back()->with('error', 'Error al generar el archivo HTML');
                 }
-    
+
                 $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
-    
+
                 exec($command, $output, $returnVar);
-    
+
                 if ($returnVar === 0) {
                     return response()->download($pdfFilePath)->deleteFileAfterSend(true);
                 } else {
                     return redirect()->back()->with('error', 'Error al generar el PDF');
                 }
             }
-    
-            // Pasa los datos de préstamos y los parámetros de paginación a la vista y renderiza la vista
-            return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage'));
+            //  dd(compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthData'));
+
+            // Pasa los datos de préstamos, el número de préstamos del mes y los parámetros de paginación a la vista y renderiza la vista
+            return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthData'));
         }
-    
+
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
         return redirect()->back()->with('error', 'Error al obtener los préstamos de la API');
     }
-    
 
     public function edit($id, Request $request) {
         // URL base de la API

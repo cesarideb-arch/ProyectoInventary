@@ -21,23 +21,17 @@
             margin: auto;
         }
         .swal2-popup {
-            width: 90% !important; /* Ajusta el ancho de la alerta */
-            max-width: 600px; /* Puedes ajustar este valor según tus necesidades */
-            padding: 40px; /* Ajusta el padding si es necesario */
-            text-align: center; /* Centrar el contenido del modal */
+            width: 90% !important;
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
         }
-        .swal2-icon {
-            margin: 20px auto; /* Centrar el icono dentro del modal */
-        }
-        .swal2-title {
-            text-align: center; /* Centrar el título */
-        }
-        .swal2-content {
-            text-align: center; /* Centrar el contenido del modal */
+        .swal2-icon, .swal2-title, .swal2-content {
+            margin: 20px auto;
         }
         .btn-custom-size {
-            margin: 0 10px 10px 0; /* Ajusta el margen para separar los botones */
-            text-align: left; /* Alinea el texto a la izquierda */
+            margin: 0 10px 10px 0;
+            text-align: left;
         }
 
         /* Centrar textos */
@@ -47,11 +41,11 @@
 
         @media (max-width: 576px) {
             .swal2-popup {
-                width: 100% !important; /* Ajusta el ancho de la alerta en móviles */
+                width: 100% !important;
             }
             .btn-custom-size {
-                margin-bottom: 15px; /* Añade más espacio debajo de cada botón en móviles */
-                width: calc(100% - 8px); /* Botones a pantalla completa en móviles con espacio entre ellos */
+                margin-bottom: 15px;
+                width: calc(100% - 8px);
             }
             .btn-group-left,
             .btn-group-right {
@@ -61,7 +55,11 @@
             }
             .d-flex.flex-wrap {
                 flex-direction: row;
-                justify-content: space-between; /* Espacio entre los botones */
+                justify-content: space-between;
+            }
+            .ml-auto {
+                width: 100%;
+                text-align: center;
             }
         }
     </style>
@@ -69,7 +67,7 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Préstamos</h1>
-        <div class="d-flex justify-content-start mb-3 flex-wrap">
+        <div class="d-flex justify-content-start align-items-center mb-3 flex-wrap">
             <div class="btn-group-left" style="flex-wrap: wrap;">
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
@@ -86,6 +84,15 @@
                     <i class="fas fa-file-pdf"></i> PDF Iniciados
                 </a>
             </div>
+            <div class="ml-auto">
+                <p class="mb-10">Conteo de préstamos del mes actual: {{ $monthData['count'] }}</p>
+            </div>
+            
+            @if (isset($monthData['other_key']))
+                <div>
+                    <p>Otro dato de interés: {{ $monthData['other_key'] }}</p>
+                </div>
+            @endif
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
@@ -95,6 +102,7 @@
                 </button>
             </div>
         </form>
+
         <div class="table-responsive">
             @if(isset($loans) && count($loans) > 0)
             <table class="table table-striped">
@@ -198,7 +206,6 @@
             </div>
         </div>
     </div>
-    
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -209,18 +216,18 @@
 
             $('#noObservations').change(function() {
                 if($(this).is(':checked')) {
-                    $('#observations').prop('disabled', true); // Deshabilitar el campo de observaciones
+                    $('#observations').prop('disabled', true);
                 } else {
-                    $('#observations').prop('disabled', false); // Habilitar el campo de observaciones
+                    $('#observations').prop('disabled', false);
                 }
             });
 
             $('.return-product-btn').click(function() {
                 currentLoanId = $(this).data('loan-id');
                 previousObservations = $(this).data('loan-observations');
-                $('#loanId').val(currentLoanId); // Asigna el valor del ID del préstamo al campo oculto
-                $('#observations').val(previousObservations).prop('disabled', false); // Carga las observaciones previas en el modal y habilitar el campo
-                $('#noObservations').prop('checked', false); // Desmarcar la casilla de verificación
+                $('#loanId').val(currentLoanId);
+                $('#observations').val(previousObservations).prop('disabled', false);
+                $('#noObservations').prop('checked', false);
                 $('#returnProductModal').modal('show');
             });
 
@@ -228,7 +235,6 @@
                 var observations = $('#noObservations').is(':checked') ? null : $('#observations').val();
                 var loanId = $('#loanId').val();
 
-                // Validación para asegurar que se seleccione una opción
                 if (!$('#noObservations').is(':checked') && !observations) {
                     Swal.fire({
                         title: 'Error',
@@ -239,7 +245,7 @@
                             popup: 'swal2-popup'
                         }
                     });
-                    return; // Salir si no se cumple la condición
+                    return;
                 }
 
                 Swal.fire({
@@ -264,7 +270,7 @@
                                 _method: 'PUT',
                                 _token: '{{ csrf_token() }}',
                                 loan_id: loanId,
-                                observations: observations // Enviar null si el checkbox está marcado
+                                observations: observations
                             },
                             success: function(response) {
                                 Swal.fire({
