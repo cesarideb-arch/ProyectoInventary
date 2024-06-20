@@ -84,26 +84,37 @@
         }
 
         .btn-custom-size {
-    margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
-}
+            margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+        }
 
-.btn-custom-size:last-child {
-    margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
-}
+        .btn-custom-size:last-child {
+            margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
+        }
+
+        @media (max-width: 576px) {
+            .ml-auto {
+                width: 100%;
+                text-align: left;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 class="mb-4">Listado de Entradas</h1>
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
             {{-- <a href="{{ route('entrances.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
-            <div style="display: flex; justify-content: flex-end;">
+            <div class="d-flex flex-wrap">
                 <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
                 <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
+            </div>
+            <div class="ml-auto text-left">
+                <p class="mb-0">Conteo de préstamos del mes actual: {{ $monthData['count'] }}</p>
             </div>
         </div>
         <form method="GET" action="{{ route('entrances.index') }}">
@@ -123,7 +134,7 @@
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
-                        <th>ubicación</th>
+                        <th>Ubicación</th>
                         <th>Descripción</th>
                         <th>Fecha</th>
                     </tr>

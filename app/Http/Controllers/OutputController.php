@@ -14,6 +14,7 @@ class OutputController extends Controller {
         $apiUrl = $baseApiUrl . '/api/outputs';
         $apiSearchUrl = $baseApiUrl . '/api/searchOutput';
         $apiGetCountMonthOutputUrl = $baseApiUrl . '/api/GetCountMonthOutput';
+        $apiGetOutputsCountMonthNumber = $baseApiUrl . '/api/GetOutputsCountMonthNumber';
     
         $searchQuery = $request->input('query');
     
@@ -51,6 +52,10 @@ class OutputController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
+    
+            // Obtener el conteo de salidas del mes actual
+            $monthCountResponse = Http::withToken($token)->get($apiGetOutputsCountMonthNumber);
+            $monthData = $monthCountResponse->successful() ? $monthCountResponse->json() : ['count' => 0];
     
             // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
             if ($request->has('download')) {
@@ -108,7 +113,7 @@ class OutputController extends Controller {
             }
     
             // Pasa los datos de salidas y la página actual a la vista y renderiza la vista
-            return view('outputs.index', compact('outputs', 'searchQuery', 'total', 'currentPage', 'lastPage'));
+            return view('outputs.index', compact('outputs', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthData'));
         }
     
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error

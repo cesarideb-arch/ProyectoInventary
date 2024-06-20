@@ -16,6 +16,7 @@ class EntranceController extends Controller {
         $apiUrl = $baseApiUrl . '/api/entrances';
         $apiSearchUrl = $baseApiUrl . '/api/searchEntrance';
         $apiGetCountMonthEntranceUrl = $baseApiUrl . '/api/GetCountMonthEntrance';
+        $apiGetEntrancesCountMonthNumber = $baseApiUrl . '/api/GetEntrancesCountMonthNumber';
     
         $searchQuery = $request->input('query');
     
@@ -54,6 +55,10 @@ class EntranceController extends Controller {
                 $currentPage = $page;
                 $lastPage = ceil($total / $perPage);
             }
+    
+            // Obtener el conteo de préstamos del mes actual
+            $monthCountResponse = Http::withToken($token)->get($apiGetEntrancesCountMonthNumber);
+            $monthData = $monthCountResponse->successful() ? $monthCountResponse->json() : ['count' => 0];
     
             // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
             if ($request->has('download')) {
@@ -107,11 +112,19 @@ class EntranceController extends Controller {
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener las entradas del mes de la API');
                     }
+                } elseif ($downloadType === 'finished_pdf') {
+                    // Generar PDF para las entradas finalizadas
+                    // Añade la lógica para obtener las entradas finalizadas y generar el PDF
+                    // Similar a lo realizado anteriormente para 'pdf' y 'month_pdf'
+                } elseif ($downloadType === 'started_pdf') {
+                    // Generar PDF para las entradas iniciadas
+                    // Añade la lógica para obtener las entradas iniciadas y generar el PDF
+                    // Similar a lo realizado anteriormente para 'pdf' y 'month_pdf'
                 }
             }
     
             // Pasa los datos de entradas y la página actual a la vista y renderiza la vista
-            return view('entrances.index', compact('entrances', 'page', 'total', 'currentPage', 'lastPage'));
+            return view('entrances.index', compact('entrances', 'page', 'total', 'currentPage', 'lastPage', 'monthData'));
         } else {
             // Si la solicitud falla, muestra un mensaje de error
             return 'Error: ' . $response->status();
