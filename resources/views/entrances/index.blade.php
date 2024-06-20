@@ -97,6 +97,27 @@
                 text-align: left;
                 margin-top: 10px;
             }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
         }
     </style>
 </head>
@@ -142,13 +163,13 @@
                 <tbody>
                     @foreach($entrances as $entrance)
                     <tr>
-                        <td>{{ $entrance['project']['name'] ?? 'N/A' }}</td>
-                        <td>{{ $entrance['product']['name'] ?? 'N/A' }}</td>
-                        <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
-                        <td>{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td>{{ $entrance['product']['location'] ?? 'N/A' }}</td>
-                        <td>{{ $entrance['description'] ?? 'N/A' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
+                        <td data-label="Proyecto">{{ $entrance['project']['name'] ?? 'N/A' }}</td>
+                        <td data-label="Producto">{{ $entrance['product']['name'] ?? 'N/A' }}</td>
+                        <td data-label="Responsable">{{ $entrance['responsible'] ?? 'N/A' }}</td>
+                        <td data-label="Cantidad">{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
+                        <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
+                        <td data-label="Fecha">{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
                     @endforeach
                 </tbody>
