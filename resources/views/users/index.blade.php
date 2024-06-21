@@ -10,6 +10,61 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .btn-group-horizontal {
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center;
+        }
+
+        .btn-group-horizontal .btn {
+            margin-right: 5px;
+        }
+
+        .btn-custom-size {
+            padding: 6px 12px;
+        }
+
+        .btn-danger {
+            background-color: #ff0000; /* color rojo */
+            border-color: #ff0000; /* color rojo */
+            color: #fff; /* texto blanco */
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
+
+        @media (max-width: 576px) {
+            .ml-auto {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -39,16 +94,16 @@
                 <tbody>
                 @foreach($users as $user)
                     <tr>
-                    <td>{{ $user['name'] }}</td>
-                    <td>{{ $user['email'] }}</td>
-                    <td>
+                    <td data-label="Nombre">{{ $user['name'] }}</td>
+                    <td data-label="Email">{{ $user['email'] }}</td>
+                    <td data-label="Rol">
                         @if($user['role'] == 1)
                             Admin Trabajador
                         @elseif($user['role'] == 2)
                             Trabajador
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td data-label="Acciones" class="text-center">
                         <div class="btn-group btn-group-horizontal" role="group">
                             <form action="{{ route('users.edit', $user['id']) }}" method="GET">
                                 @csrf
