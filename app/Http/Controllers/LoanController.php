@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class LoanController extends Controller {
- 
+
     public function index(Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
@@ -17,7 +17,7 @@ class LoanController extends Controller {
         $apiGetCountMonthLoanUrl = $baseApiUrl . '/api/GetCountMonthLoan';
         $apiGetFinished = $baseApiUrl . '/api/GetFinished';
         $apiGetStarted = $baseApiUrl . '/api/GetStarted';
-        $apiGetLoanCountMonthNumber = $baseApiUrl . '/api/GetLoanCountMonthNumber';
+        $apiGetLoanCountMonthNumberUrl = $baseApiUrl . '/api/GetLoanCountMonthNumber';
 
         $searchQuery = $request->input('query');
 
@@ -56,9 +56,9 @@ class LoanController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
 
-            // Obtener el número total de préstamos del mes actual
-            $monthResponse = Http::withToken($token)->get($apiGetLoanCountMonthNumber);
-            $monthData = $monthResponse->successful() ? $monthResponse->json() : ['count' => 0];
+            // Obtener el conteo de préstamos del mes actual
+            $monthLoanResponse = Http::withToken($token)->get($apiGetLoanCountMonthNumberUrl);
+            $monthDataNumber = $monthLoanResponse->successful() ? $monthLoanResponse->json() : ['count' => 0];
 
             // Si el parámetro 'download' está presente, generar el PDF correspondiente
             if ($request->has('download')) {
@@ -72,9 +72,15 @@ class LoanController extends Controller {
                     file_put_contents($htmlFilePath, $htmlContent);
                 } elseif ($downloadType === 'month_pdf') {
                     // Generar PDF para los préstamos del mes actual
-                    $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
-                    $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
-                    file_put_contents($htmlFilePath, $htmlContent);
+                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthLoanUrl);
+                    if ($monthResponse->successful()) {
+                        $monthData = $monthResponse->json();
+                        $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
+                        $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
+                        file_put_contents($htmlFilePath, $htmlContent);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener los préstamos del mes de la API');
+                    }
                 } elseif ($downloadType === 'finished_pdf') {
                     // Generar PDF para los préstamos finalizados
                     $finishedResponse = Http::withToken($token)->get($apiGetFinished);
@@ -113,10 +119,9 @@ class LoanController extends Controller {
                     return redirect()->back()->with('error', 'Error al generar el PDF');
                 }
             }
-            //  dd(compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthData'));
 
-            // Pasa los datos de préstamos, el número de préstamos del mes y los parámetros de paginación a la vista y renderiza la vista
-            return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthData'));
+            // Pasa los datos de préstamos y los parámetros de paginación a la vista y renderiza la vista
+            return view('loans.index', compact('loans', 'searchQuery', 'total', 'currentPage', 'lastPage', 'monthDataNumber'));
         }
 
         // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error

@@ -106,14 +106,13 @@
                 </a>
             </div>
             <div class="ml-auto">
-                <p class="mb-10">Conteo de préstamos del mes actual: {{ $monthData['count'] }}</p>
+                @if(isset($monthDataNumber['count']))
+                    <p class="mb-10">Conteo de préstamos del mes actual: {{ $monthDataNumber['count'] }}</p>
+                @else
+                    <p class="mb-10">No hay datos disponibles.</p>
+                @endif
             </div>
             
-            @if (isset($monthData['other_key']))
-                <div>
-                    <p>Otro dato de interés: {{ $monthData['other_key'] }}</p>
-                </div>
-            @endif
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
