@@ -11,31 +11,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .btn-group-horizontal {
-            display: flex;
-            justify-content: center; /* Centra horizontalmente */
-            align-items: center;
-        }
-
-        .btn-group-horizontal .btn {
-            margin-right: 5px;
-        }
-
-        .btn-custom-size {
-            padding: 6px 12px;
-        }
-
-        .btn-danger {
-            background-color: #ff0000; /* color rojo */
-            border-color: #ff0000; /* color rojo */
-            color: #fff; /* texto blanco */
-        }
-
-        .btn-danger:hover {
-            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-        }
-
         @media (max-width: 576px) {
             .ml-auto {
                 width: 100%;
