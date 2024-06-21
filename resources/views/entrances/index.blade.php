@@ -136,7 +136,7 @@
             </div>
             @if(isset($monthData))
                 <div class="ml-auto text-left">
-                    <p class="mb-0">Conteo de entradas del mes actual: {{ $monthData['count'] }}</p>
+                    <p class="mb-0">Conteo de entradas del mes actual: {{ number_format($monthData['count'], 0, ',', '.') }}</p>
                 </div>
             @else
                 <p class="mb-10">No hay datos disponibles.</p>

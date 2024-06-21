@@ -107,7 +107,7 @@
             </div>
             <div class="ml-auto">
                 @if(isset($monthDataNumber['count']))
-                    <p class="mb-10">Conteo de préstamos del mes actual: {{ $monthDataNumber['count'] }}</p>
+                    <p class="mb-10">Conteo de préstamos del mes actual: {{ number_format($monthDataNumber['count'], 0, ',', '.') }}</p>
                 @else
                     <p class="mb-10">No hay datos disponibles.</p>
                 @endif
