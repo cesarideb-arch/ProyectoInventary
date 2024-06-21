@@ -35,6 +35,35 @@
             background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
             border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
         }
+
+        @media (max-width: 576px) {
+            .ml-auto {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
     </style>
 </head>
 <body>
@@ -64,9 +93,9 @@
                 <tbody>
                     @foreach($categories as $category)
                         <tr>
-                            <td style="text-align: center;">{{ $category['name'] }}</td>
-                            <td style="text-align: center;">{{ $category['description'] ?? 'N/A' }}</td>
-                            <td style="text-align: center;">
+                            <td data-label="Nombre" style="text-align: center;">{{ $category['name'] }}</td>
+                            <td data-label="Descripción" style="text-align: center;">{{ $category['description'] ?? 'N/A' }}</td>
+                            <td data-label="Acciones" style="text-align: center;">
                                 <div class="btn-group btn-group-horizontal" role="group">
                                     <form action="{{ route('categories.edit', $category['id']) }}" method="GET">
                                         @csrf
@@ -126,6 +155,7 @@
     @endif
 
     <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
     const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
 
@@ -150,7 +180,6 @@
         });
     });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <!-- JavaScript para Bootstrap y dependencias -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
