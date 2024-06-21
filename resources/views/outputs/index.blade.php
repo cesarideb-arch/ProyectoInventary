@@ -97,6 +97,27 @@
                 text-align: left;
                 margin-top: 10px;
             }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
         }
     </style>
 </head>
@@ -117,7 +138,6 @@
                 <p class="mb-0">Conteo de salidas del mes actual: {{ $monthData['count'] }}</p>
             </div>
         </div>
-        
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Salidas..." value="{{ request('query') }}">
@@ -143,13 +163,13 @@
                 <tbody>
                     @foreach($outputs as $output)
                     <tr>
-                        <td>{{ $output['project']['name'] ?? 'N/A' }}</td>
-                        <td>{{ $output['product']['name'] ?? 'N/A' }}</td>
-                        <td>{{ $output['responsible'] ?? 'N/A' }}</td>
-                        <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td>{{ $output['product']['location'] ?? 'N/A' }}</td>
-                        <td>{{ $output['description'] ?? 'N/A' }}</td>
-                        <td>{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
+                        <td data-label="Proyecto">{{ $output['project']['name'] ?? 'N/A' }}</td>
+                        <td data-label="Producto">{{ $output['product']['name'] ?? 'N/A' }}</td>
+                        <td data-label="Responsable">{{ $output['responsible'] ?? 'N/A' }}</td>
+                        <td data-label="Cantidad">{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td data-label="Ubicación">{{ $output['product']['location'] ?? 'N/A' }}</td>
+                        <td data-label="Descripción">{{ $output['description'] ?? 'N/A' }}</td>
+                        <td data-label="Fecha">{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
                     @endforeach
                 </tbody>
