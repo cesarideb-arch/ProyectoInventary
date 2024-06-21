@@ -17,7 +17,7 @@
         }
 
         .btn-group-horizontal .btn {
-            margin-right: 5 px;
+            margin-right: 5px;
         }
 
         .btn-custom-size {
@@ -33,6 +33,35 @@
         .btn-danger:hover {
             background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
             border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+        }
+
+        @media (max-width: 576px) {
+            .ml-auto {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
         }
     </style>
 </head>
@@ -72,15 +101,15 @@
                 <tbody>
                     @foreach($projects as $project)
                     <tr>
-                        <td>{{ $project['name'] }}</td>
-                        <td>{{ $project['description'] ?? 'N/A' }}</td>
-                        <td>{{ $project['company_name'] }}</td>
-                        <td>{{ $project['rfc'] ?? 'N/A' }}</td>
-                        <td>{{ $project['address'] }}</td>
-                        <td>{{ $project['phone_number'] }}</td>
-                        <td>{{ $project['email'] }}</td>
-                        <td>{{ $project['client_name'] }}</td>
-                        <td>
+                        <td data-label="Nombre">{{ $project['name'] }}</td>
+                        <td data-label="Descripción">{{ $project['description'] ?? 'N/A' }}</td>
+                        <td data-label="Nombre de la Empresa">{{ $project['company_name'] }}</td>
+                        <td data-label="RFC">{{ $project['rfc'] ?? 'N/A' }}</td>
+                        <td data-label="Dirección">{{ $project['address'] }}</td>
+                        <td data-label="Teléfono">{{ $project['phone_number'] }}</td>
+                        <td data-label="Email">{{ $project['email'] }}</td>
+                        <td data-label="Nombre del Cliente">{{ $project['client_name'] }}</td>
+                        <td data-label="Acciones">
                             <div class="btn-group btn-group-horizontal text-center" role="group">
                                 <form action="{{ route('projects.edit', $project['id']) }}" method="GET">
                                     @csrf
@@ -112,7 +141,6 @@
                 <a href="{{ route('projects.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-            </div>
             </div>
             @else
             <p>No se encontraron proyectos.</p>
