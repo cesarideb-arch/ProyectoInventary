@@ -114,7 +114,7 @@
                 </a>
             </div>
             <div class="ml-auto text-left">
-                <p class="mb-0">Conteo de préstamos del mes actual: {{ $monthData['count'] }}</p>
+                <p class="mb-0">Conteo de salidas del mes actual: {{ $monthData['count'] }}</p>
             </div>
         </div>
         
