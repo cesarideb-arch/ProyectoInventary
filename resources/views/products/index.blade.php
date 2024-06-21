@@ -117,7 +117,7 @@
                     <td data-label="Acciones" style="text-align: center;">
                         <div class="btn-group btn-group-horizontal" role="group">
                             @if (session('role') === '1' || session('role') === '0')
-                            <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
+                            <form action="{{ route('products.edit', $product['id']) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-custom-size">
                                     <i class="fas fa-edit"></i>
