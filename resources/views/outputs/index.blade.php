@@ -134,9 +134,15 @@
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>
-            <div class="ml-auto text-left">
-                <p class="mb-0">Conteo de salidas del mes actual: {{ $monthData['count'] }}</p>
-            </div>
+            @if(isset($monthData))
+                <div class="ml-auto text-left">
+                    <p class="mb-0">Conteo de salidas del mes actual: {{ $monthData['count'] }}</p>
+                </div>
+            @else
+                <div class="ml-auto text-left">
+                    <p class="mb-10">No hay datos disponibles.</p>
+                </div>
+            @endif
         </div>
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
