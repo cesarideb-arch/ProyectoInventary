@@ -35,6 +35,35 @@
             background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
             border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
         }
+
+        @media (max-width: 576px) {
+            .ml-auto {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
+        }
     </style>
 </head>
 <body>
@@ -76,16 +105,16 @@
                 <tbody>
                 @foreach($products as $product)
                     <tr>
-                    <td>{{ $product['name'] }}</td>
-                    <td>{{ $product['description'] ?? 'N/A' }}</td>
-                    <td>{{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</td>
-                    <td>{{ $product['category']['name'] }}</td>
-                    <td>{{ $product['supplier']['company'] ?? 'N/A' }}</td>
-                    <td>{{ $product['location'] ?? 'N/A' }}</td>
-                    <td>
+                    <td data-label="Nombre">{{ $product['name'] }}</td>
+                    <td data-label="Descripción">{{ $product['description'] ?? 'N/A' }}</td>
+                    <td data-label="Precio">{{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</td>
+                    <td data-label="Categoría">{{ $product['category']['name'] }}</td>
+                    <td data-label="Proveedor">{{ $product['supplier']['company'] ?? 'N/A' }}</td>
+                    <td data-label="Ubicación">{{ $product['location'] ?? 'N/A' }}</td>
+                    <td data-label="Imagen">
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                     </td>
-                    <td style="text-align: center;">
+                    <td data-label="Acciones" style="text-align: center;">
                         <div class="btn-group btn-group-horizontal" role="group">
                             @if (session('role') === '1' || session('role') === '0')
                             <form action="{{ route('products.edit', $product['id']) }}" method="GET" style="margin-right: 5px;">
