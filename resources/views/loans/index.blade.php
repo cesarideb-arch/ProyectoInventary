@@ -61,6 +61,27 @@
                 width: 100%;
                 text-align: center;
             }
+            .table-responsive {
+                overflow-x: auto;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tr {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: bold;
+            }
         }
     </style>
 </head>
@@ -121,19 +142,19 @@
                 <tbody>
                     @foreach($loans as $loan)
                     <tr>
-                        <td>{{ $loan['product']['name'] }}</td>
-                        <td>{{ $loan['responsible'] }}</td>
-                        <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td>{{ $loan['product']['location'] ?? 'N/A' }}</td>
-                        <td style="text-align: center;">{{ $loan['observations'] ?? 'N/A' }}</td>
-                        <td>
+                        <td data-label="Producto">{{ $loan['product']['name'] }}</td>
+                        <td data-label="Responsable">{{ $loan['responsible'] }}</td>
+                        <td data-label="Cantidad">{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td data-label="Ubicación">{{ $loan['product']['location'] ?? 'N/A' }}</td>
+                        <td data-label="Observaciones">{{ $loan['observations'] ?? 'N/A' }}</td>
+                        <td data-label="Fecha">
                             @if($loan['status'] == 0)
                                 {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
                             @else
                                 {{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
                             @endif
                         </td>
-                        <td>
+                        <td data-label="Estado">
                             @if($loan['status'] == 0)
                                 Producto Regresado
                             @else
