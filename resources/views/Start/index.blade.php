@@ -51,10 +51,9 @@
                 content += `<p class="lead"><strong>El número de préstamos activos es:</strong> ${data.counts.count}</p>`;
                 content += `<p class="lead"><strong>El número de préstamos finalizados es:</strong> ${data.countsFinished.count}</p>`;
                 content += `<p class="lead"><strong>El número total de préstamos es:</strong> ${data.countsAll.count}</p>`;
-                content += `<p class="lead"><strong>El producto con más entradas es:</strong> ${data.countsProductEntrance.name} <strong>cantidad:</strong> ${data.countsProductEntrance.total_quantity}</p>`;
-                content += `<p class="lead"><strong>El producto con más salidas es:</strong> ${data.countsProductOut.name} <strong>cantidad:</strong> ${data.countsProductOut.total_quantity}</p>`;
-                content += `<p class="lead"><strong>El producto con más préstamos es:</strong> ${data.countsProductLoan.name} <strong>cantidad:</strong> ${data.countsProductLoan.total_quantity}</p>`;
-                
+                content += `<p class="lead"><strong>El producto con más entradas es:</strong> ${data.countsProductEntrance.name || 'Ninguno'} <strong>cantidad:</strong> ${data.countsProductEntrance.total_quantity || '0'}</p>`;
+                content += `<p class="lead"><strong>El producto con más salidas es:</strong> ${data.countsProductOut.name || 'Ninguno'} <strong>cantidad:</strong> ${data.countsProductOut.total_quantity || '0'}</p>`;
+                content += `<p class="lead"><strong>El producto con más préstamos es:</strong> ${data.countsProductLoan.name || 'Ninguno'} <strong>cantidad:</strong> ${data.countsProductLoan.total_quantity || '0'}</p>`;
                 $('#data-container').html(content);
             },
             error: function() {
