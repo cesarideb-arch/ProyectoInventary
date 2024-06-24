@@ -177,17 +177,17 @@
             </div>
 
             <div class="form-group">
-                <label for="serie">Serie:</label>
+                <label for="serie">Número de serie:</label>
                 <input type="text" id="serie" name="serie" value="{{ old('serie') }}" class="form-control @error('serie') is-invalid @enderror">
                 @error('serie')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese la serie del producto o marque "Sin serie".</div>
+                <div class="invalid-feedback">Por favor, ingrese el número de serie del producto o marque "Sin número de serie".</div>
             </div>
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck">
-                <label for="noSerieCheck">Sin serie</label>
+                <label for="noSerieCheck">Sin número de serie</label>
             </div>
 
             <div class="form-group">
