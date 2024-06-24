@@ -107,7 +107,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck" {{ $supplier['email'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noEmailCheck">Sin email</label>
+                <label class="" for="noEmailCheck">Sin email</label>
             </div>
 
             <div class="form-group">
@@ -121,7 +121,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck" {{ $supplier['address'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noAddressCheck">Sin dirección</label>
+                <label class="" for="noAddressCheck">Sin dirección</label>
             </div>
 
             <button type="submit" class="btn btn-primary">Actualizar</button>
