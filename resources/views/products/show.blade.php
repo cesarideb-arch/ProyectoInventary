@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Inclusión de Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Inclusión de SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-3">
@@ -86,6 +88,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Inclusión de Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Inclusión de SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -121,40 +125,51 @@
 
             // Validación personalizada del lado del cliente
             $('#entranceForm').on('submit', function(event) {
+                event.preventDefault(); // Prevenir envío del formulario inicial
                 var form = this;
                 var projectSelect = $('#project_id');
                 var noProjectCheck = $('#noProjectCheck');
                 var quantityInput = $('#quantity');
                 var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
 
-                if (quantityValue < 1) {
+                if (quantityValue < 1 || isNaN(quantityValue)) {
                     $('#alertaCantidad').removeClass('d-none');
                     quantityInput.addClass('is-invalid');
-                    event.preventDefault();
                     return false;
+                } else {
+                    $('#alertaCantidad').addClass('d-none');
+                    quantityInput.removeClass('is-invalid');
                 }
 
                 if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
                     projectSelect.addClass('is-invalid');
-                    event.preventDefault();
                     event.stopPropagation();
                 } else {
                     projectSelect.removeClass('is-invalid').addClass('is-valid');
                 }
 
                 if (!form.checkValidity()) {
-                    event.preventDefault();
                     event.stopPropagation();
+                } else {
+                    // Mostrar confirmación antes de enviar con swal2
+                    Swal.fire({
+                        title: 'Confirmar envío',
+                        html: `<p> <strong>Producto: </strong> {{ $product['name'] }}</p><p> <strong>Cantidad a enviar: </strong> ${quantityInput.val()}</p>`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, enviar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Eliminar comas antes de enviar el formulario
+                            quantityInput.val(quantityInput.val().replace(/,/g, ''));
+                            form.submit();
+                        }
+                    });
                 }
-
-                if (noProjectCheck.is(':checked')) {
-                    projectSelect.removeAttr('name');
-                }
-
                 form.classList.add('was-validated');
-
-                // Eliminar comas antes de enviar el formulario
-                quantityInput.val(quantityInput.val().replace(/,/g, ''));
             });
 
             // Separación correcta de la cantidad
