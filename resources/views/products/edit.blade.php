@@ -109,7 +109,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noModelCheck" name="noModelCheck" {{ $product['model'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noModelCheck">Sin modelo</label>
+                <label class="" for="noModelCheck">Sin modelo</label>
             </div>
 
             <div class="form-group">
@@ -123,7 +123,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noMeasurementUnitCheck" name="noMeasurementUnitCheck" {{ $product['measurement_unit'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noMeasurementUnitCheck">Sin unidad de medida</label>
+                <label class="" for="noMeasurementUnitCheck">Sin unidad de medida</label>
             </div>
 
             <div class="form-group">
@@ -247,7 +247,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSerieCheck" name="noSerieCheck" {{ $product['serie'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noSerieCheck">Sin número de serie </label>
+                <label class="" for="noSerieCheck">Sin número de serie </label>
             </div>
 
             <div class="form-group">
@@ -261,7 +261,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noObservationsCheck" name="noObservationsCheck" {{ $product['observations'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noObservationsCheck">Sin observaciones</label>
+                <label class="" for="noObservationsCheck">Sin observaciones</label>
             </div>
 
             <div class="form-group">
@@ -295,7 +295,7 @@
 
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="noSupplierCheck" name="noSupplierCheck" {{ $product['supplier_id'] == null ? 'checked' : '' }}>
-                <label class="form-check-label" for="noSupplierCheck">Sin proveedor</label>
+                <label class="" for="noSupplierCheck">Sin proveedor</label>
             </div>
 
             <div class="form-group">
