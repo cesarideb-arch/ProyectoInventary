@@ -7,10 +7,6 @@ use Illuminate\Support\Facades\Http;
 
 class SupplierController extends Controller {
     public function index(Request $request) {
-        // Verificación de rol, solo permite acceso a usuarios con rol distinto de 2
-        if (session('role') === '2') {
-            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
-        }
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 

@@ -70,7 +70,9 @@
     <div class="container">
         <h1 class="mb-4">Lista de Proveedores</h1>
         <div class="d-flex justify-content-between mb-3">
+            @if (session('role') === '1' || session('role') === '0')
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+            @endif
             <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
             </a>
@@ -94,7 +96,9 @@
                     <th style="text-align: center;">Teléfono</th>
                     <th style="text-align: center;">Email</th>
                     <th style="text-align: center;">Dirección</th>
+                    @if (session('role') === '1' || session('role') === '0')
                     <th style="text-align: center;" colspan="2">Acciones</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -108,6 +112,7 @@
                             <td data-label="Dirección" style="text-align: center;">{{ $supplier['address'] ?? 'N/A' }}</td>
                             <td data-label="Acciones" style="text-align: center;">
                                 <div class="btn-group btn-group-horizontal" role="group">
+                                    @if (session('role') === '1' || session('role') === '0')
                                     <form action="{{ route('suppliers.edit', $supplier['id']) }}" method="GET">
                                         @csrf
                                         <button type="submit" class="btn btn-primary btn-custom-size">
@@ -119,6 +124,7 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
                                     </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

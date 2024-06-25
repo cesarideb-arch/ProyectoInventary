@@ -69,14 +69,14 @@
 <body>
     <div class="container">
         <h1 class="mb-4">Inventario General</h1>
-        @if (session('role') === '1' || session('role') === '0')
             <div class="d-flex justify-content-between mb-3">
+                @if (session('role') === '1' || session('role') === '0')
                 <a href="{{ route('products.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
+                @endif
                 <a href="{{ route('products.index', ['download' => 'pdf']) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
             </div>
-        @endif
         <form method="GET" action="{{ route('products.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Productos..." value="{{ request('query') }}">
