@@ -29,6 +29,8 @@
                             <th>Producto</th>
                             <th>Responsable</th>
                             <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Gastado</th>
                             <th>Ubicación</th>
                             <th>Descripción</th>
                             <th>Folio</th>
@@ -42,6 +44,8 @@
                                 <td>{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['responsible'] ?? 'N/A' }}</td>
                                 <td>{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                                <td>{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
+                                <td>{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
                                 <td>{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['description'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['folio'] ?? 'N/A' }}</td>
