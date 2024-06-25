@@ -25,6 +25,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>Proyecto</th>
                             <th>Producto</th>
                             <th>Responsable</th>
                             <th>Cantidad</th>
@@ -37,6 +38,7 @@
                     <tbody>
                         @foreach($chunk as $loan)
                             <tr>
+                                <td>{{ $loan['project']['name'] }}</td>
                                 <td>{{ $loan['product']['name'] }}</td>
                                 <td>{{ $loan['responsible'] }}</td>
                                 <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
