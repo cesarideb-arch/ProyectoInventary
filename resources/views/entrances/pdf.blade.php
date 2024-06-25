@@ -31,6 +31,7 @@
                             <th>Cantidad</th>
                             <th>Ubicación</th>
                             <th>Descripción</th>
+                            <th>Folio</th>
                             <th>Fecha</th>
                         </tr>
                     </thead>
@@ -43,6 +44,7 @@
                                 <td>{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                                 <td>{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['description'] ?? 'N/A' }}</td>
+                                <td>{{ $entrance['folio'] ?? 'N/A' }}</td>
                                 <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                             </tr>
                         @endforeach
