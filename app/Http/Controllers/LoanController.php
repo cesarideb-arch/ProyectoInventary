@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Http;
 class LoanController extends Controller {
 
     public function index(Request $request) {
+
+        if (session('role') === '2') {
+            return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
+        }
+
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
 

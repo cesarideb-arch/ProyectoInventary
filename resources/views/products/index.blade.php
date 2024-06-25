@@ -99,8 +99,9 @@
                     <th>Proveedor</th>
                     <th>Ubicación</th>
                     <th>Imagen</th>
-                    <th style="text-align: center;" colspan="3">Acciones</th>
-                </tr>
+                    @if (session('role') === '1' || session('role') === '0')
+                        <th style="text-align: center;" colspan="3">Acciones</th>
+                    @endif
                 </thead>
                 <tbody>
                 @foreach($products as $product)
@@ -128,7 +129,6 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-custom-size"><i class="fas fa-trash"></i></button>
                             </form>
-                            @endif
                             <a href="{{ route('products.show', $product['id']) }}" class="btn btn-info btn-custom-size" style="margin-right: 5px;">
                                 <i class="fas fa-arrow-circle-right"></i>
                             </a>
@@ -138,6 +138,7 @@
                             <a href="{{ route('products.loans.get', $product['id']) }}" class="btn btn-info btn-custom-size">
                                 <i class="fas fa-exchange-alt"></i>
                             </a>
+                            @endif
                         </div>
                     </td>
                     </tr>
