@@ -43,11 +43,6 @@
                     <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
                 </div>
 
-                {{-- <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck" {{ old('noProjectCheck') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
-                </div> --}}
-
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
                 <div class="mb-3">
@@ -76,7 +71,7 @@
                 
                 <div class="mb-3">
                     <label for="folio" class="form-label">Folio:</label>
-                    <input type="text" name="folio" id="folio" class="form-control @error('folio') is-invalid @enderror" maxlength="100" value="{{ old('folio') }}">
+                    <input type="text" name="folio" id="folio" class="form-control @error('folio') is-invalid @enderror" required maxlength="100" value="{{ old('folio') }}">
                     <div class="invalid-feedback">Por favor, ingrese el folio.</div>
                 </div>
 

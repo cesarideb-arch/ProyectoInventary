@@ -162,6 +162,8 @@
                         <th>Ubicación</th>
                         <th>Descripción</th>
                         <th>Folio</th>
+                        <th>Precio</th>
+                        <th>Gastado</th>
                         <th>Fecha</th>
                     </tr>
                 </thead>
@@ -175,6 +177,9 @@
                         <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                         <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td data-label="Folio">{{ $entrance['folio'] ?? 'N/A' }}</td>
+                        <td data-label="Producto">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
+                        <td data-label="Gastado">{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
+                        
                         <td data-label="Fecha">{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
                     @endforeach
