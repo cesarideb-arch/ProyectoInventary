@@ -28,6 +28,21 @@
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
+                <div class="form-group">
+                    <label for="project_id">Proyecto:</label>
+                    <select id="project_id" name="project_id" class="form-control" required>
+                        <option value="">Seleccione un proyecto</option>
+                        @if (count($projects) > 0)
+                            @foreach ($projects as $project)
+                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
+                            @endforeach
+                        @else
+                            <option value="" disabled>No hay proyectos disponibles</option>
+                        @endif
+                    </select>
+                    <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
+                </div>
+
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') }}">

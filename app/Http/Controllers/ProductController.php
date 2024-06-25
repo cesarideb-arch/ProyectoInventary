@@ -191,6 +191,7 @@ class ProductController extends Controller {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'product_id' => 'required|integer',
+            'project_id' => 'nullable|integer',
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'observations' => 'nullable|string|max:255',
@@ -226,28 +227,37 @@ class ProductController extends Controller {
     public function loansGet($id, Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
+    
         // URL de la API para obtener un producto específico
         $productApiUrl = $baseApiUrl . '/api/products/' . $id;
-
+    
+        // URL de la API para obtener todos los proyectos
+        $projectsApiUrl = $baseApiUrl . '/api/getprojects';
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
         $productResponse = Http::withToken($token)->get($productApiUrl);
-
-        if ($productResponse->successful()) {
+    
+        // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
+        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
+    
+        if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
             $product = $productResponse->json();
-
-            // Muestra la vista de detalles del producto con los datos del producto
-            return view('products.loans', compact('product'));
+    
+            // Decodifica la respuesta JSON de los proyectos en un array asociativo
+            $projects = $projectsResponse->json();
+    
+            // Muestra la vista de detalles del producto con los datos del producto y los proyectos
+            return view('products.loans', compact('product', 'projects'));
         }
-
+    
         // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
-        return abort(404, 'Products data not found.');
+        return abort(404, 'Product or projects data not found.');
     }
-
+    
     public function outPutGet($id, Request $request) {
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
@@ -281,6 +291,8 @@ class ProductController extends Controller {
         // En caso de error en alguna solicitud, redirige a una vista de error o de no encontrado
         return abort(404, 'Product or projects data not found.');
     }
+
+
 
     public function create(Request $request) {
         // URL base de la API
