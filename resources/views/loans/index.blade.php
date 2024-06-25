@@ -127,7 +127,8 @@
             @if(isset($loans) && count($loans) > 0)
             <table class="table table-striped">
                 <thead>
-                    <tr>
+                    <tr> 
+                        <th>Proyecto</th>
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
@@ -141,6 +142,7 @@
                 <tbody>
                     @foreach($loans as $loan)
                     <tr>
+                        <td data-label="Proyecto">{{ $loan['project']['name'] ?? 'N/A' }}</td>
                         <td data-label="Producto">{{ $loan['product']['name'] }}</td>
                         <td data-label="Responsable">{{ $loan['responsible'] }}</td>
                         <td data-label="Cantidad">{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
