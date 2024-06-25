@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Inclusión de SweetAlert2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Inclusión de Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container mt-3">
@@ -30,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control" required>
+                    <select id="project_id" name="project_id" class="form-control select2" required>
                         <option value="">Seleccione un proyecto</option>
                         @if (count($projects) > 0)
                             @foreach ($projects as $project)
@@ -87,11 +89,24 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Inclusión de SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <!-- Inclusión de Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
         $(document).ready(function() {
             var maxQuantity = {{ $product['quantity'] }};
             
+            // Inicializar Select2
+            $('#project_id').select2({
+                placeholder: 'Seleccione un proyecto',
+                allowClear: true,
+                language: {
+                    noResults: function() {
+                        return "No hay resultados";
+                    }
+                }
+            });
+
             // Verifica si hay stock disponible y deshabilita los campos si no lo hay
             if (maxQuantity === 0) {
                 $('#alertaSinStock').removeClass('d-none');

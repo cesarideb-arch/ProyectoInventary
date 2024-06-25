@@ -73,6 +73,12 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                
+                <div class="mb-3">
+                    <label for="folio" class="form-label">Folio:</label>
+                    <input type="text" name="folio" id="folio" class="form-control @error('folio') is-invalid @enderror" maxlength="100" value="{{ old('folio') }}">
+                    <div class="invalid-feedback">Por favor, ingrese el folio.</div>
+                </div>
 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>

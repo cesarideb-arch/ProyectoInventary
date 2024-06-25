@@ -127,6 +127,7 @@ class ProductController extends Controller {
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
+            'folio' => 'nullable|string|max:100',    
         ]);
 
         // URL base de la API
@@ -140,6 +141,7 @@ class ProductController extends Controller {
 
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
         $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        // dd($validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
