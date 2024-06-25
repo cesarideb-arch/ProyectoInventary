@@ -159,11 +159,11 @@
                         <th>Producto</th>
                         <th>Responsable</th>
                         <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Gastado</th>
                         <th>Ubicación</th>
                         <th>Descripción</th>
                         <th>Folio</th>
-                        <th>Precio</th>
-                        <th>Gastado</th>
                         <th>Fecha</th>
                     </tr>
                 </thead>
@@ -174,11 +174,12 @@
                         <td data-label="Producto">{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                         <td data-label="Responsable">{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td data-label="Cantidad">{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                        <td data-label="Producto">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
+                        <td data-label="Gastado">{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
                         <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                         <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td data-label="Folio">{{ $entrance['folio'] ?? 'N/A' }}</td>
-                        <td data-label="Producto">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
-                        <td data-label="Gastado">{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
+                
                         
                         <td data-label="Fecha">{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                     </tr>
