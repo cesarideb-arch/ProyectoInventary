@@ -40,13 +40,13 @@
                             <option value="" disabled>No hay proyectos disponibles</option>
                         @endif
                     </select>
-                    <div class="invalid-feedback">Por favor, seleccione un proyecto o marque "Sin proyecto".</div>
+                    <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
                 </div>
 
-                <div class="form-group form-check">
+                {{-- <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck" {{ old('noProjectCheck') ? 'checked' : '' }}>
                     <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
-                </div>
+                </div> --}}
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
