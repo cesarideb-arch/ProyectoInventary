@@ -2,7 +2,7 @@
 
 @section('content')
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,10 +61,12 @@
         .btn-group-horizontal {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn-group-horizontal .btn {
             margin-right: 5px;
+            margin-bottom: 5px;
         }
 
         .btn-custom-size {
@@ -88,6 +90,17 @@
 
         .btn-custom-size:last-child {
             margin-right: 0;
+        }
+
+        .form-inline .form-control {
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .form-inline .btn {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         @media (max-width: 576px) {
@@ -116,6 +129,22 @@
             .table td::before {
                 content: attr(data-label);
                 font-weight: bold;
+            }
+            .input-group, .form-inline .input-group {
+                flex-direction: row;
+                align-items: stretch;
+                width: 100%;
+            }
+            .form-inline .input-group .form-control, .form-inline .input-group .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .form-inline .input-group .btn {
+                margin-bottom: 0;
+            }
+            .form-inline .input-group .input-group-append {
+                display: flex;
+                flex-direction: column;
             }
         }
     </style>
