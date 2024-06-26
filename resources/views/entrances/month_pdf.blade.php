@@ -6,8 +6,29 @@
     <title>Entradas del Mes - PDF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            font-size: 13px;
+        }
         .page-break {
             page-break-before: always;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #dee2e6;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .table-responsive {
+            overflow-x: auto;
         }
     </style>
 </head>
@@ -22,7 +43,7 @@
                 <div class="page-break"></div>
             @endif
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped text-center">
                     <thead>
                         <tr>
                             <th>Proyecto</th>
@@ -49,7 +70,6 @@
                                 <td>{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['description'] ?? 'N/A' }}</td>
                                 <td>{{ $entrance['folio'] ?? 'N/A' }}</td>
-
                                 <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
                             </tr>
                         @endforeach

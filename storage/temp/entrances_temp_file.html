@@ -6,16 +6,38 @@
     <title>Lista de Entradas - PDF</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            font-size: 13px;
+        }
         .page-break {
             page-break-before: always;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #dee2e6;
+            word-wrap: break-word;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .table-responsive {
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-4">Listado de Entradas</h1>
+        <div class="text-left">
+            <h1 class="mb-4">Listado de Entradas</h1>
+        </div>
                                         <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped text-center">
                     <thead>
                         <tr>
                             <th>Proyecto</th>
