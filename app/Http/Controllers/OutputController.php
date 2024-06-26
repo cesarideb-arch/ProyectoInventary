@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Exports\OutputsExport;
 
 class OutputController extends Controller {
     public function index(Request $request) {
@@ -123,6 +124,26 @@ class OutputController extends Controller {
                         } else {
                             return redirect()->back()->with('error', 'Error al generar el PDF');
                         }
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener las salidas del rango de fechas de la API');
+                    }
+                } elseif ($downloadType === 'between_dates_excel') {
+                    $start_date = $request->input('start_date');
+                    $end_date = $request->input('end_date');
+    
+                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenOutput, [
+                        'start_date' => $start_date,
+                        'end_date' => $end_date
+                    ]);
+    
+                    if ($dateRangeResponse->successful()) {
+                        $dateRangeData = $dateRangeResponse->json();
+    
+                        $filePath = storage_path('app/Salidas_Rango_Seleccionado.xlsx');
+                        $export = new OutputsExport($dateRangeData);
+                        $export->export($filePath);
+    
+                        return response()->download($filePath)->deleteFileAfterSend(true);
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener las salidas del rango de fechas de la API');
                     }
