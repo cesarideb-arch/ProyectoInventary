@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entradas por Rango de Fechas</title>
+    <title>Salidas por Rango de Fechas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -46,9 +46,9 @@
     </style>
 </head>
 <body>
-    <h1>Entradas por Rango de Fechas</h1>
+    <h1>Salidas por Rango de Fechas</h1>
     <br>
-    <p>Rango de fechas: 26/06/2024 - 26/06/2024</p>
+    <p>Rango de fechas: {{ request()->input('start_date') }} - {{ request()->input('end_date') }}</p>
     <div class="table-responsive">
         <table class="table table-striped text-center">
             <thead>
@@ -57,16 +57,24 @@
                     <th>Producto</th>
                     <th>Responsable</th>
                     <th>Cantidad</th>
-                    <th>Precio</th>
-                    <th>Gastado</th>
                     <th>Ubicación</th>
                     <th>Descripción</th>
-                    <th>Folio</th>
                     <th>Fecha</th>
                 </tr>
             </thead>
             <tbody>
-                            </tbody>
+                @foreach($dateRangeData as $output)
+                <tr>
+                    <td>{{ $output['project']['name'] ?? 'N/A' }}</td>
+                    <td>{{ $output['product']['name'] ?? 'N/A' }}</td>
+                    <td>{{ $output['responsible'] ?? 'N/A' }}</td>
+                    <td>{{ number_format($output['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                    <td>{{ $output['product']['location'] ?? 'N/A' }}</td>
+                    <td>{{ $output['description'] ?? 'N/A' }}</td>
+                    <td>{{ \Carbon\Carbon::parse($output['created_at'])->format('Y-m-d H:i:s') }}</td>
+                </tr>
+                @endforeach
+            </tbody>
         </table>
     </div>
 </body>

@@ -8,10 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Salidas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
-        /* Estilos para la ventana emergente */
         .modal {
             display: none;
             position: fixed;
@@ -73,22 +72,22 @@
         }
 
         .btn-danger {
-            background-color: #ff0000; /* color rojo */
-            border-color: #ff0000; /* color rojo */
-            color: #fff; /* texto blanco */
+            background-color: #ff0000;
+            border-color: #ff0000;
+            color: #fff;
         }
 
         .btn-danger:hover {
-            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            background-color: #cc0000;
+            border-color: #cc0000;
         }
 
         .btn-custom-size {
-            margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+            margin-right: 10px;
         }
 
         .btn-custom-size:last-child {
-            margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
+            margin-right: 0;
         }
 
         @media (max-width: 576px) {
@@ -125,30 +124,40 @@
     <div class="container">
         <h1 class="mb-4">Listado de Salidas</h1>
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-            {{-- <a href="{{ route('outputs.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
-            <div class="d-flex flex-wrap">
-                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+            <div class="btn-group-horizontal mb-3">
+                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('outputs.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>
             @if(isset($monthData))
-                <div class="ml-auto text-left">
+                <div class="ml-auto text-left mb-3">
                     <p class="mb-0">Cantidad de salidas del mes actual: {{ number_format($monthData['count'], 0, ',', '.') }}</p>
                 </div>
             @else
-                <div class="ml-auto text-left">
-                    <p class="mb-10">No hay datos disponibles.</p>
-                </div>
+                <p class="mb-10">No hay datos disponibles.</p>
             @endif
         </div>
+        
         <form method="GET" action="{{ route('outputs.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Salidas..." value="{{ request('query') }}">
-                <button class="btn" type="submit" style="background-color: #333; color: #fff;">
-                    <i class="fas fa-search"></i> Buscar
+                <div class="input-group-append">
+                    <button class="btn" type="submit" style="background-color: #333; color: #fff;">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form method="GET" action="{{ route('outputs.index') }}" class="form-inline mb-3">
+            <input type="hidden" name="download" value="between_dates_pdf">
+            <div class="input-group">
+                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+                <button type="submit" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> PDF por Fechas
                 </button>
             </div>
         </form>
@@ -199,9 +208,34 @@
             @endif
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.fn.datepicker.dates['es'] = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                clear: "Borrar",
+                format: "dd/mm/yyyy",
+                titleFormat: "MM yyyy",
+                weekStart: 1
+            };
+
+            $('input[name="start_date"], input[name="end_date"]').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'es'
+            });
+        });
+    </script>
 </body>
 </html>
 @endsection
