@@ -195,8 +195,12 @@
                 <button type="submit" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF por Fechas
                 </button>
+                <button type="submit" class="btn btn-success btn-custom-size">
+                    <i class="fas fa-file-excel"></i> Excel por Fechas
+                </button>
             </div>
         </form>
+    
         <div class="table-responsive">
             @if(isset($entrances) && count($entrances) > 0)
             <table class="table table-striped">
