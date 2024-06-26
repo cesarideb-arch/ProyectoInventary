@@ -83,6 +83,22 @@
                 content: attr(data-label);
                 font-weight: bold;
             }
+            .input-group, .form-inline .input-group {
+                flex-direction: row;
+                align-items: stretch;
+                width: 100%;
+            }
+            .form-inline .input-group .form-control, .form-inline .input-group .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .form-inline .input-group .btn {
+                margin-bottom: 0;
+            }
+            .form-inline .input-group .input-group-append {
+                display: flex;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -97,6 +113,8 @@
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
+            </div>
+            <div class="btn-group-right" style="flex-wrap: wrap;">
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF Finalizados
                 </a>
@@ -120,15 +138,16 @@
                 </button>
             </div>
         </form>
-        <form method="GET" action="{{ route('loans.index') }}" class="form-inline mb-3">
+        <form method="GET" action="{{ route('outputs.index') }}" class="form-inline mb-3">
             <input type="hidden" name="download" value="between_dates_pdf">
             <div class="input-group">
-                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
-                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
-                <button type="submit" class="btn btn-danger btn-custom-size">
-                    <i class="fas fa-file-pdf"></i> PDF por Fechas
-                </button>
+            <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+            <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+            <button type="submit" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <i class="fas fa-file-pdf"></i> PDF por Fechas
+            </button>
             </div>
+        </form>
         </form>
         <div class="table-responsive">
             @if(isset($loans) && count($loans) > 0)
@@ -198,7 +217,7 @@
                 </a>
             </div>
             @else
-            <p>No se encontraron préstamos.</p>
+            <p style="text-align: left;">No se encontraron préstamos.</p>
             @endif
         </div>
     </div>
@@ -242,26 +261,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
     <script>
         $(document).ready(function() {
-            $.fn.datepicker.dates['es'] = {
-                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-                today: "Hoy",
-                clear: "Borrar",
-                format: "dd/mm/yyyy",
-                titleFormat: "MM yyyy",
-                weekStart: 1
-            };
-
-            $('input[name="start_date"], input[name="end_date"]').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight: true,
-                language: 'es'
-            });
-
             var currentLoanId = null;
             var previousObservations = null;
 
@@ -351,6 +350,28 @@
                         });
                     }
                 });
+            });
+        });
+
+        $(document).ready(function(){
+            $.fn.datepicker.dates['es'] = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                clear: "Borrar",
+                format: "dd/mm/yyyy",
+                titleFormat: "MM yyyy",
+                weekStart: 1
+            };
+
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'es'
             });
         });
     </script>
