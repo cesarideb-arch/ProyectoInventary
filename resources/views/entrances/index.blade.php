@@ -2,7 +2,7 @@
 
 @section('content')
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -61,10 +61,12 @@
         .btn-group-horizontal {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn-group-horizontal .btn {
             margin-right: 5px;
+            margin-bottom: 5px;
         }
 
         .btn-custom-size {
@@ -88,6 +90,17 @@
 
         .btn-custom-size:last-child {
             margin-right: 0;
+        }
+
+        .form-inline .form-control {
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .form-inline .btn {
+            display: inline-block;
+            vertical-align: middle;
         }
 
         @media (max-width: 576px) {
@@ -117,6 +130,22 @@
                 content: attr(data-label);
                 font-weight: bold;
             }
+            .input-group, .form-inline .input-group {
+                flex-direction: row;
+                align-items: stretch;
+                width: 100%;
+            }
+            .form-inline .input-group .form-control, .form-inline .input-group .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .form-inline .input-group .btn {
+                margin-bottom: 0;
+            }
+            .form-inline .input-group .input-group-append {
+                display: flex;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -124,35 +153,40 @@
     <div class="container">
         <h1 class="mb-4">Listado de Entradas</h1>
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-            <div class="d-flex flex-wrap">
+            <div class="btn-group-horizontal mb-3">
                 <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
                 <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
-                <form method="GET" action="{{ route('entrances.index') }}" class="d-inline-block ml-2">
-                    <input type="hidden" name="download" value="between_dates_pdf">
-                    <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control d-inline-block datepicker" style="width: 120px;" required>
-                    <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control d-inline-block datepicker" style="width: 120px;" required>
-                    <button type="submit" class="btn btn-danger btn-custom-size">
-                        <i class="fas fa-file-pdf"></i> PDF por Fechas
-                    </button>
-                </form>
             </div>
             @if(isset($monthData))
-                <div class="ml-auto text-left">
+                <div class="ml-auto text-left mb-3">
                     <p class="mb-0">Conteo de entradas del mes actual: {{ number_format($monthData['count'], 0, ',', '.') }}</p>
                 </div>
             @else
                 <p class="mb-10">No hay datos disponibles.</p>
             @endif
         </div>
+        
         <form method="GET" action="{{ route('entrances.index') }}">
             <div class="input-group mb-3">
                 <input type="text" name="query" class="form-control" placeholder="Buscar Entradas..." value="{{ request('query') }}">
-                <button class="btn" type="submit" style="background-color: #333; color: #fff;">
-                    <i class="fas fa-search"></i> Buscar
+                <div class="input-group-append">
+                    <button class="btn" type="submit" style="background-color: #333; color: #fff;">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </form>
+        <form method="GET" action="{{ route('entrances.index') }}" class="form-inline mb-3">
+            <input type="hidden" name="download" value="between_dates_pdf">
+            <div class="input-group">
+                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+                <button type="submit" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> PDF por Fechas
                 </button>
             </div>
         </form>
@@ -180,8 +214,8 @@
                         <td data-label="Producto">{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                         <td data-label="Responsable">{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td data-label="Cantidad">{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td data-label="Producto">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
-                        <td>{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
+                        <td data-label="Precio">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
+                        <td data-label="Gastado">{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
                         <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                         <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td data-label="Folio">{{ $entrance['folio'] ?? 'N/A' }}</td>                        
@@ -213,12 +247,27 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
     <script>
         $(document).ready(function(){
+            $.fn.datepicker.dates['es'] = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                clear: "Borrar",
+                format: "dd/mm/yyyy",
+                titleFormat: "MM yyyy",
+                weekStart: 1
+            };
+
             $('input[name="start_date"], input[name="end_date"]').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,
-                todayHighlight: true
+                todayHighlight: true,
+                language: 'es'
             });
         });
     </script>
