@@ -117,7 +117,7 @@ class EntranceController extends Controller {
                             return redirect()->back()->with('error', 'Error al generar el archivo HTML');
                         }
     
-                        $pdfFilePath = storage_path('temp/Entradas_Between_Dates.pdf');
+                        $pdfFilePath = storage_path('temp/Entradas_Rango_Seleccionado.pdf');
                         $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
     
                         exec($command, $output, $returnVar);

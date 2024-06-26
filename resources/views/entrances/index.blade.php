@@ -9,6 +9,7 @@
     <title>Lista de Entradas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
         .modal {
             display: none;
@@ -132,8 +133,8 @@
                 </a>
                 <form method="GET" action="{{ route('entrances.index') }}" class="d-inline-block ml-2">
                     <input type="hidden" name="download" value="between_dates_pdf">
-                    <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control d-inline-block" style="width: 120px;" required>
-                    <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control d-inline-block" style="width: 120px;" required>
+                    <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control d-inline-block datepicker" style="width: 120px;" required>
+                    <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control d-inline-block datepicker" style="width: 120px;" required>
                     <button type="submit" class="btn btn-danger btn-custom-size">
                         <i class="fas fa-file-pdf"></i> PDF por Fechas
                     </button>
@@ -208,9 +209,19 @@
             @endif
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input[name="start_date"], input[name="end_date"]').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
+    </script>
 </body>
 </html>
 @endsection

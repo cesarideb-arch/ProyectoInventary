@@ -70,8 +70,5 @@
             @endforeach
         </tbody>
     </table>
-    <div class="footer">
-        <p>Reporte generado el {{ \Carbon\Carbon::now()->format('Y-m-d H:i:s') }}</p>
-    </div>
 </body>
 </html>
