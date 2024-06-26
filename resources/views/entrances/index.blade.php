@@ -188,19 +188,22 @@
             </div>
         </form>
         <form method="GET" action="{{ route('entrances.index') }}" class="form-inline mb-3">
-            <input type="hidden" name="download" value="between_dates_pdf">
             <div class="input-group">
                 <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
                 <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
-                <button type="submit" class="btn btn-danger btn-custom-size">
-                    <i class="fas fa-file-pdf"></i> PDF por Fechas
-                </button>
-                <button type="submit" class="btn btn-success btn-custom-size">
-                    <i class="fas fa-file-excel"></i> Excel por Fechas
-                </button>
+                <div class="btn-group" role="group">
+                    <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger btn-custom-size">
+                        <i class="fas fa-file-pdf"></i> PDF por Fechas
+                    </button>
+                    <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size">
+                        <i class="fas fa-file-excel"></i> Excel por Fechas
+                    </button>
+                </div>
             </div>
         </form>
-    
+        
+        
+        
         <div class="table-responsive">
             @if(isset($entrances) && count($entrances) > 0)
             <table class="table table-striped">

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Log;
+use App\Exports\EntrancesExport;
 
 class EntranceController extends Controller {
     public function index(Request $request) {
@@ -130,6 +131,26 @@ class EntranceController extends Controller {
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener las entradas del rango de fechas de la API');
                     }
+                } elseif ($downloadType === 'between_dates_excel') {
+                    $start_date = $request->input('start_date');
+                    $end_date = $request->input('end_date');
+    
+                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetween, [
+                        'start_date' => $start_date,
+                        'end_date' => $end_date
+                    ]);
+    
+                    if ($dateRangeResponse->successful()) {
+                        $dateRangeData = $dateRangeResponse->json();
+    
+                        $filePath = storage_path('app/Entradas_Rango_Seleccionado.xlsx');
+                        $export = new EntrancesExport($dateRangeData);
+                        $export->export($filePath);
+    
+                        return response()->download($filePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener las entradas del rango de fechas de la API');
+                    }
                 }
             }
     
@@ -138,4 +159,4 @@ class EntranceController extends Controller {
             return 'Error: ' . $response->status();
         }
     }
-}    
+}
