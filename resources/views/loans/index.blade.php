@@ -146,7 +146,7 @@
                 <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger btn-custom-size" style="background-color: red;">
                 <i class="fas fa-file-pdf"></i> PDF por Fechas
                 </button>
-                    <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size">
+                    <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size" style="text-align: center;">
                         <i class="fas fa-file-excel"></i> Excel por Fechas
                     </button>
                 </div>
