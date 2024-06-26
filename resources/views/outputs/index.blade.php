@@ -103,6 +103,10 @@
             vertical-align: middle;
         }
 
+        .table td, .table th {
+            text-align: center; /* Centrando el texto de las celdas */
+        }
+
         @media (max-width: 576px) {
             .ml-auto {
                 width: 100%;
@@ -125,10 +129,13 @@
                 justify-content: space-between;
                 padding: 10px;
                 border: 1px solid #ddd;
+                text-align: left; /* Alinea el texto a la izquierda para la versión móvil */
             }
             .table td::before {
                 content: attr(data-label);
                 font-weight: bold;
+                text-align: left;
+                margin-right: 10px;
             }
             .input-group, .form-inline .input-group {
                 flex-direction: row;
