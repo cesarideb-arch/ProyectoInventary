@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use App\Exports\LoansExport; // Add this line to import the LoansExport class
+
 class LoanController extends Controller {
 
     public function index(Request $request) {
@@ -64,51 +66,111 @@ class LoanController extends Controller {
             $monthLoanResponse = Http::withToken($token)->get($apiGetLoanCountMonthNumberUrl);
             $monthDataNumber = $monthLoanResponse->successful() ? $monthLoanResponse->json() : ['count' => 0];
     
-            // Si el parámetro 'download' está presente, generar el PDF correspondiente
+            // Si el parámetro 'download' está presente, generar el archivo correspondiente
             if ($request->has('download')) {
                 $downloadType = $request->input('download');
-                $htmlFilePath = storage_path('temp/loans_temp_file.html');
-                $pdfFilePath = storage_path('temp/Prestamos.pdf');
     
                 if ($downloadType === 'pdf') {
-                    // Generar PDF para todos los préstamos
                     $htmlContent = view('loans.pdf', compact('loans'))->render();
+                    $htmlFilePath = storage_path('temp/loans_temp_file.html');
                     file_put_contents($htmlFilePath, $htmlContent);
+    
+                    if (!file_exists($htmlFilePath)) {
+                        return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                    }
+    
+                    $pdfFilePath = storage_path('temp/Prestamos.pdf');
+                    $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                    exec($command, $output, $returnVar);
+    
+                    if ($returnVar === 0) {
+                        return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al generar el PDF');
+                    }
                 } elseif ($downloadType === 'month_pdf') {
-                    // Generar PDF para los préstamos del mes actual
                     $monthResponse = Http::withToken($token)->get($apiGetCountMonthLoanUrl);
+    
                     if ($monthResponse->successful()) {
                         $monthData = $monthResponse->json();
+    
                         $htmlContent = view('loans.month_pdf', compact('monthData'))->render();
-                        $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
+                        $htmlFilePath = storage_path('temp/loans_month_temp_file.html');
                         file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Prestamos_Mes.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos del mes de la API');
                     }
                 } elseif ($downloadType === 'finished_pdf') {
-                    // Generar PDF para los préstamos finalizados
                     $finishedResponse = Http::withToken($token)->get($apiGetFinished);
+    
                     if ($finishedResponse->successful()) {
                         $finishedData = $finishedResponse->json();
+    
                         $htmlContent = view('loans.finished_pdf', compact('finishedData'))->render();
-                        $pdfFilePath = storage_path('temp/Prestamos_Finalizados.pdf');
+                        $htmlFilePath = storage_path('temp/loans_finished_temp_file.html');
                         file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Prestamos_Finalizados.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos finalizados de la API');
                     }
                 } elseif ($downloadType === 'started_pdf') {
-                    // Generar PDF para los préstamos iniciados
                     $startedResponse = Http::withToken($token)->get($apiGetStarted);
+    
                     if ($startedResponse->successful()) {
                         $startedData = $startedResponse->json();
+    
                         $htmlContent = view('loans.started_pdf', compact('startedData'))->render();
-                        $pdfFilePath = storage_path('temp/Prestamos_Iniciados.pdf');
+                        $htmlFilePath = storage_path('temp/loans_started_temp_file.html');
                         file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Prestamos_Iniciados.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos iniciados de la API');
                     }
                 } elseif ($downloadType === 'between_dates_pdf') {
-                    // Generar PDF para los préstamos entre fechas
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
@@ -119,26 +181,48 @@ class LoanController extends Controller {
     
                     if ($dateRangeResponse->successful()) {
                         $dateRangeData = $dateRangeResponse->json();
+    
                         $htmlContent = view('loans.between_dates_pdf', compact('dateRangeData'))->render();
-                        $pdfFilePath = storage_path('temp/Prestamos_Rango_Fechas.pdf');
+                        $htmlFilePath = storage_path('temp/loans_between_dates_temp_file.html');
                         file_put_contents($htmlFilePath, $htmlContent);
+    
+                        if (!file_exists($htmlFilePath)) {
+                            return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                        }
+    
+                        $pdfFilePath = storage_path('temp/Prestamos_Rango_Fechas.pdf');
+                        $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+    
+                        exec($command, $output, $returnVar);
+    
+                        if ($returnVar === 0) {
+                            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                        } else {
+                            return redirect()->back()->with('error', 'Error al generar el PDF');
+                        }
                     } else {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos del rango de fechas de la API');
                     }
-                }
+                } elseif ($downloadType === 'between_dates_excel') {
+                    $start_date = $request->input('start_date');
+                    $end_date = $request->input('end_date');
     
-                if (!file_exists($htmlFilePath)) {
-                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
-                }
+                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenLoan, [
+                        'start_date' => $start_date,
+                        'end_date' => $end_date
+                    ]);
     
-                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+                    if ($dateRangeResponse->successful()) {
+                        $dateRangeData = $dateRangeResponse->json();
     
-                exec($command, $output, $returnVar);
+                        $filePath = storage_path('app/Prestamos_Rango_Seleccionado.xlsx');
+                        $export = new LoansExport($dateRangeData);
+                        $export->export($filePath);
     
-                if ($returnVar === 0) {
-                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                        return response()->download($filePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al obtener los préstamos del rango de fechas de la API');
+                    }
                 }
             }
     

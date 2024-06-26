@@ -138,14 +138,18 @@
                 </button>
             </div>
         </form>
-        <form method="GET" action="{{ route('outputs.index') }}" class="form-inline mb-3">
-            <input type="hidden" name="download" value="between_dates_pdf">
+        <form method="GET" action="{{ route('loans.index') }}" class="form-inline mb-3">
             <div class="input-group">
-            <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
-            <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
-            <button type="submit" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
-                <i class="fas fa-file-pdf"></i> PDF por Fechas
-            </button>
+                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+                <div class="btn-group" role="group">
+                    <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger btn-custom-size">
+                        <i class="fas fa-file-pdf"></i> PDF por Fechas
+                    </button>
+                    <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size">
+                        <i class="fas fa-file-excel"></i> Excel por Fechas
+                    </button>
+                </div>
             </div>
         </form>
         </form>
