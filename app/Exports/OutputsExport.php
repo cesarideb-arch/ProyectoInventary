@@ -20,7 +20,7 @@ class OutputsExport
 
         // Agregar encabezados
         $writer->addRow([
-            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Precio', 'Total', 'Ubicación', 'Descripción', 'Fecha de Creación'
+            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Ubicación', 'Descripción', 'Fecha de Creación'
         ]);
 
         // Agregar datos
@@ -31,8 +31,6 @@ class OutputsExport
                 $row['product']['name'] ?? '',
                 $row['responsible'] ?? '',
                 number_format($row['quantity'] ?? 0, 0, '.', ','),
-                number_format($row['price'] ?? 0, 2, '.', ','),
-                number_format(($row['price'] ?? 0) * ($row['quantity'] ?? 0), 2, '.', ','),
                 $row['product']['location'] ?? '',
                 $row['description'] ?? 'N/A',
                 \Carbon\Carbon::parse($row['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s')
