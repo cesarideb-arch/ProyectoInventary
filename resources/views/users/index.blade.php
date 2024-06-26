@@ -11,6 +11,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+        .table td, .table th {
+            text-align: center; /* Centrando el texto de las celdas */
+        }
         @media (max-width: 576px) {
             .ml-auto {
                 width: 100%;
