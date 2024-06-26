@@ -8,10 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Entradas</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Estilos para la ventana emergente */
         .modal {
             display: none;
             position: fixed;
@@ -73,22 +71,22 @@
         }
 
         .btn-danger {
-            background-color: #ff0000; /* color rojo */
-            border-color: #ff0000; /* color rojo */
-            color: #fff; /* texto blanco */
+            background-color: #ff0000;
+            border-color: #ff0000;
+            color: #fff;
         }
 
         .btn-danger:hover {
-            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            background-color: #cc0000;
+            border-color: #cc0000;
         }
 
         .btn-custom-size {
-            margin-right: 10px; /* Añade espacio a la derecha de cada botón excepto el último */
+            margin-right: 10px;
         }
 
         .btn-custom-size:last-child {
-            margin-right: 0; /* Remueve el margen del último botón para que no tenga espacio extra a la derecha */
+            margin-right: 0;
         }
 
         @media (max-width: 576px) {
@@ -125,14 +123,21 @@
     <div class="container">
         <h1 class="mb-4">Listado de Entradas</h1>
         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
-            {{-- <a href="{{ route('entrances.create') }}" class="btn btn-primary btn-custom-size">Agregar</a> --}}
             <div class="d-flex flex-wrap">
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
+                <form method="GET" action="{{ route('entrances.index') }}" class="d-inline-block ml-2">
+                    <input type="hidden" name="download" value="between_dates_pdf">
+                    <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control d-inline-block" style="width: 120px;" required>
+                    <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control d-inline-block" style="width: 120px;" required>
+                    <button type="submit" class="btn btn-danger btn-custom-size">
+                        <i class="fas fa-file-pdf"></i> PDF por Fechas
+                    </button>
+                </form>
             </div>
             @if(isset($monthData))
                 <div class="ml-auto text-left">
