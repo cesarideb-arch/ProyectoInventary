@@ -4,22 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entradas por Rango de Fechas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
+            font-size: 13px;
             font-family: Arial, sans-serif;
+        }
+        .page-break {
+            page-break-before: always;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
         th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #dee2e6;
+            word-wrap: break-word;
         }
         th {
             background-color: #f2f2f2;
+            font-weight: bold;
+            white-space: nowrap;
         }
         h1 {
             text-align: center;
@@ -33,64 +40,70 @@
             font-size: 12px;
             color: #777;
         }
+        .table-responsive {
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
     <h1>Entradas por Rango de Fechas</h1>
-    <p>Rango de fechas: 25/06/2024 - 25/06/2024</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Proyecto</th>
-                <th>Producto</th>
-                <th>Responsable</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Gastado</th>
-                <th>Ubicación</th>
-                <th>Descripción</th>
-                <th>Folio</th>
-                <th>Fecha</th>
-            </tr>
-        </thead>
-        <tbody>
-                        <tr>
-                <td>The Project</td>
-                <td>Martillo</td>
-                <td>Jesus</td>
-                <td>30</td>
-                <td>1,700.00</td>
-                <td>51,000.00</td>
-                <td>Zona 1</td>
-                <td>N/A</td>
-                <td>A1213</td>
-                <td>2024-06-25 23:36:28</td>
-            </tr>
-                        <tr>
-                <td>The Project</td>
-                <td>Martillo</td>
-                <td>Josue</td>
-                <td>2</td>
-                <td>1,700.00</td>
-                <td>3,400.00</td>
-                <td>Zona 1</td>
-                <td>N/A</td>
-                <td>ALL223</td>
-                <td>2024-06-25 22:41:51</td>
-            </tr>
-                        <tr>
-                <td>The Project</td>
-                <td>Martillo</td>
-                <td>Josue</td>
-                <td>3</td>
-                <td>2,000.00</td>
-                <td>6,000.00</td>
-                <td>Zona 1</td>
-                <td>N/A</td>
-                <td>AL22092</td>
-                <td>2024-06-25 22:40:29</td>
-            </tr>
-                    </tbody>
-    </table>
+    <br>
+    <p>Rango de fechas: 25/06/2024 - 27/06/2024</p>
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Proyecto</th>
+                    <th>Producto</th>
+                    <th>Responsable</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Gastado</th>
+                    <th>Ubicación</th>
+                    <th>Descripción</th>
+                    <th>Folio</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                                <tr>
+                    <td>The Project</td>
+                    <td>Martillo</td>
+                    <td>Jesus</td>
+                    <td>30</td>
+                    <td>1,700.00</td>
+                    <td>51,000.00</td>
+                    <td>Zona 1</td>
+                    <td>N/A</td>
+                    <td>A1213</td>
+                    <td>2024-06-25 23:36:28</td>
+                </tr>
+                                <tr>
+                    <td>The Project</td>
+                    <td>Martillo</td>
+                    <td>Josue</td>
+                    <td>2</td>
+                    <td>1,700.00</td>
+                    <td>3,400.00</td>
+                    <td>Zona 1</td>
+                    <td>N/A</td>
+                    <td>ALL223</td>
+                    <td>2024-06-25 22:41:51</td>
+                </tr>
+                                <tr>
+                    <td>The Project</td>
+                    <td>Martillo</td>
+                    <td>Josue</td>
+                    <td>3</td>
+                    <td>2,000.00</td>
+                    <td>6,000.00</td>
+                    <td>Zona 1</td>
+                    <td>N/A</td>
+                    <td>AL22092</td>
+                    <td>2024-06-25 22:40:29</td>
+                </tr>
+                            </tbody>
+        </table>
+    </div>
 </body>
 </html>
