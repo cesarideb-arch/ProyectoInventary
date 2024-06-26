@@ -45,11 +45,19 @@
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
-                <div class="mb-3">
-                    <label for="responsible" class="form-label">Responsable:</label>
-                    <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') }}">
-                    <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
-                </div>
+                @if (session()->has('name'))
+                    <div class="mb-3">
+                        <label for="responsible" class="form-label">Responsable:</label>
+                        <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? session('name') }}">
+                        <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
+                    </div>
+                @else
+                    <div class="mb-3">
+                        <label for="responsible" class="form-label">Responsable:</label>
+                        <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? auth()->user()->name }}">
+                        <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
+                    </div>
+                @endif
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
