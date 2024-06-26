@@ -48,7 +48,7 @@
 <body>
     <h1>Préstamos por Rango de Fechas</h1>
     <br>
-    <p>Rango de fechas: 25/06/2024 - 26/06/2024</p>
+    <p>Rango de fechas: {{ request()->input('start_date') }} - {{ request()->input('end_date') }}</p>
     <div class="table-responsive">
         <table class="table table-striped text-center">
             <thead>
@@ -64,21 +64,31 @@
                 </tr>
             </thead>
             <tbody>
-                                <tr>
-                    <td>The Project</td>
-                    <td>Martillo</td>
-                    <td>Josue</td>
-                    <td>1</td>
-                    <td>Zona 1</td>
-                    <td>N/A</td>
+                @foreach($dateRangeData as $loan)
+                <tr>
+                    <td>{{ $loan['project']['name'] ?? 'N/A' }}</td>
+                    <td>{{ $loan['product']['name'] }}</td>
+                    <td>{{ $loan['responsible'] }}</td>
+                    <td>{{ number_format($loan['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
+                    <td>{{ $loan['product']['location'] ?? 'N/A' }}</td>
+                    <td>{{ $loan['observations'] ?? 'N/A' }}</td>
                     <td>
-                                                    2024-06-25 18:20:51
-                                            </td>
+                        @if($loan['status'] == 0)
+                            {{ $loan['updated_at'] ? \Carbon\Carbon::parse($loan['updated_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
+                        @else
+                            {{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
+                        @endif
+                    </td>
                     <td>
-                                                    Producto Prestado
-                                            </td>
+                        @if($loan['status'] == 0)
+                            Producto Regresado
+                        @else
+                            Producto Prestado
+                        @endif
+                    </td>
                 </tr>
-                            </tbody>
+                @endforeach
+            </tbody>
         </table>
     </div>
 </body>

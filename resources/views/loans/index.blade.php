@@ -9,6 +9,7 @@
     <title>Lista de Préstamos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <style>
         /* Estilos personalizados */
         .modal-dialog-centered {
@@ -96,8 +97,6 @@
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
-            </div>
-            <div class="btn-group-right" style="flex-wrap: wrap;">
                 <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                     <i class="fas fa-file-pdf"></i> PDF Finalizados
                 </a>
@@ -112,7 +111,6 @@
                     <p class="mb-10">No hay datos disponibles.</p>
                 @endif
             </div>
-            
         </div>
         <form method="GET" action="{{ route('loans.index') }}">
             <div class="input-group mb-3">
@@ -122,7 +120,16 @@
                 </button>
             </div>
         </form>
-
+        <form method="GET" action="{{ route('loans.index') }}" class="form-inline mb-3">
+            <input type="hidden" name="download" value="between_dates_pdf">
+            <div class="input-group">
+                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+                <button type="submit" class="btn btn-danger btn-custom-size">
+                    <i class="fas fa-file-pdf"></i> PDF por Fechas
+                </button>
+            </div>
+        </form>
         <div class="table-responsive">
             @if(isset($loans) && count($loans) > 0)
             <table class="table table-striped">
@@ -231,8 +238,30 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
     <script>
         $(document).ready(function() {
+            $.fn.datepicker.dates['es'] = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                clear: "Borrar",
+                format: "dd/mm/yyyy",
+                titleFormat: "MM yyyy",
+                weekStart: 1
+            };
+
+            $('input[name="start_date"], input[name="end_date"]').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'es'
+            });
+
             var currentLoanId = null;
             var previousObservations = null;
 
@@ -325,7 +354,6 @@
             });
         });
     </script>
-
 </body> 
 </html>
 @endsection
