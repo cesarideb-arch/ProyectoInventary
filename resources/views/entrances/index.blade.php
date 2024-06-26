@@ -201,9 +201,6 @@
                 </div>
             </div>
         </form>
-        
-        
-        
         <div class="table-responsive">
             @if(isset($entrances) && count($entrances) > 0)
             <table class="table table-striped">
