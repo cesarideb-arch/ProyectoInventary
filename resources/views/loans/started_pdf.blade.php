@@ -32,6 +32,8 @@
                             <th>Ubicación</th>
                             <th>Observaciones</th>
                             <th>Fecha</th>
+                            <th>Nombre Cuenta</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -44,6 +46,7 @@
                                 <td>{{ $loan['product']['location'] ?? 'N/A' }}</td>
                                 <td>{{ $loan['observations'] ?? 'N/A' }}</td>
                                 <td>{{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}</td>
+                                <td>{{  $loan['user']['name'] ?? 'N/A' }}</td>
                             </tr>
                         @endforeach
                     </tbody>

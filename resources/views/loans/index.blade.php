@@ -140,18 +140,20 @@
         </form>
         <form method="GET" action="{{ route('loans.index') }}" class="form-inline mb-3">
             <div class="input-group">
-            <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
-            <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
-            <div class="btn-group" role="group">
-                <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger btn-custom-size" style="background-color: red;">
-                <i class="fas fa-file-pdf"></i> PDF por Fechas
-                </button>
+                <input type="text" name="start_date" placeholder="Fecha Inicio" class="form-control datepicker mr-2" required>
+                <input type="text" name="end_date" placeholder="Fecha Fin" class="form-control datepicker mr-2" required>
+                <div class="btn-group" role="group">
+                    <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger btn-custom-size" style="background-color: red;">
+                        <i class="fas fa-file-pdf"></i> PDF por Fechas
+                    </button>
                     <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size" style="text-align: center;">
                         <i class="fas fa-file-excel"></i> Excel por Fechas
                     </button>
+                    <button type="button" id="clear-dates" class="btn btn-secondary btn-custom-size">
+                        <i class="fas fa-eraser"></i> Limpiar Fechas
+                    </button>
                 </div>
             </div>
-        </form>
         </form>
         <div class="table-responsive">
             @if(isset($loans) && count($loans) > 0)
@@ -378,6 +380,10 @@
                 autoclose: true,
                 todayHighlight: true,
                 language: 'es'
+            });
+
+            $('#clear-dates').on('click', function() {
+                $('input[name="start_date"], input[name="end_date"]').val('');
             });
         });
     </script>

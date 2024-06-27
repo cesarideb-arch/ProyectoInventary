@@ -20,7 +20,7 @@ class LoansExport
 
         // Agregar encabezados
         $writer->addRow([
-            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Ubicación', 'Observaciones', 'Fecha', 'Estado'
+            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Ubicación', 'Observaciones', 'Fecha','Nombre Cuenta', 'Estado'
         ]);
 
         // Agregar datos
@@ -34,6 +34,7 @@ class LoansExport
                 $row['product']['location'] ?? '',
                 $row['observations'] ?? 'N/A',
                 \Carbon\Carbon::parse($row['status'] == 0 ? $row['updated_at'] : $row['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s'),
+                $row['user']['name'] ?? 'N/A',
                 $row['status'] == 0 ? 'Producto Regresado' : 'Producto Prestado',
             ]);
         }

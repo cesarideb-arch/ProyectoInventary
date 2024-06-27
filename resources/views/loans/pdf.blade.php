@@ -32,6 +32,7 @@
                             <th>Ubicación</th>
                             <th>Observaciones</th>
                             <th>Fecha</th>
+                            <th>Nombre Cuenta</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
@@ -50,6 +51,9 @@
                                     @else
                                         {{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
                                     @endif
+
+                                    <td>{{  $loan['user']['name'] ?? 'N/A' }}</td>
+
                                 </td>
                                 <td>
                                     @if($loan['status'] == 0)
