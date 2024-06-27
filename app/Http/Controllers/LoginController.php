@@ -47,6 +47,7 @@ class LoginController extends Controller {
                 $request->session()->put('name', $name);
                 $request->session()->put('email', $email);
                 $request->session()->put('user_id', $userId);
+
                 // Verifica el rol del usuario y redirige según el rol
                 if (in_array($role, [1, 2])) {
                     return redirect()->route('products.index');

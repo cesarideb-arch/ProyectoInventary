@@ -55,7 +55,8 @@ class AuthApiMiddleware {
                 return redirect()->route('login')->with('error', 'No se pudo obtener el correo electrónico del usuario.');
             }
         }
-
+ 
+        
         // Verificar si el 'user_id' está presente en la sesión
         if (!$request->session()->has('user_id')) {
             // Obtener el 'user_id' del usuario desde la solicitud o alguna otra fuente
@@ -68,11 +69,6 @@ class AuthApiMiddleware {
                 // Si no se puede obtener el 'user_id', redirigir al usuario a la página de inicio de sesión con un mensaje de error
                 return redirect()->route('login')->with('error', 'No se pudo obtener el ID de usuario.');
             }
-        }
-
-        // Verifica el rol del usuario y redirige según el rol
-        if (in_array($role, [1, 2])) {
-            return redirect()->route('products.index');
         }
 
         // Si todas las verificaciones son exitosas, continúa con la solicitud
