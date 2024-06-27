@@ -216,6 +216,9 @@
                         <th>Descripción</th>
                         <th>Folio</th>
                         <th>Fecha</th>
+                        <th>Nombre Cuenta</th>
+
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -231,7 +234,7 @@
                         <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td data-label="Folio">{{ $entrance['folio'] ?? 'N/A' }}</td>                        
                         <td data-label="Fecha">{{ \Carbon\Carbon::parse($entrance['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
-                    </tr>
+                        <td data-label="ID User">{{ $entrance['user']['name'] ?? 'N/A' }}</td>
                     @endforeach
                 </tbody>
             </table>

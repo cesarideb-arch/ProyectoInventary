@@ -165,6 +165,7 @@
                         <th>Ubicación</th>
                         <th>Observaciones</th>
                         <th>Fecha</th>
+                        <th>Nombre Cuenta</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>
@@ -185,6 +186,7 @@
                                 {{ $loan['created_at'] ? \Carbon\Carbon::parse($loan['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') : 'N/A' }}
                             @endif
                         </td>
+                        <td data-label="Nombre Cuenta">{{ $loan['user']['name'] ?? 'N/A' }}</td>
                         <td data-label="Estado">
                             @if($loan['status'] == 0)
                                 Producto Regresado

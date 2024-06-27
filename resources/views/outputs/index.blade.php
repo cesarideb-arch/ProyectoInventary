@@ -213,6 +213,8 @@
                         <th>Ubicación</th>
                         <th>Descripción</th>
                         <th>Fecha</th>
+                        <th>Nombre Cuenta</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -225,6 +227,7 @@
                         <td data-label="Ubicación">{{ $output['product']['location'] ?? 'N/A' }}</td>
                         <td data-label="Descripción">{{ $output['description'] ?? 'N/A' }}</td>
                         <td data-label="Fecha">{{ \Carbon\Carbon::parse($output['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s') }}</td>
+                        <td data-label="Nombre Cuenta">{{ $output['user']['name'] ?? 'N/A' }}</td>
                     </tr>
                     @endforeach
                 </tbody>
