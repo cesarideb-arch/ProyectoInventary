@@ -45,6 +45,9 @@
 
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
 
+                <!-- Campo oculto para enviar el ID del usuario -->
+                <input type="hidden" name="user_id" value="{{ session('user_id') }}">
+
                 @if (session()->has('name'))
                     <div class="mb-3">
                         <label for="responsible" class="form-label">Responsable:</label>

@@ -124,10 +124,12 @@ class ProductController extends Controller {
         $validatedData = $request->validate([
             'project_id' => 'nullable|integer',
             'product_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
-            'folio' => 'nullable|string|max:100',    
+            'folio' => 'nullable|string|max:100', 
+
         ]);
 
         // URL base de la API
@@ -160,6 +162,7 @@ class ProductController extends Controller {
         $validatedData = $request->validate([
             'project_id' => 'nullable|integer',
             'product_id' => 'nullable|integer',
+            'user_id' => 'required|integer',
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'description' => 'nullable|string|max:100',
@@ -194,6 +197,7 @@ class ProductController extends Controller {
         $validatedData = $request->validate([
             'product_id' => 'required|integer',
             'project_id' => 'nullable|integer',
+            'user_id' => 'required|integer',
             'responsible' => 'required|string|max:100',
             'quantity' => 'required|integer',
             'observations' => 'nullable|string|max:255',

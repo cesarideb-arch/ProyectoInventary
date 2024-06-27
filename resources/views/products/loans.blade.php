@@ -29,6 +29,8 @@
             <form id="entranceForm" action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
+                <!-- Campo oculto para enviar el ID del usuario -->
+                <input type="hidden" name="user_id" value="{{ session('user_id') }}">
 
                 <div class="form-group">
                     <label for="project_id">Proyecto:</label>
@@ -51,13 +53,13 @@
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? session('name') }}">
                     <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
-            @else
+                @else
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? auth()->user()->name }}">
                     <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
-            @endif
+                @endif
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
                     <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">

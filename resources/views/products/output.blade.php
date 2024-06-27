@@ -43,12 +43,9 @@
                     <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
                 </div>
 
-                {{-- <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="noProjectCheck" name="noProjectCheck" {{ old('noProjectCheck') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="noProjectCheck">Sin proyecto</label>
-                </div> --}}
-
                 <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
+                <!-- Campo oculto para enviar el ID del usuario -->
+                <input type="hidden" name="user_id" value="{{ session('user_id') }}">
 
                 @if (session()->has('name'))
                 <div class="mb-3">
@@ -56,14 +53,13 @@
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? session('name') }}">
                     <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
-            @else
+                @else
                 <div class="mb-3">
                     <label for="responsible" class="form-label">Responsable:</label>
                     <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? auth()->user()->name }}">
                     <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
                 </div>
-            @endif
-
+                @endif
 
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Cantidad:</label>
@@ -128,32 +124,11 @@
                 $('#entranceForm :input').prop('disabled', true);
             }
 
-            // Verifica si el checkbox está marcado y deshabilita el select si es necesario
-            if ($('#noProjectCheck').is(':checked')) {
-                $('#project_id').prop('disabled', true);
-            }
-
-            $('#noProjectCheck').on('change', function() {
-                if ($(this).is(':checked')) {
-                    $('#project_id').val(null).trigger('change');
-                    $('#project_id').prop('disabled', true).removeClass('is-invalid');
-                } else {
-                    $('#project_id').prop('disabled', false);
-                }
-            });
-
-            $('#project_id').on('change', function() {
-                if ($(this).val() !== '') {
-                    $(this).removeClass('is-invalid');
-                }
-            });
-
             // Validación personalizada del lado del cliente
             $('#entranceForm').on('submit', function(event) {
                 event.preventDefault(); // Prevenir envío del formulario inicial
                 var form = this;
                 var projectSelect = $('#project_id');
-                var noProjectCheck = $('#noProjectCheck');
                 var quantityInput = $('#quantity');
                 var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
 
@@ -173,7 +148,7 @@
                     quantityInput.removeClass('is-invalid');
                 }
 
-                if (projectSelect.val() === '' && !noProjectCheck.is(':checked')) {
+                if (projectSelect.val() === '') {
                     projectSelect.addClass('is-invalid');
                     event.stopPropagation();
                 } else {
