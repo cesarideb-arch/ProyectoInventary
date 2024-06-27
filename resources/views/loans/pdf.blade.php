@@ -9,6 +9,9 @@
         .page-break {
             page-break-before: always;
         }
+        .small-text {
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +24,7 @@
             @if($index > 0)
                 <div class="page-break"></div>
             @endif
-            <div class="table-responsive">
+            <div class="table-responsive small-text">
                 <table class="table table-striped">
                     <thead>
                         <tr>
