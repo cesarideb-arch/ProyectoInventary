@@ -60,6 +60,8 @@
                     <th>Ubicación</th>
                     <th>Descripción</th>
                     <th>Fecha</th>
+                    <th>Nombre Cuenta</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -72,6 +74,7 @@
                     <td>{{ $output['product']['location'] ?? 'N/A' }}</td>
                     <td>{{ $output['description'] ?? 'N/A' }}</td>
                     <td>{{ \Carbon\Carbon::parse($output['created_at'])->format('Y-m-d H:i:s') }}</td>
+                    <td>{{ $output['user']['name'] ?? 'N/A' }}</td>
                 </tr>
                 @endforeach
             </tbody>
