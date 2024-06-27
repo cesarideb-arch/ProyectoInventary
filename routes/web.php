@@ -12,6 +12,9 @@ use App\Http\Controllers\EntranceController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Database; // Add this line to import the Databases controller
+use App\Http\Controllers\DatabaseController;
+use Illuminate\Queue\Connectors\DatabaseConnector;
 
 /*|--------------------------------------------------------------------------
 | Web Routes
@@ -55,6 +58,7 @@ Route::middleware('auth.api')->resource('entrances', EntranceController::class);
 Route::middleware('auth.api')->resource('outputs', OutputController::class);
 Route::middleware('auth.api')->resource('loans', LoanController::class);
 Route::middleware('auth.api')->resource('users', UserController::class);
+Route::middleware('auth.api')->get('/databases', [DatabaseController::class, 'index'])->name('databases.index');
 
 
 Route::post('/entrances', [ProductController::class, 'storeEntrance'])->name('products.entrances.store');
