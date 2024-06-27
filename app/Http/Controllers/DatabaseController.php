@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 class DatabaseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('database.index');
+        $baseApiUrl = config('app.backend_api');
+        $apibakcup = $baseApiUrl . '/api/export-database';
+        // Obtener el token de la sesión
+        $token = $request->session()->get('token');
+        return view('database.index', compact('apibakcup', 'token'));
     }
-}
+    
+}    
