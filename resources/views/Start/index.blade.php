@@ -22,6 +22,7 @@
             @endif
             a la página de inicio de la aplicación de inventario.
         </p>
+        {{-- <p class="lead"><strong>ID:</strong> {{ session('user_id', 'No se pudo obtener el ID del usuario.') }}</p> --}}
 
         @php
             $roleNames = ['Administrador', 'Trabajador Admin', 'Trabajador'];
