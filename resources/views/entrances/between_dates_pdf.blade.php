@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-size: 13px;
+            font-size: 10px;
             font-family: Arial, sans-serif;
         }
         .page-break {
@@ -63,6 +63,8 @@
                     <th>Descripción</th>
                     <th>Folio</th>
                     <th>Fecha</th>
+                    <th>Nombre Cuenta</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -78,6 +80,7 @@
                     <td>{{ $entrance['description'] ?? 'N/A' }}</td>
                     <td>{{ $entrance['folio'] ?? 'N/A' }}</td>
                     <td>{{ \Carbon\Carbon::parse($entrance['created_at'])->format('Y-m-d H:i:s') }}</td>
+                    <td>{{  $entrance['user']['name'] ?? 'N/A' }}</td>
                 </tr>
                 @endforeach
             </tbody>

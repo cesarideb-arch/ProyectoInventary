@@ -198,6 +198,9 @@
                     <button type="submit" name="download" value="between_dates_excel" class="btn btn-success btn-custom-size">
                         <i class="fas fa-file-excel"></i> Excel por Fechas
                     </button>
+                    <button type="button" id="clear-dates" class="btn btn-secondary btn-custom-size">
+                        <i class="fas fa-eraser"></i> Limpiar Fechas
+                    </button>
                 </div>
             </div>
         </form>
@@ -214,7 +217,6 @@
                         <th>Descripción</th>
                         <th>Fecha</th>
                         <th>Nombre Cuenta</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -276,6 +278,10 @@
                 autoclose: true,
                 todayHighlight: true,
                 language: 'es'
+            });
+
+            $('#clear-dates').on('click', function() {
+                $('input[name="start_date"], input[name="end_date"]').val('');
             });
         });
     </script>

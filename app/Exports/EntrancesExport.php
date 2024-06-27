@@ -20,7 +20,7 @@ class EntrancesExport
 
         // Agregar encabezados
         $writer->addRow([
-            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Precio', 'Gastado', 'Ubicación', 'Descripción', 'Folio', 'Fecha de Creación'
+            'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Precio', 'Gastado', 'Ubicación', 'Descripción', 'Folio', 'Fecha de Creación', 'Nombre Cuenta'
         ]);
 
         // Agregar datos
@@ -36,7 +36,8 @@ class EntrancesExport
                 $row['product']['location'] ?? '',
                 $row['description'] ?? 'N/A',
                 $row['folio'] ?? '',
-                \Carbon\Carbon::parse($row['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s')
+                \Carbon\Carbon::parse($row['created_at'])->setTimezone('America/Mexico_City')->format('Y-m-d H:i:s'),
+                $row['user']['name'] ?? 'N/A'
             ]);
         }
 
