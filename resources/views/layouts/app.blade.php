@@ -173,7 +173,11 @@
             @if (session('role') === '0' || session('role') === '1')
             <li><a href="{{ route('loans.index') }}">Lista de Préstamos</a></li>
             @endif
-          
+            
+            @if (session('role') !== '1' && session('role') !== '2')
+            <li><a href="{{ route('databases.index') }}">Bases de datos</a></li>
+    @endif
+
 
             <li class="logout-form">
                 <form action="{{ route('logout') }}" method="POST">
