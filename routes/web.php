@@ -12,9 +12,7 @@ use App\Http\Controllers\EntranceController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Database; // Add this line to import the Databases controller
 use App\Http\Controllers\DatabaseController;
-use Illuminate\Queue\Connectors\DatabaseConnector;
 
 /*|--------------------------------------------------------------------------
 | Web Routes
