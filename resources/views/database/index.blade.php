@@ -44,25 +44,7 @@
         <div id="responseMessage"></div>
     </div>
 
-    <div class="jumbotron text-center mt-5">
-        <h1 class="display-4">Importar Base de Datos</h1>
-        <p class="lead">Seleccione un archivo SQL para importar a la base de datos.</p>
-        
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        <form id="importForm" enctype="multipart/form-data" class="mt-4">
-            <div class="custom-file mb-3">
-                <input type="file" class="custom-file-input" id="database_file" name="database_file" accept=".sql" required>
-                <label class="custom-file-label" for="database_file">Choose file</label>
-            </div>
-            <button type="submit" class="btn btn-primary btn-lg">Importar</button>
-        </form>
-        <div id="importResponseMessage"></div>
-    </div>
-</div>
-
+  
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
     $(document).ready(function() {
@@ -96,50 +78,6 @@
             });
         });
 
-        $('#importForm').on('submit', function(event) {
-            event.preventDefault();
-
-            let formData = new FormData(this);
-            let token = '{{ $token }}';
-            let apiImport = '{{ $apiImport }}';
-
-            fetch(apiImport, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Authorization': `Bearer ${token}`
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    $('#importResponseMessage').html('<div class="alert alert-success">Database imported successfully!</div>');
-                } else {
-                    $('#importResponseMessage').html('<div class="alert alert-danger">Failed to import database. Error: ' + data.message + '</div>');
-                }
-                setTimeout(function() {
-                    $('#importResponseMessage').fadeOut('slow', function() {
-                        $(this).html('').show();
-                    });
-                }, 3000);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                $('#importResponseMessage').html('<div class="alert alert-danger">An error occurred while importing the database.</div>');
-                setTimeout(function() {
-                    $('#importResponseMessage').fadeOut('slow', function() {
-                        $(this).html('').show();
-                    });
-                }, 3000);
-            });
-        });
-
-        // Mostrar el nombre del archivo seleccionado
-        $('.custom-file-input').on('change', function() {
-            var fileName = $(this).val().split('\\').pop();
-            $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
-        });
     });
 </script>
 @endsection
