@@ -10,9 +10,11 @@ class DatabaseController extends Controller
     {
         $baseApiUrl = config('app.backend_api');
         $apibakcup = $baseApiUrl . '/api/export-database';
+        $apiImport = $baseApiUrl . '/api/import-database';
+
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-        return view('database.index', compact('apibakcup', 'token'));
+        return view('database.index', compact('apibakcup', 'token', 'apiImport'));
     }
     
 }    
