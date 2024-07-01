@@ -17,7 +17,7 @@ class SupplierController extends Controller {
 
         // Parámetros de paginación
         $page = $request->input('page', 1); // Página actual, por defecto es 1
-        $perPage = 1; // Número máximo de elementos por página
+        $perPage = 100; // Número máximo de elementos por página
 
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
