@@ -16,6 +16,31 @@
             align-items: center;
         }
 
+
+        .btn-group-horizontal .btn {
+            margin-right: 5px;
+        }
+                .pagination {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+        }
+
+        .pagination a {
+            margin: 0 5px; /* Ajusta este valor según sea necesario */
+        }
+
+        .pagination .active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+            
+
+
         .btn-group-horizontal .btn {
             margin-right: 5px;
         }
@@ -139,16 +164,19 @@
                 @if($currentPage > 1)
                     <a href="{{ route('projects.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
                 @endif
-                @for($i = 1; $i <= $lastPage; $i++)
-                    <a href="{{ route('projects.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
-                @endfor
+            
+                <span>Página {{ $currentPage }} de {{ $lastPage }}</span>
+            
                 @if($currentPage < $lastPage)
                     <a href="{{ route('projects.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
-                <a href="{{ route('projects.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-            </div>
+            
+                @if($currentPage > 1)
+                    <a href="{{ route('projects.index') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-left"></i> Inicio
+                    </a>
+                @endif
+            </div>     
             @else
             <p>No se encontraron proyectos.</p>
             @endif
