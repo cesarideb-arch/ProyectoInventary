@@ -17,7 +17,7 @@ class OutputController extends Controller {
     
         $searchQuery = $request->input('query');
         $page = $request->input('page', 1);
-        $perPage = 10;
+        $perPage = 100;
         $token = $request->session()->get('token');
     
         if ($searchQuery) {
