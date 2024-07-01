@@ -20,7 +20,7 @@ class EntranceController extends Controller {
         $searchQuery = $request->input('query');
     
         $page = $request->input('page', 1);
-        $perPage = 15;
+        $perPage = 3;
     
         $token = $request->session()->get('token');
     

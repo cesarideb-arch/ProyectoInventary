@@ -22,7 +22,26 @@
             overflow: auto;
             background-color: rgba(0,0,0,0.5);
         }
+             
+        .pagination {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
+        .pagination span {
+            margin: 0 10px;
+        }
+
+        .pagination a {
+            margin: 0 5px; /* Ajusta este valor según sea necesario */
+        }
+
+        .pagination .active {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+            
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -243,15 +262,18 @@
                 @if($currentPage > 1)
                     <a href="{{ route('entrances.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
                 @endif
-                @for($i = 1; $i <= $lastPage; $i++)
-                    <a href="{{ route('entrances.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
-                @endfor
+            
+                <span>Página {{ $currentPage }} de {{ $lastPage }}</span>
+            
                 @if($currentPage < $lastPage)
                     <a href="{{ route('entrances.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
-                <a href="{{ route('entrances.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
+            
+                @if($currentPage > 1)
+                    <a href="{{ route('entrances.index') }}" class="btn btn-info">
+                        <i class="fas fa-arrow-left"></i> Inicio
+                    </a>
+                @endif
             </div>
             @else
             <p>No se encontraron entradas.</p>
