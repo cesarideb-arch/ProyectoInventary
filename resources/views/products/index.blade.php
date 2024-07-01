@@ -17,9 +17,23 @@
             align-items: center;
         }
 
-        .btn-group-horizontal .btn {
-            margin-right: 5px;
+         .btn-group-horizontal .btn {
+              margin-right: 5px;
+                }
+                .pagination {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            }
+
+        .pagination span {
+            margin: 0 10px;
         }
+
+        .pagination a {
+            margin: 0 5px; /* Ajusta este valor según sea necesario */
+        }
+
 
         .btn-custom-size {
             padding: 6px 12px;
@@ -156,16 +170,14 @@
                 @if($currentPage > 1)
                     <a href="{{ route('products.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
                 @endif
-                @for($i = 1; $i <= $lastPage; $i++)
-                    <a href="{{ route('products.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
-                @endfor
+                <span>Página {{ $currentPage }} de {{ $lastPage }}</span>
                 @if($currentPage < $lastPage)
                     <a href="{{ route('products.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
                 <a href="{{ route('products.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-left"></i>
+                    <i class="fas fa-arrow-left"></i> Inicio
                 </a>
-            </div>
+            </div>                     
             </div>
             @else
             <p>No se encontraron productos.</p>

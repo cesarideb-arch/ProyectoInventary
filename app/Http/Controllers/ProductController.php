@@ -19,7 +19,7 @@ class ProductController extends Controller {
     
         // Parámetros de paginación
         $page = $request->input('page', 1);
-        $perPage = 10;
+        $perPage = 100;
     
         // Define la URL de búsqueda en la API
         $apiSearchUrl = $baseApiUrl . '/api/search';

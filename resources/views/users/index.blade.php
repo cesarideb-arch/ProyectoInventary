@@ -8,18 +8,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Usuarios</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .table td, .table th {
-            text-align: center; /* Centrando el texto de las celdas */
+            text-align: center;
+            vertical-align: middle;
         }
+        .btn-custom-size {
+            padding: 0.375rem 0.75rem;
+        }
+        .pagination {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.pagination span {
+    margin: 0 10px;
+}
+
+.pagination a {
+    margin: 0 5px; /* Ajusta este valor según sea necesario */
+}
+
         @media (max-width: 576px) {
-            .ml-auto {
-                width: 100%;
-                text-align: center;
-                margin-top: 10px;
-            }
             .table-responsive {
                 overflow-x: auto;
             }
@@ -60,13 +72,13 @@
         </form>
         <div class="table-responsive">
             @if(isset($users) && count($users) > 0)
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
                 <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Rol</th>
-                    <th style="text-align: center;" colspan="2">Acciones</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,14 +94,14 @@
                         @endif
                     </td>
                     <td data-label="Acciones" class="text-center">
-                        <div class="btn-group btn-group-horizontal" role="group">
+                        <div class="btn-group" role="group">
                             <form action="{{ route('users.edit', $user['id']) }}" method="GET">
                                 @csrf
                                 <button type="submit" class="btn btn-primary btn-custom-size">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
-                            <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}" style="background-color: red;">
+                            <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -99,23 +111,24 @@
                 </tbody>
             </table>
             <div class="pagination">
-                    @if($currentPage > 1)
-                        <a href="{{ route('users.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
-                    @endif
-                    @if($currentPage < $lastPage)
-                        <a href="{{ route('users.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
-                    @endif
-                         <a href="{{ route('users.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-left"></i>
+                @if($currentPage > 1)
+                    <a href="{{ route('users.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+                @endif
+                <span>Página {{ $currentPage }} de {{ $lastPage }}</span>
+                @if($currentPage < $lastPage)
+                    <a href="{{ route('users.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+                @endif
+
+                <a href="{{ route('users.index') }}" class="btn btn-info">
+                    <i class="fas fa-arrow-left"></i> Inicio
                 </a>
-                </div>
+            </div>            
             @else
             <p>No se encontraron usuarios.</p>
             @endif
         </div>
     </div>
 
-    <!-- Modal para confirmar eliminación -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -142,9 +155,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer" style="justify-content: center;">
+                    <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" style="background-color: red;">Eliminar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </div>
                 </form>
             </div>
@@ -171,7 +184,6 @@
     </script>
     @endif
 
-    <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -195,7 +207,6 @@
             const form = this;
             const data = new FormData(form);
 
-            // Realizar solicitud AJAX para eliminar el usuario
             fetch(form.action, {
                 method: 'POST',
                 headers: {
