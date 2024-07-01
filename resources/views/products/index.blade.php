@@ -174,9 +174,11 @@
                 @if($currentPage < $lastPage)
                     <a href="{{ route('products.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
+                @if($currentPage > 1)
                 <a href="{{ route('products.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i> Inicio
                 </a>
+                @endif
             </div>                     
             </div>
             @else

@@ -118,10 +118,11 @@
                 @if($currentPage < $lastPage)
                     <a href="{{ route('users.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
                 @endif
-
+                @if($currentPage > 1)
                 <a href="{{ route('users.index') }}" class="btn btn-info">
                     <i class="fas fa-arrow-left"></i> Inicio
                 </a>
+                @endif
             </div>            
             @else
             <p>No se encontraron usuarios.</p>
