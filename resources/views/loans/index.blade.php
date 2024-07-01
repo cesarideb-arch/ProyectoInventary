@@ -18,6 +18,14 @@
             justify-content: center;
             min-height: calc(100% - 1rem);
         }
+        .pagination span {
+            margin: 0 10px;
+        }
+
+        .pagination a {
+            margin: 0 5px; /* Ajusta este valor según sea necesario */
+        }
+
         .modal-content {
             margin: auto;
         }
@@ -210,20 +218,21 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="pagination">
-                @if($currentPage > 1)
-                    <a href="{{ route('loans.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
-                @endif
-                @for($i = 1; $i <= $lastPage; $i++)
-                    <a href="{{ route('loans.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-secondary {{ $i == $currentPage ? 'active' : '' }}">{{ $i }}</a>
-                @endfor
-                @if($currentPage < $lastPage)
-                    <a href="{{ route('loans.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
-                @endif
-                <a href="{{ route('loans.index') }}" class="btn btn-info">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-            </div>
+            @if($currentPage > 1)
+            <a href="{{ route('loans.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary">Anterior</a>
+        @endif
+    
+        <span>Página {{ $currentPage }} de {{ $lastPage }}</span>
+    
+        @if($currentPage < $lastPage)
+            <a href="{{ route('loans.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary">Siguiente</a>
+        @endif
+    
+        @if($currentPage > 1)
+            <a href="{{ route('loans.index') }}" class="btn btn-info">
+                <i class="fas fa-arrow-left"></i> Inicio
+            </a>
+        @endif
             @else
             <p style="text-align: left;">No se encontraron préstamos.</p>
             @endif
