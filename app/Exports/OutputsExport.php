@@ -18,6 +18,11 @@ class OutputsExport
         $writer = SimpleExcelWriter::create($filePath, 'xlsx')
             ->noHeaderRow(); // Agrega esta línea para evitar encabezado automático
 
+             // Rango de fechas
+        $writer->addRow([
+            'Rango de fechas: ' . request()->input('start_date') . ' - ' . request()->input('end_date')
+        ]);
+
         // Agregar encabezados
         $writer->addRow([
             'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Ubicación', 'Descripción', 'Fecha de Creación','Nombre Cuenta'

@@ -19,6 +19,12 @@ class EntrancesExport
             ->noHeaderRow(); // Agrega esta línea para evitar encabezado automático
 
         // Agregar encabezados
+
+        // Rango de fechas
+        $writer->addRow([
+            'Rango de fechas: ' . request()->input('start_date') . ' - ' . request()->input('end_date')
+        ]);
+
         $writer->addRow([
             'ID', 'Proyecto', 'Producto', 'Responsable', 'Cantidad', 'Precio', 'Gastado', 'Ubicación', 'Descripción', 'Folio', 'Fecha de Creación', 'Nombre Cuenta'
         ]);
