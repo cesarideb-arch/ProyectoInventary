@@ -4,54 +4,59 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Exports\SuppliersExport;
 
 class SupplierController extends Controller {
-    public function index(Request $request) {
-        // URL base de la API
-        $baseApiUrl = config('app.backend_api');
+    
+public function index(Request $request)
+{
+    // URL base de la API
+    $baseApiUrl = config('app.backend_api');
 
-        // URL de la API de proveedores
-        $apiUrl = $baseApiUrl . '/api/suppliers';
-        $apiSearchUrl = $baseApiUrl . '/api/searchSupplier';
-        $searchQuery = $request->input('query');
+    // URL de la API de proveedores
+    $apiUrl = $baseApiUrl . '/api/suppliers';
+    $apiSearchUrl = $baseApiUrl . '/api/searchSupplier';
+    $searchQuery = $request->input('query');
 
-        // Parámetros de paginación
-        $page = $request->input('page', 1); // Página actual, por defecto es 1
-        $perPage = 100; // Número máximo de elementos por página
+    // Parámetros de paginación
+    $page = $request->input('page', 1); // Página actual, por defecto es 1
+    $perPage = 100; // Número máximo de elementos por página
 
-        // Obtener el token de la sesión
-        $token = $request->session()->get('token');
+    // Obtener el token de la sesión
+    $token = $request->session()->get('token');
 
-        // Si hay un término de búsqueda, usar la URL de búsqueda
-        if ($searchQuery) {
-            $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+    // Si hay un término de búsqueda, usar la URL de búsqueda
+    if ($searchQuery) {
+        $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
+        $response = Http::withToken($token)->get($apiSearchUrl);
+    } else {
+        $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
+        $response = Http::withToken($token)->get($apiUrl);
+    }
+
+    // Verifica si la solicitud fue exitosa
+    if ($response->successful()) {
+        // Decodifica la respuesta JSON en un array asociativo
+        $data = $response->json();
+
+        // Verifica si la clave 'data' está presente en la respuesta
+        if (is_array($data) && array_key_exists('data', $data)) {
+            $suppliers = $data['data'];
+            $total = $data['total'] ?? 0;
+            $currentPage = $data['current_page'] ?? 1;
+            $lastPage = $data['last_page'] ?? 1;
         } else {
-            $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            // Asume que toda la respuesta es el conjunto de datos
+            $suppliers = array_slice($data, ($page - 1) * $perPage, $perPage);
+            $total = count($data);
+            $currentPage = $page;
+            $lastPage = ceil($total / $perPage);
         }
 
-        // Verifica si la solicitud fue exitosa
-        if ($response->successful()) {
-            // Decodifica la respuesta JSON en un array asociativo
-            $data = $response->json();
-
-            // Verifica si la clave 'data' está presente en la respuesta
-            if (is_array($data) && array_key_exists('data', $data)) {
-                $suppliers = $data['data'];
-                $total = $data['total'] ?? 0;
-                $currentPage = $data['current_page'] ?? 1;
-                $lastPage = $data['last_page'] ?? 1;
-            } else {
-                // Asume que toda la respuesta es el conjunto de datos
-                $suppliers = array_slice($data, ($page - 1) * $perPage, $perPage);
-                $total = count($data);
-                $currentPage = $page;
-                $lastPage = ceil($total / $perPage);
-            }
-
-            // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
-            if ($request->has('download') && $request->input('download') === 'pdf') {
+        // Si el parámetro 'download' está presente y es 'pdf' o 'excel', generar el archivo correspondiente
+        if ($request->has('download')) {
+            $downloadType = $request->input('download');
+            if ($downloadType === 'pdf') {
                 // Guardar HTML en un archivo temporal en una ubicación accesible
                 $htmlContent = view('suppliers.pdf', compact('suppliers'))->render();
                 $htmlFilePath = storage_path('temp/suppliers_temp_file.html');
@@ -75,16 +80,21 @@ class SupplierController extends Controller {
                 } else {
                     return redirect()->back()->with('error', 'Error al generar el PDF');
                 }
+            } elseif ($downloadType === 'excel') {
+                $filePath = storage_path('temp/Proveedores.xlsx');
+                $export = new SuppliersExport($suppliers);
+                $export->export($filePath);
+                return response()->download($filePath)->deleteFileAfterSend(true);
             }
-
-            // Pasa los datos de proveedores y los parámetros de paginación a la vista y renderiza la vista
-            return view('suppliers.index', compact('suppliers', 'searchQuery', 'total', 'currentPage', 'lastPage'));
         }
 
-        // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
-        return redirect()->back()->with('error', 'Error al obtener los proveedores de la API');
+        // Pasa los datos de proveedores y los parámetros de paginación a la vista y renderiza la vista
+        return view('suppliers.index', compact('suppliers', 'searchQuery', 'total', 'currentPage', 'lastPage'));
     }
 
+    // Si la solicitud no fue exitosa, redirige o muestra un mensaje de error
+    return redirect()->back()->with('error', 'Error al obtener los proveedores de la API');
+}
 
     public function create() {
         // Verificación de rol, solo permite acceso a usuarios con rol distinto de 2

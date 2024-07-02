@@ -20,7 +20,7 @@
         .btn-group-horizontal .btn {
             margin-right: 5px;
         }
-                .pagination {
+        .pagination {
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -38,7 +38,6 @@
             font-weight: bold;
             text-decoration: underline;
         }
-            
 
         .btn-custom-size {
             padding: 6px 12px;
@@ -94,6 +93,9 @@
             @endif
             <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
+            </a>
+            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
+                <i class="fas fa-file-excel"></i> Excel
             </a>
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">
