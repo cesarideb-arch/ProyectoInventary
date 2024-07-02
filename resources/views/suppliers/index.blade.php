@@ -13,13 +13,14 @@
     <style>
         .btn-group-horizontal {
             display: flex;
-            justify-content: center; /* Centra horizontalmente */
+            justify-content: flex-end; /* Aligns buttons to the right */
             align-items: center;
         }
 
         .btn-group-horizontal .btn {
-            margin-right: 5px;
+            margin-left: 5px; /* Adds space between buttons */
         }
+
         .pagination {
             display: flex;
             justify-content: flex-start;
@@ -31,7 +32,7 @@
         }
 
         .pagination a {
-            margin: 0 5px; /* Ajusta este valor según sea necesario */
+            margin: 0 5px; /* Adjust as necessary */
         }
 
         .pagination .active {
@@ -44,14 +45,14 @@
         }
 
         .btn-danger {
-            background-color: #ff0000; /* color rojo */
-            border-color: #ff0000; /* color rojo */
-            color: #fff; /* texto blanco */
+            background-color: #ff0000; /* Red color */
+            border-color: #ff0000; /* Red color */
+            color: #fff; /* White text */
         }
 
         .btn-danger:hover {
-            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            background-color: #cc0000; /* Darker red on hover */
+            border-color: #cc0000; /* Darker red on hover */
         }
 
         @media (max-width: 576px) {
@@ -91,12 +92,14 @@
             @if (session('role') === '1' || session('role') === '0')
             <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
             @endif
-            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
-                <i class="fas fa-file-pdf"></i> PDF
-            </a>
-            <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
-                <i class="fas fa-file-excel"></i> Excel
-            </a>
+            <div class="btn-group-horizontal">
+                <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </a>
+                <a href="{{ route('suppliers.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
+                    <i class="fas fa-file-excel"></i> Excel
+                </a>
+            </div>
         </div>
         <form method="GET" action="{{ route('suppliers.index') }}">
             <div class="input-group mb-3">
@@ -197,11 +200,11 @@
     <!-- JavaScript para la ventana emergente de confirmación de eliminación -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-    const deleteForms = document.querySelectorAll('.delete-form'); // Selecciona todos los formularios de eliminar
+    const deleteForms = document.querySelectorAll('.delete-form'); // Select all delete forms
 
     deleteForms.forEach(form => {
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Previene la acción predeterminada del formulario
+            event.preventDefault(); // Prevent default form action
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "¿Quieres eliminar este proveedor?",
@@ -213,7 +216,7 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si confirma, enviar el formulario
+                    // If confirmed, submit the form
                     form.submit();
                 }
             });
@@ -221,7 +224,7 @@
     });
     </script>
 
-    <!-- JavaScript para Bootstrap y dependencias -->
+    <!-- JavaScript for Bootstrap and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

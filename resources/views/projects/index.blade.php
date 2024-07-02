@@ -13,12 +13,14 @@
     <style>
         .btn-group-horizontal {
             display: flex;
+            justify-content: flex-end; /* Aligns buttons to the right */
             align-items: center;
         }
 
         .btn-group-horizontal .btn {
-            margin-right: 5px;
+            margin-left: 5px; /* Adds space between buttons */
         }
+
         .pagination {
             display: flex;
             justify-content: flex-start;
@@ -30,7 +32,7 @@
         }
 
         .pagination a {
-            margin: 0 5px; /* Ajusta este valor según sea necesario */
+            margin: 0 5px; /* Adjust as necessary */
         }
 
         .pagination .active {
@@ -38,27 +40,23 @@
             text-decoration: underline;
         }
 
-        .btn-group-horizontal .btn {
-            margin-right: 5px;
-        }
-
         .btn-custom-size {
             padding: 6px 12px;
         }
 
         .btn-danger {
-            background-color: #ff0000; /* color rojo */
-            border-color: #ff0000; /* color rojo */
-            color: #fff; /* texto blanco */
+            background-color: #ff0000; /* Red color */
+            border-color: #ff0000; /* Red color */
+            color: #fff; /* White text */
         }
 
         .btn-danger:hover {
-            background-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
-            border-color: #cc0000; /* color rojo más oscuro al pasar el mouse */
+            background-color: #cc0000; /* Darker red on hover */
+            border-color: #cc0000; /* Darker red on hover */
         }
 
         .table td, .table th {
-            text-align: center; /* Centrando el texto de las celdas */
+            text-align: center; /* Center text in cells */
         }
 
         @media (max-width: 576px) {
@@ -83,13 +81,11 @@
                 justify-content: space-between;
                 padding: 10px;
                 border: 1px solid #ddd;
-                text-align: left; /* Alinea el texto a la izquierda para la versión móvil */
+                text-align: left; /* Align text to the left for mobile */
             }
             .table td::before {
                 content: attr(data-label);
                 font-weight: bold;
-                text-align: left;
-                margin-right: 10px;
             }
         }
     </style>
@@ -99,12 +95,14 @@
         <h1 class="mb-4">Lista de Proyectos</h1>
         <div class="d-flex justify-content-between mb-3">
             <a href="{{ route('projects.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
-            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
-                <i class="fas fa-file-pdf"></i> PDF
-            </a>
-            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
-                <i class="fas fa-file-excel"></i> Excel
-            </a>
+            <div class="btn-group-horizontal">
+                <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </a>
+                <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
+                    <i class="fas fa-file-excel"></i> Excel
+                </a>
+            </div>
         </div>
         <form method="GET" action="{{ route('projects.index') }}">
             <div class="input-group mb-3">
