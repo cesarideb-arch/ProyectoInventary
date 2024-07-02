@@ -44,15 +44,17 @@
                     </div>
                 </div>
             </div>
+            @if($user['role'] != '0')
+                <div class="form-group">
+                    <label for="role">Rol</label>
+                    <select class="form-control" id="role" name="role" required>
+                        <option value="1" {{ $user['role'] == '1' ? 'selected' : '' }}>Administrador Trabajador</option>
+                        <option value="2" {{ $user['role'] == '2' ? 'selected' : '' }}>Trabajador</option>
+                    </select>
+                </div>
+            @endif
             <div class="form-group">
-                <label for="role">Rol</label>
-                <select class="form-control" id="role" name="role" required>
-                    <option value="1" {{ $user['role'] == '1' ? 'selected' : '' }}>Administrador Trabajador</option>
-                    <option value="2" {{ $user['role'] == '2' ? 'selected' : '' }}>Trabajador</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="admin_password">Contraseña de Administrador</label>
+                <label for="admin_password">Contraseña de Administrador Dueño</label>
                 <div class="input-group">
                     <input type="password" class="form-control" id="admin_password" name="admin_password" required>
                     <div class="input-group-append">

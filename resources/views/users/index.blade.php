@@ -149,7 +149,7 @@
                     <div class="modal-body">
                         <p>¿Estás seguro de que quieres eliminar este usuario?</p>
                         <div class="form-group">
-                            <label for="admin_password">Contraseña de Administrador</label>
+                            <label for="admin_password">Contraseña de Administrador Dueño</label>
                             <div class="input-group">
                                 <input type="password" class="form-control" id="admin_password" name="admin_password" required>
                                 <div class="input-group-append">

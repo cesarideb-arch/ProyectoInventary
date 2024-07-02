@@ -120,10 +120,10 @@ class UserController extends Controller {
             return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
         }
 
-        // Verificación de que el user id no sea 1
-        if ($id == 1) {
-            return redirect()->back()->with('error', 'No puedes editar a este usuario');
-        }
+        // // Verificación de que el user id no sea 1
+        // if ($id == 1) {
+        //     return redirect()->back()->with('error', 'No puedes editar a este usuario');
+        // }
 
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
