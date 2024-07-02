@@ -52,6 +52,8 @@
                         <option value="2" {{ $user['role'] == '2' ? 'selected' : '' }}>Trabajador</option>
                     </select>
                 </div>
+            @else
+                <input type="hidden" name="role" value="0">
             @endif
             <div class="form-group">
                 <label for="admin_password">Contraseña de Administrador Dueño</label>
