@@ -16,11 +16,10 @@
             align-items: center;
         }
 
-
         .btn-group-horizontal .btn {
             margin-right: 5px;
         }
-                .pagination {
+        .pagination {
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -38,8 +37,6 @@
             font-weight: bold;
             text-decoration: underline;
         }
-            
-
 
         .btn-group-horizontal .btn {
             margin-right: 5px;
@@ -104,6 +101,9 @@
             <a href="{{ route('projects.create') }}" class="btn btn-primary btn-custom-size">Agregar</a>
             <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
                 <i class="fas fa-file-pdf"></i> PDF
+            </a>
+            <a href="{{ route('projects.index', array_merge(request()->query(), ['download' => 'excel'])) }}" class="btn btn-success btn-custom-size" style="background-color: green; border-radius: 10px;">
+                <i class="fas fa-file-excel"></i> Excel
             </a>
         </div>
         <form method="GET" action="{{ route('projects.index') }}">

@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Exports\ProjectsExport;
 
 class ProjectController extends Controller {
 
-    public function index(Request $request) {
+  
+    public function index(Request $request)
+    {
         // Verificación de rol, solo permite acceso a usuarios con rol distinto de 2
         if (session('role') === '2') {
             return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
@@ -56,30 +59,38 @@ class ProjectController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
     
-            // Si el parámetro 'download' está presente y es 'pdf', generar el PDF
-            if ($request->has('download') && $request->input('download') === 'pdf') {
-                // Guardar HTML en un archivo temporal en una ubicación accesible
-                $htmlContent = view('projects.pdf', compact('projects'))->render();
-                $htmlFilePath = storage_path('temp/projects_temp_file.html');
-                file_put_contents($htmlFilePath, $htmlContent);
+            // Si el parámetro 'download' está presente y es 'pdf' o 'excel', generar el archivo correspondiente
+            if ($request->has('download')) {
+                $downloadType = $request->input('download');
+                if ($downloadType === 'pdf') {
+                    // Guardar HTML en un archivo temporal en una ubicación accesible
+                    $htmlContent = view('projects.pdf', compact('projects'))->render();
+                    $htmlFilePath = storage_path('temp/projects_temp_file.html');
+                    file_put_contents($htmlFilePath, $htmlContent);
     
-                // Verificar si el archivo HTML se genera correctamente
-                if (!file_exists($htmlFilePath)) {
-                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
-                }
+                    // Verificar si el archivo HTML se genera correctamente
+                    if (!file_exists($htmlFilePath)) {
+                        return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                    }
     
-                // Definir la ruta de salida del PDF
-                $pdfFilePath = storage_path('temp/Proyectos.pdf');
-                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+                    // Definir la ruta de salida del PDF
+                    $pdfFilePath = storage_path('temp/Proyectos.pdf');
+                    $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
     
-                // Ejecutar el comando
-                exec($command, $output, $returnVar);
+                    // Ejecutar el comando
+                    exec($command, $output, $returnVar);
     
-                // Verificar si el PDF se generó correctamente
-                if ($returnVar === 0) {
-                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                    // Verificar si el PDF se generó correctamente
+                    if ($returnVar === 0) {
+                        return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al generar el PDF');
+                    }
+                } elseif ($downloadType === 'excel') {
+                    $filePath = storage_path('temp/Proyectos.xlsx');
+                    $export = new ProjectsExport($projects);
+                    $export->export($filePath);
+                    return response()->download($filePath)->deleteFileAfterSend(true);
                 }
             }
     
