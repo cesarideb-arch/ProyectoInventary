@@ -248,8 +248,8 @@
                         <td data-label="Producto">{{ $entrance['product']['name'] ?? 'N/A' }}</td>
                         <td data-label="Responsable">{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td data-label="Cantidad">{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
-                        <td data-label="Precio">{{ number_format($entrance['price'] ?? 'N/A', 2, '.', ',') }}</td>
-                        <td data-label="Gastado">{{ number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') }}</td>
+                        <td data-label="Precio">{{ $entrance['price'] != 0 ? number_format($entrance['price'], 2, '.', ',') : 'N/A' }}</td>
+                        <td data-label="Gastado">{{ $entrance['price'] != 0 ? number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') : 'N/A' }}</td>
                         <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
                         <td data-label="Descripción">{{ $entrance['description'] ?? 'N/A' }}</td>
                         <td data-label="Folio">{{ $entrance['folio'] ?? 'N/A' }}</td>                        
