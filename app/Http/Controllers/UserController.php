@@ -153,7 +153,6 @@ class UserController extends Controller {
 
 
 
-
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
@@ -163,7 +162,7 @@ class UserController extends Controller {
             'role' => 'required|string',
             'admin_password' => 'required|string',
         ]);
-
+    
         // Configurar los datos del formulario
         $formParams = [
             [
@@ -187,7 +186,7 @@ class UserController extends Controller {
                 'contents' => $validatedData['admin_password'],
             ],
         ];
-
+    
         // Si se proporciona una nueva contraseña, agregarla antes de actualizar
         if ($request->filled('password')) {
             $formParams[] = [
@@ -195,22 +194,19 @@ class UserController extends Controller {
                 'contents' => $request->password,
             ];
         }
-
-        // Realizar un dd para ver los datos que se enviarán
-        // dd($formParams);
-
+    
         // URL base de la API
         $baseApiUrl = config('app.backend_api');
-
+    
         // URL de la API para actualizar un usuario específico
         $apiUrl = $baseApiUrl . '/api/users/' . $id;
-
+    
         // Obtener el token de la sesión
         $token = $request->session()->get('token');
-
+    
         // Crear un cliente Guzzle
-        $client = new Client();
-
+        $client = new \GuzzleHttp\Client();
+    
         // Realizar una solicitud HTTP POST con _method=PUT para actualizar el usuario
         try {
             $response = $client->post($apiUrl, [
@@ -220,7 +216,7 @@ class UserController extends Controller {
                 ],
                 'multipart' => $formParams,
             ]);
-
+    
             // Verificar si la solicitud fue exitosa
             if ($response->getStatusCode() == 200) {
                 // Redirigir a una página de éxito o mostrar un mensaje de éxito
@@ -229,13 +225,21 @@ class UserController extends Controller {
                 // Manejar errores si la solicitud no fue exitosa
                 return back()->withInput()->withErrors('Error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.');
             }
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $responseBody = json_decode($e->getResponse()->getBody()->getContents(), true);
+    
+            if (isset($responseBody['message']) && $responseBody['message'] == 'El correo electrónico ya está registrado') {
+                return back()->withInput()->withErrors(['email' => 'El correo electrónico ya está registrado']);
+            } elseif (isset($responseBody['message']) && $responseBody['message'] == 'Contraseña de administrador incorrecta') {
+                return back()->withInput()->withErrors(['admin_password' => 'Contraseña de administrador incorrecta']);
+            } else {
+                return back()->withInput()->withErrors('Error al actualizar el usuario. Por favor, inténtalo de nuevo más tarde.');
+            }
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors('Error al actualizar el usuario: ' . 'Contraseña Incorrecta');
+            return back()->withInput()->withErrors('Error al actualizar el usuario: ' . $e->getMessage());
         }
     }
-
-
-
+    
     public function destroy(Request $request, $id) {
         // Validar que se proporcione la contraseña del administrador
         $validatedData = $request->validate([
