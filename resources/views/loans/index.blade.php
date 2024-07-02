@@ -115,18 +115,18 @@
         <h1 class="mb-4">Listado de Préstamos</h1>
         <div class="d-flex justify-content-start align-items-center mb-3 flex-wrap">
             <div class="btn-group-left" style="flex-wrap: wrap;">
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 5px;">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 5px;">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>
             <div class="btn-group-right" style="flex-wrap: wrap;">
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'finished_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 5px;">
                     <i class="fas fa-file-pdf"></i> PDF Finalizados
                 </a>
-                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 10px;">
+                <a href="{{ route('loans.index', array_merge(request()->query(), ['download' => 'started_pdf'])) }}" class="btn btn-danger btn-custom-size" style="background-color: red; border-radius: 5px;">
                     <i class="fas fa-file-pdf"></i> PDF Iniciados
                 </a>
             </div>
