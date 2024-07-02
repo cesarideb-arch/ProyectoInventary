@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
-
+use App\Exports\ProductsExport;
 
 class ProductController extends Controller {
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // URL base de la API de productos
         $baseApiUrl = config('app.backend_api');
         $apiUrl = $baseApiUrl . '/api/products';
@@ -52,29 +53,37 @@ class ProductController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
     
-            if ($request->has('download') && $request->input('download') === 'pdf') {
-                // Guardar HTML en un archivo temporal en una ubicación accesible
-                $htmlContent = view('products.pdf', compact('products'))->render();
-                $htmlFilePath = storage_path('temp/my_temp_file.html');
-                file_put_contents($htmlFilePath, $htmlContent);
+            if ($request->has('download')) {
+                $downloadType = $request->input('download');
+                if ($downloadType === 'pdf') {
+                    // Guardar HTML en un archivo temporal en una ubicación accesible
+                    $htmlContent = view('products.pdf', compact('products'))->render();
+                    $htmlFilePath = storage_path('temp/my_temp_file.html');
+                    file_put_contents($htmlFilePath, $htmlContent);
     
-                // Verificar si el archivo HTML se genera correctamente
-                if (!file_exists($htmlFilePath)) {
-                    return redirect()->back()->with('error', 'Error al generar el archivo HTML');
-                }
+                    // Verificar si el archivo HTML se genera correctamente
+                    if (!file_exists($htmlFilePath)) {
+                        return redirect()->back()->with('error', 'Error al generar el archivo HTML');
+                    }
     
-                // Definir la ruta de salida del PDF
-                $pdfFilePath = storage_path('temp/Inventario.pdf');
-                $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
+                    // Definir la ruta de salida del PDF
+                    $pdfFilePath = storage_path('temp/Inventario.pdf');
+                    $command = '"' . env('WKHTMLTOPDF_PATH') . '" --lowquality "file:///' . $htmlFilePath . '" "' . $pdfFilePath . '"';
     
-                // Ejecutar el comando
-                exec($command, $output, $returnVar);
+                    // Ejecutar el comando
+                    exec($command, $output, $returnVar);
     
-                // Verificar si el PDF se generó correctamente
-                if ($returnVar === 0) {
-                    return response()->download($pdfFilePath)->deleteFileAfterSend(true);
-                } else {
-                    return redirect()->back()->with('error', 'Error al generar el PDF');
+                    // Verificar si el PDF se generó correctamente
+                    if ($returnVar === 0) {
+                        return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+                    } else {
+                        return redirect()->back()->with('error', 'Error al generar el PDF');
+                    }
+                } elseif ($downloadType === 'excel') {
+                    $filePath = storage_path('temp/Inventario.xlsx');
+                    $export = new ProductsExport($products);
+                    $export->export($filePath);
+                    return response()->download($filePath)->deleteFileAfterSend(true);
                 }
             }
     
