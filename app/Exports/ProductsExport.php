@@ -20,7 +20,7 @@ class ProductsExport
 
         // Agregar encabezados
         $writer->addRow([
-            'Nombre', 'Descripción', 'Precio', 'Categoría', 'Proveedor', 'Ubicación', 'Imagen'
+            'Nombre', 'Descripción', 'Precio', 'Categoría', 'Proveedor', 'Ubicación', 'Cantidad',
         ]);
 
         // Agregar datos
@@ -32,7 +32,7 @@ class ProductsExport
                 $row['category']['name'] ?? '',
                 $row['supplier']['company'] ?? 'N/A',
                 $row['location'] ?? 'N/A',
-                config('app.backend_api') . '/' . ($row['profile_image'] ?? 'ruta_por_defecto_de_la_imagen.jpg')
+                $row['quantity'] != 0 ? number_format($row['quantity'], 0, '.', ',') : 'N/A',
             ]);
         }
 

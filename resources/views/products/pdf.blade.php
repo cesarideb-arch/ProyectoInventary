@@ -31,6 +31,7 @@
                             <th>Categoría</th>
                             <th>Proveedor</th>
                             <th>Ubicación</th>
+                            <th>Cantidad</th>
                             <th>Imagen</th>
                         </tr>
                     </thead>
@@ -43,6 +44,7 @@
                                 <td>{{ $product['category']['name'] }}</td>
                                 <td>{{ $product['supplier']['company'] ?? 'N/A' }}</td>
                                 <td>{{ $product['location'] ?? 'N/A' }}</td>
+                                <td>{{ number_format($product['quantity'] ?? 0, 0, '.', ',') }}</td>
                                 <td>
                                     <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                                 </td>

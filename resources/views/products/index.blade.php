@@ -121,6 +121,7 @@
                     <th>Categoría</th>
                     <th>Proveedor</th>
                     <th>Ubicación</th>
+                    <th>Cantidad</th>
                     <th>Imagen</th>
                     @if (session('role') === '1' || session('role') === '0')
                         <th style="text-align: center;" colspan="3">Acciones</th>
@@ -135,6 +136,8 @@
                     <td data-label="Categoría">{{ $product['category']['name'] }}</td>
                     <td data-label="Proveedor">{{ $product['supplier']['company'] ?? 'N/A' }}</td>
                     <td data-label="Ubicación">{{ $product['location'] ?? 'N/A' }}</td>
+                    <td data-label="Cantidad">{{ number_format($product['quantity'] ?? 0, 0, '.', ',') }}</td>
+
                     <td data-label="Imagen">
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
                     </td>
