@@ -18,18 +18,18 @@
             padding: 0.375rem 0.75rem;
         }
         .pagination {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-.pagination span {
-    margin: 0 10px;
-}
+        .pagination span {
+            margin: 0 10px;
+        }
 
-.pagination a {
-    margin: 0 5px; /* Ajusta este valor según sea necesario */
-}
+        .pagination a {
+            margin: 0 5px;
+        }
 
         @media (max-width: 576px) {
             .table-responsive {
@@ -87,8 +87,10 @@
                     <td data-label="Nombre">{{ $user['name'] }}</td>
                     <td data-label="Email">{{ $user['email'] }}</td>
                     <td data-label="Rol">
-                        @if($user['role'] == 1)
-                            Admin Trabajador
+                        @if($user['role'] == 0)
+                            Administrador Dueño
+                        @elseif($user['role'] == 1)
+                          Administrador Trabajador
                         @elseif($user['role'] == 2)
                             Trabajador
                         @endif
@@ -101,9 +103,11 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </form>
+                            @if($user['role'] != 0)
                             <button class="btn btn-danger btn-custom-size delete-button" data-id="{{ $user['id'] }}">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endif
                         </div>
                     </td>
                     </tr>

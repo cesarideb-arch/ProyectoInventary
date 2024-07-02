@@ -47,7 +47,7 @@
                 <label for="role">Rol</label>
                 <select class="form-control" id="role" name="role" required>
                     <option value="">Selecciona un rol</option>
-                    <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Admin Trabajador</option>
+                    <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Administrador Trabajador</option>
                     <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Trabajador</option>
                 </select>
             </div>
