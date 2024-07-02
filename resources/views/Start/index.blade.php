@@ -25,7 +25,7 @@
         {{-- <p class="lead"><strong>ID:</strong> {{ session('user_id', 'No se pudo obtener el ID del usuario.') }}</p> --}}
 
         @php
-            $roleNames = ['Administrador', 'Trabajador Admin', 'Trabajador'];
+            $roleNames = ['Administrador Dueño'];
             $role = session('role', -1);
         @endphp
         <p class="lead"><strong>Rol: </strong> {{ $role >= 0 && $role < count($roleNames) ? $roleNames[$role] : 'Rol no identificado' }}</p>
