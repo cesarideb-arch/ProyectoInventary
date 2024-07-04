@@ -39,6 +39,10 @@
         .is-valid .form-control {
             border-color: #28a745;
         }
+        textarea {
+            resize: none;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -65,12 +69,12 @@
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría (máximo 500 caracteres).</div>
+                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría.</div>
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" maxlength="500">{{ $category['description'] }}</textarea>
+                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" maxlength="500" rows="1">{{ $category['description'] }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -118,6 +122,15 @@
                 }
             });
         });
+
+        // Ajusta el tamaño del textarea según el contenido
+        const description = document.getElementById('description');
+        description.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        // Inicializa el tamaño del textarea
+        description.style.height = (description.scrollHeight) + 'px';
     </script>
 </body>
 </html>

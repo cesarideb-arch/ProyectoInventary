@@ -64,7 +64,7 @@
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría (máximo 500 caracteres).</div>
+                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría.</div>
             </div>
 
             <div class="form-group">
