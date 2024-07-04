@@ -76,7 +76,7 @@ class CategoryController extends Controller {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'name' => 'required|string|max:100',
-            'description' => 'nullable|string|max:100'
+            'description' => 'nullable|string|max:500'
         ]);
 
         // URL base de la API
@@ -134,7 +134,7 @@ class CategoryController extends Controller {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
             'name' => 'required|string|max:100',
-            'description' => 'nullable|string|max:100'
+            'description' => 'nullable|string|max:500'
         ]);
 
         // URL base de la API

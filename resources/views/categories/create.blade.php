@@ -60,20 +60,20 @@
 
             <div class="form-group">
                 <label for="name">Nombre:</label>
-                <input type="text" id="name" name="name" value="{{ old('name') }}" required class="form-control @error('name') is-invalid @enderror">
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required maxlength="500" class="form-control @error('name') is-invalid @enderror">
                 @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría.</div>
+                <div class="invalid-feedback">Por favor, ingrese el nombre de la categoría (máximo 500 caracteres).</div>
             </div>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
-                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" maxlength="500">{{ old('description') }}</textarea>
                 @error('description')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
-                <div class="invalid-feedback">Por favor, ingrese la descripción de la categoría.</div>
+                <div class="invalid-feedback">Por favor, ingrese la descripción de la categoría (máximo 500 caracteres).</div>
             </div>
 
             <button type="submit" class="btn btn-primary">Crear Categoría</button>
@@ -90,7 +90,7 @@
 
             for (var i = 0; i < requiredInputs.length; i++) {
                 var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '') {
+                if (input.value === '' || input.value.length > 500) {
                     input.classList.add('is-invalid');
                     event.preventDefault();
                     event.stopPropagation();
