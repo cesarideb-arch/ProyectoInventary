@@ -42,7 +42,7 @@ class CategoryController extends Controller {
                 // Decodifica la respuesta JSON en un array asociativo
                 $data = $response->json();
     
-                // Verifica si la clave 'data' está presente en la respuesta
+                // Verifica si la clave 'data' está presente en la respuesta prueba ssh
                 if (is_array($data) && array_key_exists('data', $data)) {
                     $categories = $data['data'];
                     $total = $data['total'] ?? 0;
