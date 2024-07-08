@@ -20,7 +20,7 @@ class ProductsExport
 
         // Agregar encabezados
         $writer->addRow([
-            'Nombre', 'Descripción', 'Precio', 'Categoría', 'Proveedor', 'Ubicación', 'Cantidad',
+            'Nombre', 'Descripción', 'Precio', 'Observaciones','Categoría', 'Proveedor', 'Ubicación', 'Cantidad',
         ]);
 
         // Agregar datos
@@ -29,6 +29,7 @@ class ProductsExport
                 $row['name'] ?? '',
                 $row['description'] ?? 'N/A',
                 $row['price'] != 0 ? '$' . number_format($row['price'], 2, '.', ',') : 'N/A',
+                $row['observations'] ?? 'N/A',
                 $row['category']['name'] ?? '',
                 $row['supplier']['company'] ?? 'N/A',
                 $row['location'] ?? 'N/A',
