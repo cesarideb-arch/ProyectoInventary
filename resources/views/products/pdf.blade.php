@@ -9,6 +9,9 @@
         .page-break {
             page-break-before: always;
         }
+        .small-text {
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -21,13 +24,14 @@
             @if($index > 0)
                 <div class="page-break"></div>
             @endif
-            <div class="table-responsive">
+            <div class="table-responsive small-text">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Nombre</th>
                             <th>Descripción</th>
                             <th>Precio</th>
+                            <th>Observaciones</th>
                             <th>Categoría</th>
                             <th>Proveedor</th>
                             <th>Ubicación</th>
@@ -41,6 +45,7 @@
                                 <td>{{ $product['name'] }}</td>
                                 <td>{{ $product['description'] ?? 'N/A' }}</td>
                                 <td>${{ number_format($product['price'], 2, '.', ',') }}</td>
+                                <td>{{ $product['observations'] ?? 'N/A' }}</td>
                                 <td>{{ $product['category']['name'] }}</td>
                                 <td>{{ $product['supplier']['company'] ?? 'N/A' }}</td>
                                 <td>{{ $product['location'] ?? 'N/A' }}</td>
