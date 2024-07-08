@@ -65,7 +65,7 @@ class CategoryController extends Controller {
         }
 
     public function create() {
-            // Verificación de rol, solo permite acceso a usuarios con rol 1 o 2
+            // Verificación de rol, solo permite acceso a usuarios con rol 1 o 0
             if (session('role') === '2') {
                 return redirect()->back()->with('error', 'No tienes permiso para acceder a esta página');
             }
