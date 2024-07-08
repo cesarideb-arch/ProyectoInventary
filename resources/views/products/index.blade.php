@@ -11,6 +11,26 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+
+            body {
+                overflow-x: hidden; /* Oculta las barras de desplazamiento horizontales */
+            }
+
+            .container {
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .table-responsive {
+                overflow-x: auto; /* Permite la barra de desplazamiento solo en la tabla */
+            }
+
+            .table {
+                width: 100%;
+                table-layout: fixed; /* Asegura que la tabla no exceda el ancho del contenedor */
+            }
+
         .btn-group-horizontal {
             display: flex;
             justify-content: flex-start; /* Aligns buttons to the left */
@@ -121,6 +141,7 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
+                    <th>Observaciones</th>
                     <th>Categoría</th>
                     <th>Proveedor</th>
                     <th>Ubicación</th>
@@ -136,6 +157,7 @@
                     <td data-label="Nombre">{{ $product['name'] }}</td>
                     <td data-label="Descripción">{{ $product['description'] ?? 'N/A' }}</td>
                     <td data-label="Precio">{{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</td>
+                    <td data-label="Observaciones">{{ $product['observations'] ?? 'N/A' }}</td>
                     <td data-label="Categoría">{{ $product['category']['name'] }}</td>
                     <td data-label="Proveedor">{{ $product['supplier']['company'] ?? 'N/A' }}</td>
                     <td data-label="Ubicación">{{ $product['location'] ?? 'N/A' }}</td>
@@ -143,6 +165,9 @@
 
                     <td data-label="Imagen">
                         <img src="{{ config('app.backend_api') }}/{{ isset($product['profile_image']) ? $product['profile_image'] : 'ruta_por_defecto_de_la_imagen.jpg' }}" alt="Sin Imagen" width="100" style="border-radius: 10px;">
+                    </td>
+                    
+                    <td>
                     </td>
                     <td data-label="Acciones" style="text-align: center;">
                         <div class="btn-group btn-group-horizontal" role="group">
