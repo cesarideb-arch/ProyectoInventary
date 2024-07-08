@@ -121,6 +121,7 @@
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Precio</th>
+                    <th>Observaciones</th>
                     <th>Categoría</th>
                     <th>Proveedor</th>
                     <th>Ubicación</th>
@@ -136,6 +137,7 @@
                     <td data-label="Nombre">{{ $product['name'] }}</td>
                     <td data-label="Descripción">{{ $product['description'] ?? 'N/A' }}</td>
                     <td data-label="Precio">{{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</td>
+                    <td data-label="Observaciones">{{ $product['observations'] ?? 'N/A' }}</td>
                     <td data-label="Categoría">{{ $product['category']['name'] }}</td>
                     <td data-label="Proveedor">{{ $product['supplier']['company'] ?? 'N/A' }}</td>
                     <td data-label="Ubicación">{{ $product['location'] ?? 'N/A' }}</td>
