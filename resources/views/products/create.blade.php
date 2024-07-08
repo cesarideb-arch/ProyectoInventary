@@ -136,12 +136,40 @@
 
             <div class="form-group">
                 <label for="quantity">Cantidad:</label>
-                <input type="text" id="quantity" name="quantity" value="{{ old('quantity') }}" required class="form-control @error('quantity') is-invalid @enderror">
+                <input type="text" id="formattedQuantity" class="form-control" value="{{ old('quantity') ? number_format(old('quantity')) : '' }}" required>
+                <input type="hidden" id="quantity" name="quantity" value="{{ old('quantity') }}" required>
                 @error('quantity')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 <div class="invalid-feedback">Por favor, ingrese la cantidad del producto. El valor mínimo es 1.</div>
             </div>
+            <script>
+                function formatNumber(value) {
+                    value = value.replace(/,/g, ''); // Remove existing commas
+                    if (!isNaN(value) && value !== '') {
+                        return parseInt(value).toLocaleString();
+                    }
+                    return value;
+                }
+
+                function unformatNumber(value) {
+                    return value.replace(/,/g, ''); // Remove existing commas
+                }
+
+                document.getElementById('formattedQuantity').addEventListener('input', function (e) {
+                    var formattedValue = formatNumber(e.target.value);
+                    e.target.value = formattedValue;
+                    document.getElementById('quantity').value = unformatNumber(formattedValue);
+                });
+
+                // Format initial value if it exists
+                document.addEventListener('DOMContentLoaded', function() {
+                    var quantityInput = document.getElementById('quantity');
+                    var formattedQuantityInput = document.getElementById('formattedQuantity');
+                    var initialValue = quantityInput.value;
+                    formattedQuantityInput.value = formatNumber(initialValue);
+                });
+            </script>
 
             <div class="form-group">
                 <label for="description">Descripción:</label>
@@ -151,17 +179,47 @@
                 @enderror
                 <div class="invalid-feedback">Por favor, ingrese la descripción del producto.</div>
             </div>
-       
+
             <div class="form-group">
                 <label for="price">Precio:</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                     </div>
-                    <input type="text" id="price" name="price" value="{{ old('price', '0.00') }}" required class="form-control" placeholder="0.00" data-type="currency">
+                    <input type="text" id="formattedPrice" class="form-control" value="{{ old('price') ? number_format(old('price'), 2) : '0.00' }}" required>
+                    <input type="hidden" id="price" name="price" value="{{ old('price') }}" required>
                 </div>
                 <div class="invalid-feedback">Por favor, ingrese el precio del producto.</div>
             </div>
+            <script>
+                function formatPrice(value) {
+                    value = value.replace(/,/g, ''); // Remove existing commas
+                    if (!isNaN(value) && value !== '') {
+                        var parts = value.split('.');
+                        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return parts.join('.');
+                    }
+                    return value;
+                }
+
+                function unformatPrice(value) {
+                    return value.replace(/,/g, ''); // Remove existing commas
+                }
+
+                document.getElementById('formattedPrice').addEventListener('input', function (e) {
+                    var formattedValue = formatPrice(e.target.value);
+                    e.target.value = formattedValue;
+                    document.getElementById('price').value = unformatPrice(formattedValue);
+                });
+
+                // Format initial value if it exists
+                document.addEventListener('DOMContentLoaded', function() {
+                    var priceInput = document.getElementById('price');
+                    var formattedPriceInput = document.getElementById('formattedPrice');
+                    var initialValue = priceInput.value;
+                    formattedPriceInput.value = formatPrice(initialValue);
+                });
+            </script>
 
             <div class="form-group">
                 <label for="profile_image">Imagen:</label>
@@ -413,24 +471,6 @@
                 if (this.checkValidity()) {
                     this.classList.remove('is-invalid');
                     this.nextElementSibling.style.display = 'none';
-                }
-            });
-        });
-
-        // Function to format number as currency with commas
-        function formatNumberWithCommas(number) {
-            return number.replace(/\D/g, "")
-                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // Event listener to format price and quantity inputs with commas
-        document.querySelectorAll('#price, #quantity').forEach(input => {
-            input.addEventListener('input', function (e) {
-                var value = e.target.value.replace(/,/g, '');
-                if (!isNaN(value) && value !== '') {
-                    e.target.value = formatNumberWithCommas(value);
-                } else {
-                    e.target.value = '';
                 }
             });
         });
