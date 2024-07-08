@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
+          body {
+                overflow-x: hidden; /* Oculta las barras de desplazamiento horizontales */
+            }
+
+            .container {
+                max-width: 100%;
+                overflow-x: hidden;
+                box-sizing: border-box;
+            }
+
+            .table-responsive {
+                overflow-x: auto; /* Permite la barra de desplazamiento solo en la tabla */
+            }
         .table td, .table th {
             text-align: center;
             vertical-align: middle;
