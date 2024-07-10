@@ -30,6 +30,15 @@
         .btn-custom-size {
             padding: 0.375rem 0.75rem;
         }
+        .btn-danger {
+            background-color: #ff0000; /* Rojo fuerte */
+            border-color: #ff0000; /* Rojo fuerte */
+            color: #fff; /* Texto blanco */
+        }
+        .btn-danger:hover {
+            background-color: #cc0000; /* Rojo más oscuro en hover */
+            border-color: #cc0000; /* Rojo más oscuro en hover */
+        }
         .pagination {
             display: flex;
             justify-content: flex-start;
