@@ -11,22 +11,23 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-          body {
-                overflow-x: hidden; /* Oculta las barras de desplazamiento horizontales */
-            }
+        body {
+            overflow-x: hidden; /* Oculta las barras de desplazamiento horizontales */
+        }
 
-            .container {
-                max-width: 100%;
-                overflow-x: hidden;
-                box-sizing: border-box;
-            }
+        .container {
+            max-width: 100%;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
 
-            .table-responsive {
-                overflow-x: auto; /* Permite la barra de desplazamiento solo en la tabla */
-            }
+        .table-responsive {
+            overflow-x: auto; /* Permite la barra de desplazamiento solo en la tabla */
+        }
+
         .btn-group-horizontal {
             display: flex;
-            justify-content: flex-end; /* Aligns buttons to the right */
+            justify-content: center; /* Center buttons */
             align-items: center;
         }
 
@@ -246,5 +247,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
 
 @endsection
