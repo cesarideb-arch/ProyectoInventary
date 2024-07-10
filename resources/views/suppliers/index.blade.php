@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
           body {
-                overflow-x: hidden; /* Oculta las barras de desplazamiento horizontales */
+                overflow-x: hidden; /* Oculta las barras de desplazamiento horizontaes */
             }
 
             .container {
