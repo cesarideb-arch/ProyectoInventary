@@ -26,7 +26,7 @@
                     <thead>
                         <tr>
                             <th class="text-center">Nombre</th>
-                            <th class="text-center">Descripción</th>
+                            <th class="text-center">Ubicación / sub ubicacion</th>
                             <th class="text-center">Nombre de la Empresa</th>
                             <th class="text-center">RFC</th>
                             <th class="text-center">Dirección</th>

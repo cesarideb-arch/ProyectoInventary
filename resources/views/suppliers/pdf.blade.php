@@ -25,7 +25,6 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="text-center">Artículo</th>
                             <th class="text-center">Precio</th>
                             <th class="text-center">Empresa</th>
                             <th class="text-center">Teléfono</th>
@@ -36,7 +35,6 @@
                     <tbody>
                         @foreach($chunk as $supplier)
                             <tr>
-                                <td class="text-center">{{ $supplier['article'] }}</td>
                                 <td class="text-center">${{ number_format($supplier['price'], 2, '.', ',') }}</td>
                                 <td class="text-center">{{ $supplier['company'] }}</td>
                                 <td class="text-center">{{ $supplier['phone'] }}</td>

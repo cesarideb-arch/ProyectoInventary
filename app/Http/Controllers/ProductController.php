@@ -447,7 +447,7 @@ class ProductController extends Controller {
             'profile_image' => 'nullable|file|max:2048|mimes:jpeg,png,gif,svg',
             'serie' => 'nullable|string|max:40',
             'observations' => 'nullable|string|max:50',
-            'location' => 'nullable|string|max:20',
+            'location' => 'nullable|string|max:100',
             'category_id' => 'required|integer',
             'supplier_id' => 'nullable|integer',
         ]);

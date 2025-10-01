@@ -1,54 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Proveedor</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body {
+        .employee-form-container {
             background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 50px;
-            padding: 30px;
-            background-color: #ffffff;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
-        h1 {
-            color: #343a40;
-            margin-bottom: 30px;
+        .form-title {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: bold;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
             text-align: center;
         }
-        .form-group label {
-            font-weight: bold;
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            transition: background-color 0.3s, border-color 0.3s;
+        .form-section-title {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+        .form-table {
+            display: table;
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
         }
-        .is-invalid .form-control {
-            border-color: #dc3545;
+        .form-row {
+            display: table-row;
         }
-        .is-valid .form-control {
-            border-color: #28a745;
+        .form-cell {
+            display: table-cell;
+            padding: 10px 15px;
+            vertical-align: top;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .btn-agregar {
+            background-color: #3498db;
+            border-color: #3498db;
+            font-weight: 500;
+            padding: 8px 25px;
+            border-radius: 5px;
+        }
+        .btn-agregar:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .checkbox-group .form-check-input {
+            margin-top: 0;
+        }
+        .checkbox-group label {
+            margin-left: 8px;
+            margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .form-table, .form-row, .form-cell {
+                display: block;
+            }
+            .form-cell {
+                padding: 8px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Editar Proveedor</h1>
-
+    <div class="container employee-form-container">
+        <h1 class="form-title">Editar Proveedor</h1>
+        
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul>
+                <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -59,73 +107,73 @@
         <form method="POST" action="{{ route('suppliers.update', $supplier['id']) }}" novalidate>
             @csrf
             @method('PUT')
-
-            <div class="form-group">
-                <label for="article">Artículo:</label>
-                <input type="text" id="article" name="article" value="{{ $supplier['article'] }}" required class="form-control @error('article') is-invalid @enderror">
-                @error('article')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el artículo del proveedor.</div>
+            
+            <div class="form-section">
+                <h5 class="form-section-title">Información del Proveedor</h5>
+                <div class="form-table">
+                    <div class="form-row">
+                        <div class="form-cell">
+                            <label class="form-label">Precio:</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="text" id="price" name="price" value="{{ $supplier['price'] }}" required class="form-control @error('price') is-invalid @enderror">
+                                @error('price')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-cell">
+                            <label class="form-label">Empresa:</label>
+                            <input type="text" id="company" name="company" value="{{ $supplier['company'] }}" required class="form-control @error('company') is-invalid @enderror">
+                            @error('company')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-cell">
+                            <label class="form-label">Teléfono:</label>
+                            <input type="text" id="phone" name="phone" value="{{ $supplier['phone'] }}" maxlength="10" required class="form-control @error('phone') is-invalid @enderror">
+                            @error('phone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-cell">
+                            <label class="form-label">Email:</label>
+                            <input type="email" id="email" name="email" value="{{ $supplier['email'] }}" class="form-control @error('email') is-invalid @enderror">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck" {{ $supplier['email'] == null ? 'checked' : '' }}>
+                                <label for="noEmailCheck" class="form-check-label">Sin Email</label>
+                            </div>
+                        </div>
+                        <div class="form-cell">
+                            <label class="form-label">Dirección:</label>
+                            <input type="text" id="address" name="address" value="{{ $supplier['address'] }}" class="form-control @error('address') is-invalid @enderror">
+                            @error('address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div class="checkbox-group">
+                                <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck" {{ $supplier['address'] == null ? 'checked' : '' }}>
+                                <label for="noAddressCheck" class="form-check-label">Sin dirección</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="price">Precio:</label>
-                <input type="number" id="price" name="price" value="{{ $supplier['price'] }}" step="0.01" required class="form-control @error('price') is-invalid @enderror">
-                @error('price')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el precio del artículo.</div>
+            
+            <div class="d-flex justify-content-end mt-4">
+                <a href="{{ route('suppliers.index') }}" class="btn btn-secondary mr-2">Cancelar</a>
+                <button type="submit" class="btn btn-agregar">Actualizar</button>
             </div>
-
-            <div class="form-group">
-                <label for="company">Empresa:</label>
-                <input type="text" id="company" name="company" value="{{ $supplier['company'] }}" required class="form-control @error('company') is-invalid @enderror">
-                @error('company')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el nombre de la empresa.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" name="phone" value="{{ $supplier['phone'] }}" required class="form-control @error('phone') is-invalid @enderror">
-                @error('phone')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el número de teléfono.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ $supplier['email'] }}" class="form-control @error('email') is-invalid @enderror">
-                @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese el email del proveedor o marque "Sin email".</div>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noEmailCheck" name="noEmailCheck" {{ $supplier['email'] == null ? 'checked' : '' }}>
-                <label class="" for="noEmailCheck">Sin email</label>
-            </div>
-
-            <div class="form-group">
-                <label for="address">Dirección:</label>
-                <input type="text" id="address" name="address" value="{{ $supplier['address'] }}" class="form-control @error('address') is-invalid @enderror">
-                @error('address')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                <div class="invalid-feedback">Por favor, ingrese la dirección del proveedor o marque "Sin dirección".</div>
-            </div>
-
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="noAddressCheck" name="noAddressCheck" {{ $supplier['address'] == null ? 'checked' : '' }}>
-                <label class="" for="noAddressCheck">Sin dirección</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-            <a href="{{ route('suppliers.index') }}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 
@@ -133,14 +181,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            toggleInputDisable('noEmailCheck', 'email');
-            toggleInputDisable('noAddressCheck', 'address');
-        });
+        function formatPrice(input) {
+            var value = input.value.replace(/,/g, '');
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
 
         function toggleInputDisable(checkboxId, inputId) {
             var checkbox = document.getElementById(checkboxId);
             var input = document.getElementById(inputId);
+            
+            // Estado inicial
+            if (checkbox.checked) {
+                input.disabled = true;
+                input.removeAttribute('required');
+            }
+            
             checkbox.addEventListener('change', function() {
                 if (this.checked) {
                     input.value = '';
@@ -152,70 +207,64 @@
                     input.setAttribute('required', 'required');
                 }
             });
-
-            if (checkbox.checked) {
-                input.disabled = true;
-                input.removeAttribute('required');
-            } else {
-                input.disabled = false;
-                input.setAttribute('required', 'required');
-            }
         }
 
-        document.querySelector('form').addEventListener('submit', function(event) {
-            var requiredInputs = ['article', 'price', 'company', 'phone'];
-            var optionalInputs = ['email', 'address'];
-            var checkboxes = ['noEmailCheck', 'noAddressCheck'];
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleInputDisable('noEmailCheck', 'email');
+            toggleInputDisable('noAddressCheck', 'address');
 
-            for (var i = 0; i < requiredInputs.length; i++) {
-                var input = document.getElementById(requiredInputs[i]);
-                if (input.value === '') {
-                    input.classList.add('is-invalid');
+            document.querySelector('form').addEventListener('submit', function(event) {
+                var requiredInputs = [ 'price', 'company', 'phone'];
+                var allValid = true;
+
+                for (var i = 0; i < requiredInputs.length; i++) {
+                    var input = document.getElementById(requiredInputs[i]);
+                    if (input.value === '' && !input.disabled) {
+                        input.classList.add('is-invalid');
+                        allValid = false;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                }
+
+                // Validar email si no está deshabilitado
+                var emailInput = document.getElementById('email');
+                if (!emailInput.disabled && emailInput.value === '') {
+                    emailInput.classList.add('is-invalid');
+                    allValid = false;
+                }
+
+                // Validar dirección si no está deshabilitado
+                var addressInput = document.getElementById('address');
+                if (!addressInput.disabled && addressInput.value === '') {
+                    addressInput.classList.add('is-invalid');
+                    allValid = false;
+                }
+
+                var priceInput = document.getElementById('price');
+                priceInput.value = priceInput.value.replace(/,/g, '');
+
+                if (!allValid) {
                     event.preventDefault();
                     event.stopPropagation();
-                } else {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
-                }
-            }
-
-            for (var i = 0; i < optionalInputs.length; i++) {
-                var input = document.getElementById(optionalInputs[i]);
-                var checkbox = document.getElementById(checkboxes[i]);
-
-                if (input.value === '' && !checkbox.checked) {
-                    input.classList.add('is-invalid');
-                    event.preventDefault();
-                    event.stopPropagation();
-                } else {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
                 }
 
-                if (checkbox.checked) {
-                    input.disabled = true;
-                    input.removeAttribute('required');
-                } else {
-                    input.disabled = false;
-                    input.setAttribute('required', 'required');
-                }
-            }
+                this.classList.add('was-validated');
+            });
 
-            if (!this.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+            document.getElementById('price').addEventListener('input', function() {
+                formatPrice(this);
+            });
 
-            this.classList.add('was-validated');
-        });
-
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('input', function () {
-                if (this.checkValidity()) {
-                    this.classList.remove('is-invalid');
-                    this.classList.add('is-valid');
-                    this.nextElementSibling.style.display = 'none';
-                }
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.value !== '') {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    } else {
+                        this.classList.remove('is-valid');
+                    }
+                });
             });
         });
     </script>

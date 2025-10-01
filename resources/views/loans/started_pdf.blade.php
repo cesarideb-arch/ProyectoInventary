@@ -30,7 +30,7 @@
                             <th>Responsable</th>
                             <th>Cantidad</th>
                             <th>Ubicación</th>
-                            <th>Observaciones</th>
+                            <th>Motivos de Préstamo</th>
                             <th>Fecha</th>
                             <th>Nombre Cuenta</th>
 

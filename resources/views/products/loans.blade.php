@@ -3,108 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles del Producto</title>
-    <!-- Inclusión de Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Inclusión de SweetAlert2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <!-- Inclusión de Select2 CSS -->
+    <title>Préstamo de Producto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .card-header {
+            background-color: #000000ff;
+            color: white;
+            font-weight: bold;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #000000ff;
+            border-color: #000000ff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #000000ff;
+            border-color: #000000ff;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 36px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 36px;
+        }
+        .is-invalid .select2-selection {
+            border-color: #dc3545;
+        }
+        .is-valid .select2-selection {
+            border-color: #28a745;
+        }
+        .alert {
+            margin-top: 10px;
+        }
+        .product-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-3">
+    <div class="container">
+        <h1>Préstamo de Producto</h1>
+
+        <!-- Información del Producto -->
         <div class="card">
             <div class="card-header">
-                <h1>Préstamo</h1>
+                <h2>Información del Producto</h2>
             </div>
             <div class="card-body">
-                <h2>{{ $product['name'] }}</h2>
-                <p>{{ $product['description'] }}</p>
-                <p class="fw-bold">Precio: {{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</p>
-                <p class="fw-bold">Cantidad de producto: {{ number_format($product['quantity'], 0, '.', ',') }}</p>
+                <div class="product-info">
+                    <h3>{{ $product['name'] }}</h3>
+                    <p><strong>Descripción:</strong> {{ $product['description'] }}</p>
+                    <p><strong>Precio:</strong> {{ $product['price'] != 0 ? '$' . number_format($product['price'], 2, '.', ',') : 'N/A' }}</p>
+                    <p><strong>Cantidad disponible:</strong> {{ number_format($product['quantity'], 0, '.', ',') }}</p>
+                </div>
             </div>
         </div>
 
-        <div class="mt-4 mb-4">
-            <form id="entranceForm" action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
-                <!-- Campo oculto para enviar el ID del usuario -->
-                <input type="hidden" name="user_id" value="{{ session('user_id') }}">
+        <!-- Formulario de Préstamo -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Registrar Préstamo</h2>
+            </div>
+            <div class="card-body">
+                <form id="loanForm" action="{{ route('products.loans.store') }}" method="POST" class="needs-validation" novalidate>
+                    @csrf
+                    
+                    <input type="hidden" name="product_id" value="{{ $product['id'] }}" required>
+                    <input type="hidden" name="user_id" value="{{ session('user_id') }}">
 
-                <div class="form-group">
-                    <label for="project_id">Proyecto:</label>
-                    <select id="project_id" name="project_id" class="form-control select2" required>
-                        <option value="">Seleccione un proyecto</option>
-                        @if (count($projects) > 0)
-                            @foreach ($projects as $project)
-                                <option value="{{ $project['id'] }}">{{ $project['name'] }}</option>
-                            @endforeach
+                    <!-- Proyecto -->
+                    <div class="form-group">
+                        <label for="project_id">Proyecto:</label>
+                        <select id="project_id" name="project_id" class="form-control" required>
+                            <option value="">Seleccione un proyecto</option>
+                            @if (count($projects) > 0)
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project['id'] }}" {{ old('project_id') == $project['id'] ? 'selected' : '' }}>{{ $project['name'] }}</option>
+                                @endforeach
+                            @else
+                                <option value="" disabled>No hay proyectos disponibles</option>
+                            @endif
+                        </select>
+                        <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
+                    </div>
+
+                    <!-- Responsable -->
+                    <div class="form-group">
+                        <label for="responsible">Responsable:</label>
+                        @if (session()->has('name'))
+                            <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? session('name') }}">
                         @else
-                            <option value="" disabled>No hay proyectos disponibles</option>
+                            <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? auth()->user()->name }}">
                         @endif
-                    </select>
-                    <div class="invalid-feedback">Por favor, seleccione un proyecto.</div>
-                </div>
+                        @error('responsible')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
+                    </div>
 
-                @if (session()->has('name'))
-                <div class="mb-3">
-                    <label for="responsible" class="form-label">Responsable:</label>
-                    <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? session('name') }}">
-                    <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
-                </div>
-                @else
-                <div class="mb-3">
-                    <label for="responsible" class="form-label">Responsable:</label>
-                    <input type="text" name="responsible" id="responsible" class="form-control @error('responsible') is-invalid @enderror" required maxlength="100" value="{{ old('responsible') ?? auth()->user()->name }}">
-                    <div class="invalid-feedback">Por favor, ingrese el nombre del responsable.</div>
-                </div>
-                @endif
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Cantidad:</label>
-                    <input type="text" name="quantity" id="quantity" class="form-control quantity-input @error('quantity') is-invalid @enderror" required value="{{ old('quantity') }}">
-                    <div class="invalid-feedback">Por favor, ingrese la cantidad</div>
-                </div>
+                    <!-- Cantidad -->
+                    <div class="form-group">
+                        <label for="quantity">Cantidad:</label>
+                        <input type="text" id="formattedQuantity" class="form-control" value="{{ old('quantity') ? number_format(old('quantity'), 0) : '' }}" required>
+                        <input type="hidden" id="quantity" name="quantity" value="{{ old('quantity') }}" required>
+                        <div class="invalid-feedback">Por favor, ingrese la cantidad.</div>
+                    </div>
 
-                <div id="alertaSinStock" class="alert alert-danger d-none" role="alert">
-                    No hay stock disponible.
-                </div>
+                    <!-- Alertas de cantidad -->
+                    <div id="alertaSinStock" class="alert alert-danger d-none" role="alert">
+                        No hay stock disponible.
+                    </div>
 
-                <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
-                    La cantidad mínima es 1.
-                </div>
+                    <div id="alertaCantidad" class="alert alert-danger d-none" role="alert">
+                        La cantidad mínima es 1.
+                    </div>
 
-                <div id="alertaCantidadExcedida" class="alert alert-warning d-none" role="alert">
-                    Cantidad excedida. La cantidad disponible es {{ number_format($product['quantity'], 0, '.', ',') }}.
-                </div>
+                    <div id="alertaCantidadExcedida" class="alert alert-warning d-none" role="alert">
+                        Cantidad excedida. La cantidad disponible es {{ number_format($product['quantity'], 0, '.', ',') }}.
+                    </div>
 
-                <div class="mb-3">
-                    <label for="observations" class="form-label">Observaciones:</label>
-                    <textarea name="observations" id="observations" class="form-control @error('observations') is-invalid @enderror" maxlength="255">{{ old('observations') }}</textarea>
-                    <div class="invalid-feedback">Por favor, ingrese observaciones válidas.</div>
-                </div>
+                    <!-- Observaciones -->
+                    <div class="form-group">
+                        <label for="observations">Motivo de préstamo:</label>
+                        <textarea name="observations" id="observations" class="form-control @error('observations') is-invalid @enderror" maxlength="255">{{ old('observations') }}</textarea>
+                        @error('observations')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <div class="invalid-feedback">Por favor, ingrese observaciones válidas.</div>
+                    </div>
 
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
+                    <!-- Botones -->
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Inclusión de JavaScript de Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Inclusión de jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Inclusión de SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <!-- Inclusión de Select2 JS -->
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            var maxQuantity = {{ $product['quantity'] }};
-            
             // Inicializar Select2
             $('#project_id').select2({
                 placeholder: 'Seleccione un proyecto',
@@ -114,100 +193,136 @@
                         return "No hay resultados";
                     }
                 }
+            }).on('change', function() {
+                if ($(this).val() !== '') {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                    $(this).next('.invalid-feedback').hide();
+                }
             });
 
-            // Verifica si hay stock disponible y deshabilita los campos si no lo hay
+            // Variables
+            var maxQuantity = {{ $product['quantity'] }};
+            
+            // Verificar stock
             if (maxQuantity === 0) {
                 $('#alertaSinStock').removeClass('d-none');
-                $('#entranceForm :input').prop('disabled', true);
+                $('#loanForm :input').prop('disabled', true);
+                $('#loanForm button[type="submit"]').prop('disabled', true);
             }
 
-            // Validación personalizada del lado del cliente
-            $('#entranceForm').on('submit', function(event) {
-                event.preventDefault(); // Prevenir envío del formulario inicial
-                var form = this;
-                var quantityInput = $('#quantity');
-                var quantityValue = parseFloat(quantityInput.val().replace(/,/g, ''));
+            // Funciones de formateo
+            function formatNumber(value) {
+                value = value.replace(/,/g, '');
+                if (!isNaN(value) && value !== '') {
+                    return parseInt(value).toLocaleString();
+                }
+                return value;
+            }
 
+            function unformatNumber(value) {
+                return value.replace(/,/g, '');
+            }
+
+            // Formatear cantidad inicial
+            var quantityInput = document.getElementById('quantity');
+            var formattedQuantityInput = document.getElementById('formattedQuantity');
+            
+            if (quantityInput.value) {
+                formattedQuantityInput.value = formatNumber(quantityInput.value);
+            }
+
+            // Event listener para formateo en tiempo real
+            formattedQuantityInput.addEventListener('input', function (e) {
+                var formattedValue = formatNumber(e.target.value);
+                e.target.value = formattedValue;
+                document.getElementById('quantity').value = unformatNumber(formattedValue);
+                
+                // Validar cantidad
+                validateQuantity();
+            });
+
+            // Validar cantidad
+            function validateQuantity() {
+                var quantityValue = parseFloat($('#quantity').val().replace(/,/g, '') || 0);
+                
+                $('#alertaCantidad').addClass('d-none');
+                $('#alertaCantidadExcedida').addClass('d-none');
+                $('#formattedQuantity').removeClass('is-invalid');
+                
                 if (quantityValue < 1 || isNaN(quantityValue)) {
                     $('#alertaCantidad').removeClass('d-none');
-                    $('#alertaCantidadExcedida').addClass('d-none');
-                    quantityInput.addClass('is-invalid');
+                    $('#formattedQuantity').addClass('is-invalid');
                     return false;
                 } else if (quantityValue > maxQuantity) {
                     $('#alertaCantidadExcedida').removeClass('d-none');
-                    $('#alertaCantidad').addClass('d-none');
-                    quantityInput.addClass('is-invalid');
+                    $('#formattedQuantity').addClass('is-invalid');
+                    return false;
+                }
+                return true;
+            }
+
+            // Validación del formulario
+            $('#loanForm').on('submit', function(event) {
+                event.preventDefault();
+                var form = this;
+                var projectSelect = $('#project_id');
+                var quantityValid = validateQuantity();
+                
+                // Validar proyecto
+                if (projectSelect.val() === '') {
+                    projectSelect.addClass('is-invalid');
+                    event.stopPropagation();
                     return false;
                 } else {
-                    $('#alertaCantidad').addClass('d-none');
-                    $('#alertaCantidadExcedida').addClass('d-none');
-                    quantityInput.removeClass('is-invalid');
+                    projectSelect.removeClass('is-invalid').addClass('is-valid');
                 }
-
-                if (!form.checkValidity()) {
+                
+                if (!quantityValid || !form.checkValidity()) {
                     event.stopPropagation();
-                } else {
-                    // Mostrar confirmación antes de enviar con swal2
-                    Swal.fire({
-                        title: 'Confirmar envío',
-                        html: `<p><strong>Producto: </strong>{{ $product['name'] }}</p><strong><p>Cantidad a enviar:</strong> ${quantityInput.val()}</p>`,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Sí, enviar',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Eliminar comas antes de enviar el formulario
-                            quantityInput.val(quantityInput.val().replace(/,/g, ''));
-                            form.submit();
-                        }
-                    });
+                    form.classList.add('was-validated');
+                    return false;
                 }
+                
+                // Mostrar confirmación
+                Swal.fire({
+                    title: 'Confirmar Préstamo',
+                    html: `<p><strong>Producto:</strong> {{ $product['name'] }}</p>
+                          <p><strong>Cantidad a prestar:</strong> ${$('#formattedQuantity').val()}</p>
+                          <p><strong>Proyecto:</strong> ${$('#project_id option:selected').text()}</p>
+                          <p><strong>Responsable:</strong> ${$('#responsible').val()}</p>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#000000ff',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, confirmar préstamo',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Remover comas antes de enviar
+                        $('#quantity').val($('#quantity').val().replace(/,/g, ''));
+                        form.submit();
+                    }
+                });
+                
                 form.classList.add('was-validated');
             });
 
-            // Separación correcta de la cantidad
-            var quantityInput = document.getElementById('quantity');
-            quantityInput.addEventListener('input', function(e) {
-                var value = e.target.value.replace(/,/g, ''); // Elimina las comas existentes
-                if (value) {
-                    value = parseFloat(value.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 2
-                    });
-                    e.target.value = value;
-                }
-            });
-
-            // Validación para no permitir ceros y cantidades superiores a las disponibles
-            $('#quantity').on('blur', function() {
-                var quantityValue = parseFloat($(this).val().replace(/,/g, ''));
-                if (quantityValue < 1) {
-                    $('#alertaCantidad').removeClass('d-none');
-                    $('#alertaCantidadExcedida').addClass('d-none');
-                    $(this).addClass('is-invalid');
-                } else if (quantityValue > maxQuantity) {
-                    $('#alertaCantidadExcedida').removeClass('d-none');
-                    $('#alertaCantidad').addClass('d-none');
-                    $(this).addClass('is-invalid');
-                } else {
-                    $('#alertaCantidad').addClass('d-none');
-                    $('#alertaCantidadExcedida').addClass('d-none');
-                    $(this).removeClass('is-invalid');
-                }
+            // Validación en tiempo real para campos de texto
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function () {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        this.nextElementSibling.style.display = 'none';
+                    }
+                });
             });
 
             // Restaurar la cantidad formateada si existe un valor anterior
             var oldQuantity = '{{ old('quantity') }}';
             if (oldQuantity) {
-                var formattedOldQuantity = parseFloat(oldQuantity.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 2
-                });
-                $('#quantity').val(formattedOldQuantity);
+                var formattedOldQuantity = formatNumber(oldQuantity);
+                $('#formattedQuantity').val(formattedOldQuantity);
+                $('#quantity').val(unformatNumber(formattedOldQuantity));
             }
         });
     </script>
