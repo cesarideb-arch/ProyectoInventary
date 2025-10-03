@@ -323,10 +323,10 @@
                 </div>
             </div>
             
-            <div class="d-flex justify-content-end mt-4 btn-group-mobile">
-                <a href="{{ route('products.outputs.store') }}" class="btn btn-secondary mr-2">Cancelar</a>
-                <button type="submit" class="btn btn-agregar" id="btnCrearProducto">Crear Producto</button>
-            </div>
+          <div class="d-flex justify-content-end mt-4 btn-group-mobile">
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary mr-2">Cancelar</button>
+    <button type="submit" class="btn btn-agregar" id="btnCrearProducto">Crear Producto</button>
+</div>
         </form>
     </div>
 
