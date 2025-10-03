@@ -36,8 +36,19 @@
       height: 60px;
     }
 
-    .header-title {
-      font-size: 24px;
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-logo img {
+      max-height: 40px;
+      width: auto;
+    }
+
+    .header-logo p {
+      margin: 0 0 0 10px;
+      font-size: 18px;
       font-weight: bold;
     }
 
@@ -210,6 +221,19 @@
       align-items: flex-end;
     }
 
+    .footer-section.footer-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-logo img {
+      max-width: 120px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
     .social-icons-container {
       display: flex;
       flex-direction: row;
@@ -293,7 +317,7 @@
         display: block;
       }
       
-      .header-title {
+      .header-logo {
         margin-left: 40px;
       }
       
@@ -308,6 +332,10 @@
       
       .footer-section.footer-social {
         align-items: center;
+      }
+      
+      .footer-section.footer-logo {
+        order: -1; /* Mover el logo al inicio en móviles */
       }
       
       .social-icons-container {
@@ -327,6 +355,10 @@
       .footer-section {
         min-width: 100%;
       }
+      
+      .header-logo p {
+        display: none; /* Ocultar el texto del logo en móviles muy pequeños */
+      }
     }
   </style>
 </head>
@@ -338,7 +370,11 @@
 
   <!-- HEADER -->
   <div class="header">
-    <div class="header-title">I-DEB ERP</div>
+    <div class="header-logo">
+      <img src="{{ asset('images/logo.jpeg') }}" alt="Logo I-DEB México">
+      <p>I-DEB México</p>
+    </div>
+    
     <div class="user-info">
       @if(session()->has('name'))
         <span>Bienvenido, <strong>{{ session('name') }}</strong></span>
@@ -400,6 +436,10 @@
         <p><i class="fas fa-map-marker-alt"></i> Fuente Alpaca #271, Villa Fontana, San Pedro Tlaquepaque, Jal.</p>
         <p><i class="fas fa-envelope"></i> contacto@idebmexico.com</p>
         <p><i class="fas fa-phone"></i> 33 1592 2676</p>
+      </div>
+      <div class="footer-section footer-logo">
+        <img src="{{ asset('images/mexico.jpeg') }}" alt="Logo I-DEB México">
+        <p>I-DEB México</p>
       </div>
       <div class="footer-section footer-social">
         <h4>Redes</h4>
