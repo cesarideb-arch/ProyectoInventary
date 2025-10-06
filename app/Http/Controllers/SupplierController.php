@@ -107,7 +107,6 @@ public function index(Request $request)
     public function store(Request $request) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
-            'price' => 'required|numeric|between:0,999999.99',
             'company' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -170,7 +169,6 @@ public function index(Request $request)
     public function update(Request $request, $id) {
         // Validar los datos de la solicitud
         $validatedData = $request->validate([
-            'price' => 'nullable|numeric|between:0,999999.99',
             'company' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'nullable|email',
@@ -182,11 +180,6 @@ public function index(Request $request)
             [
                 'name' => '_method',
                 'contents' => 'PUT',
-            ],
-          
-            [
-                'name' => 'price',
-                'contents' => $validatedData['price'] ?? null,
             ],
             [
                 'name' => 'company',

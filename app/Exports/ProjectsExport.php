@@ -20,7 +20,15 @@ class ProjectsExport
 
         // Agregar encabezados
         $writer->addRow([
-            'Nombre', 'Descripción', 'Nombre de la Empresa', 'RFC', 'Dirección', 'Teléfono', 'Email', 'Nombre del Cliente'
+            'Nombre', 
+            'Descripción', 
+            'Nombre de la Empresa', 
+            'RFC', 
+            'Dirección', 
+            'Ubicación', // NUEVO CAMPO
+            'Teléfono', 
+            'Email', 
+            'Nombre del Cliente'
         ]);
 
         // Agregar datos
@@ -31,6 +39,7 @@ class ProjectsExport
                 $row['company_name'] ?? '',
                 $row['rfc'] ?? 'N/A',
                 $row['address'] ?? '',
+                $row['ubicacion'] ?? 'N/A', // NUEVO CAMPO
                 $row['phone_number'] ?? '',
                 $row['email'] ?? '',
                 $row['client_name'] ?? ''

@@ -20,13 +20,12 @@ class SuppliersExport
 
         // Agregar encabezados
         $writer->addRow([
-             'Precio', 'Empresa', 'Teléfono', 'Email', 'Dirección'
+         'Empresa', 'Teléfono', 'Email', 'Dirección'
         ]);
 
         // Agregar datos
         foreach ($this->data as $row) {
             $writer->addRow([
-                '$' . number_format($row['price'], 2, '.', ','),
                 $row['company'] ?? '',
                 $row['phone'] ?? '',
                 $row['email'] ?? 'N/A',

@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title', 'Crear producto')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -547,6 +552,7 @@
                 }
             });
         });
+        
     </script>
     
 </body>

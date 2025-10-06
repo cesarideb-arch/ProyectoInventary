@@ -120,15 +120,22 @@
                             @enderror
                         </div>
                         <div class="form-cell">
-                            <label class="form-label">Nombre de la Empresa:</label>
-                            <input type="text" class="form-control @error('company_name') is-invalid @enderror" id="company_name" name="company_name" value="{{ $project['company_name'] }}" required>
-                            @error('company_name')
+                            <label class="form-label">Descripción:</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ $project['description'] }}</textarea>
+                            @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
                     
                     <div class="form-row">
+                        <div class="form-cell">
+                            <label class="form-label">Nombre de la Empresa:</label>
+                            <input type="text" class="form-control @error('company_name') is-invalid @enderror" id="company_name" name="company_name" value="{{ $project['company_name'] }}" required>
+                            @error('company_name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="form-cell">
                             <label class="form-label">RFC:</label>
                             <input type="text" class="form-control @error('rfc') is-invalid @enderror" id="rfc" name="rfc" value="{{ $project['rfc'] }}" maxlength="13">
@@ -140,10 +147,20 @@
                                 <label for="noRfcCheck" class="form-check-label">Sin RFC</label>
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-cell">
                             <label class="form-label">Dirección:</label>
                             <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ $project['address'] }}" required>
                             @error('address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-cell">
+                            <label class="form-label">Ubicación:</label>
+                            <input type="text" class="form-control @error('ubicacion') is-invalid @enderror" id="ubicacion" name="ubicacion" value="{{ $project['ubicacion'] ?? '' }}" maxlength="100">
+                            @error('ubicacion')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -175,11 +192,7 @@
                             @enderror
                         </div>
                         <div class="form-cell">
-                            <label class="form-label">Ubicación / Sub ubicación:</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3">{{ $project['description'] }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <!-- Espacio reservado para mantener el layout -->
                         </div>
                     </div>
                 </div>

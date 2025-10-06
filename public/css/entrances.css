@@ -1,0 +1,347 @@
+/* resources/css/entrances.css */
+.entrances-container {
+    overflow-x: hidden;
+    background-color: #f5f7f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.entrances-content {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.entrances-title {
+    color: #000000ff;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.entrances-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.entrances-btn-primary {
+    background: #000000ff;
+    color: white;
+}
+
+.entrances-btn-danger {
+    background: #e53e3e;
+    color: white;
+}
+
+.entrances-btn-success {
+    background: #38a169;
+    color: white;
+}
+
+.entrances-btn-info {
+    background: #000000ff;
+    color: white;
+}
+
+.entrances-btn-outline-primary {
+    border: 1px solid #000000ff;
+    color: #000000ff;
+    background: transparent;
+}
+
+.entrances-btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.entrances-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.entrances-btn-custom-size {
+    padding: 8px 16px;
+}
+
+.entrances-search-container {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.entrances-input-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.entrances-form-control {
+    border: 1px solid #cbd5e0;
+    padding: 10px 15px;
+    height: auto;
+    font-size: 14px;
+}
+
+.entrances-input-group-append .entrances-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #000000ff;
+    color: white;
+}
+
+.entrances-table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.entrances-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.entrances-table thead {
+    background-color: #000000ff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.entrances-table th {
+    padding: 12px 15px;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    border-bottom: 2px solid #000000ff;
+    position: sticky;
+    top: 0;
+    background-color: #000000ff;
+    z-index: 11;
+}
+
+.entrances-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.entrances-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.entrances-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.entrances-table tbody tr:hover {
+    background-color: #ebf8ff;
+}
+
+.entrances-action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.entrances-pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.entrances-pagination-info {
+    font-size: 14px;
+    color: #000000ff;
+}
+
+.entrances-pagination {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.entrances-pagination span {
+    margin: 0 5px;
+}
+
+.entrances-pagination a {
+    margin: 0 3px;
+}
+
+.entrances-pagination .active {
+    font-weight: bold;
+    background: #000000ff;
+    color: white;
+}
+
+.entrances-page-input {
+    width: 50px;
+    display: inline-block;
+    margin: 0 5px;
+    text-align: center;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.entrances-export-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.entrances-date-filter-container {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.entrances-date-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.entrances-date-input-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.entrances-date-input-group label {
+    margin-bottom: 0;
+    font-weight: 500;
+    min-width: 90px;
+}
+
+.entrances-amount-highlight {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+@media (max-width: 768px) {
+    .entrances-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .entrances-export-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .entrances-pagination-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .entrances-pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .entrances-date-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .entrances-date-input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .entrances-date-input-group label {
+        min-width: auto;
+    }
+    
+    .entrances-table-container {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .entrances-table-container {
+        overflow-x: auto;
+        max-height: none;
+    }
+    
+    .entrances-table thead {
+        display: none;
+    }
+    
+    .entrances-table tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    .entrances-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+    
+    .entrances-table td:last-child {
+        border-bottom: none;
+    }
+    
+    .entrances-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+        color: #2d3748;
+        min-width: 100px;
+        text-align: left;
+    }
+    
+    .entrances-action-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .entrances-btn-group-horizontal {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

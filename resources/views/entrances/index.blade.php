@@ -10,367 +10,23 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <style>
-        body {
-            overflow-x: hidden;
-            background-color: #f5f7f9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .container {
-            max-width: 100%;
-            overflow-x: hidden;
-            box-sizing: border-box;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: #000000ff;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eaeaea;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-        
-        .btn-primary {
-            background: #000000ff;
-            color: white;
-        }
-        
-        .btn-danger {
-            background: #e53e3e;
-            color: white;
-        }
-        
-        .btn-success {
-            background: #38a169;
-            color: white;
-        }
-        
-        .btn-info {
-            background: #000000ff;
-            color: white;
-        }
-        
-        .btn-outline-primary {
-            border: 1px solid #000000ff;
-            color: #000000ff;
-            background: transparent;
-        }
-        
-        .btn:hover {
-            opacity: 0.85;
-            transform: translateY(-1px);
-        }
-        
-        .btn-custom-size {
-            padding: 8px 16px;
-        }
-
-        .search-container {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .input-group {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            border-radius: 6px;
-        }
-        
-        .form-control {
-            border: 1px solid #cbd5e0;
-            padding: 10px 15px;
-            height: auto;
-            font-size: 14px;
-        }
-        
-        .input-group-append .btn {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            background: #000000ff;
-            color: white;
-        }
-
-        /* ESTILOS PARA LA TABLA (COMO LA IMAGEN) CON CABECERA FIJA */
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-            max-height: 500px; /* Limitamos la altura para activar scroll */
-            overflow-y: auto; /* Habilitamos scroll vertical */
-            position: relative; /* Necesario para el sticky header */
-        }
-        
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 0;
-            font-size: 14px;
-        }
-        
-        .custom-table thead {
-            background-color: #000000ff; /* Fondo oscuro como en la imagen */
-            position: sticky; /* Hacemos el header sticky */
-            top: 0; /* Lo fijamos en la parte superior del contenedor */
-            z-index: 10; /* Aseguramos que esté por encima del contenido */
-        }
-        
-        .custom-table th {
-            padding: 12px 15px;
-            text-align: center;
-            color: white;
-            font-weight: 600;
-            border-bottom: 2px solid #000000ff;
-            position: sticky; /* También aplicamos sticky a cada th */
-            top: 0;
-            background-color: #000000ff; /* Mantenemos el color de fondo */
-            z-index: 11; /* Aseguramos que esté por encima del thead */
-        }
-        
-        .custom-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e2e8f0;
-            vertical-align: middle;
-            text-align: center;
-        }
-        
-        .custom-table tbody tr {
-            transition: background-color 0.2s;
-        }
-        
-        .custom-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        
-        .custom-table tbody tr:hover {
-            background-color: #ebf8ff;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-
-        .pagination-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .pagination-info {
-            font-size: 14px;
-            color: #000000ff;
-        }
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .pagination span {
-            margin: 0 5px;
-        }
-
-        .pagination a {
-            margin: 0 3px;
-        }
-        
-        .pagination .active {
-            font-weight: bold;
-            background: #000000ff;
-            color: white;
-        }
-
-        .pagination .page-input {
-            width: 50px;
-            display: inline-block;
-            margin: 0 5px;
-            text-align: center;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            padding: 5px;
-            font-size: 14px;
-        }
-
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .date-filter-container {
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .date-filter-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .date-input-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .date-input-group label {
-            margin-bottom: 0;
-            font-weight: 500;
-            min-width: 90px;
-        }
-
-        .amount-highlight {
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        @media (max-width: 768px) {
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .export-buttons {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .pagination-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .pagination {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .date-filter-form {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .date-input-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .date-input-group label {
-                min-width: auto;
-            }
-            
-            /* Ajustes para móviles en la tabla */
-            .table-container {
-                max-height: 400px; /* Reducimos la altura máxima en móviles */
-            }
-        }
-
-        @media (max-width: 576px) {
-            .table-container {
-                overflow-x: auto;
-                max-height: none; /* En móviles quitamos la altura fija para la vista de tarjetas */
-            }
-            
-            .custom-table thead {
-                display: none; /* Ocultamos el header en móviles */
-            }
-            
-            .custom-table tr {
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 15px;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                padding: 10px;
-            }
-            
-            .custom-table td {
-                display: flex;
-                justify-content: space-between;
-                padding: 10px;
-                border: none;
-                border-bottom: 1px solid #eee;
-                text-align: right;
-            }
-            
-            .custom-table td:last-child {
-                border-bottom: none;
-            }
-            
-            .custom-table td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                margin-right: 10px;
-                color: #2d3748;
-                min-width: 100px;
-                text-align: left;
-            }
-            
-            .action-buttons {
-                justify-content: center;
-                width: 100%;
-            }
-            
-            .btn-group-horizontal {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+    <link href="{{ asset('css/entrances.css') }}" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h1>Listado de Entradas</h1>
+<body class="entrances-container">
+    <div class="entrances-content">
+        <h1 class="entrances-title">Listado de Entradas</h1>
         
-        <div class="d-flex justify-content-between align-items-center page-header mb-3">
-            <div class="export-buttons">
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="btn btn-danger">
+        <div class="d-flex justify-content-between align-items-center entrances-page-header mb-3">
+            <div class="entrances-export-buttons">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'pdf'])) }}" class="entrances-btn entrances-btn-danger">
                     <i class="fas fa-file-pdf"></i> PDF
                 </a>
-                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="btn btn-danger">
+                <a href="{{ route('entrances.index', array_merge(request()->query(), ['download' => 'month_pdf'])) }}" class="entrances-btn entrances-btn-danger">
                     <i class="fas fa-file-pdf"></i> PDF del Mes
                 </a>
             </div>
             
-            <div class="pagination-info">
+            <div class="entrances-pagination-info">
                 @if(isset($monthData))
                     <p>Conteo de entradas del mes actual: <strong>{{ number_format($monthData['count'], 0, ',', '.') }}</strong></p>
                 @else
@@ -379,12 +35,12 @@
             </div>
         </div>
         
-        <div class="search-container">
+        <div class="entrances-search-container">
             <form method="GET" action="{{ route('entrances.index') }}">
-                <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Buscar Entradas..." value="{{ request('query') }}">
+                <div class="entrances-input-group">
+                    <input type="text" name="query" class="entrances-form-control form-control" placeholder="Buscar Entradas..." value="{{ request('query') }}">
                     <div class="input-group-append">
-                        <button class="btn" type="submit">
+                        <button class="entrances-btn" type="submit">
                             <i class="fas fa-search"></i> Buscar
                         </button>
                     </div>
@@ -392,35 +48,35 @@
             </form>
         </div>
         
-        <div class="date-filter-container">
-            <form method="GET" action="{{ route('entrances.index') }}" class="date-filter-form">
-                <div class="date-input-group">
+        <div class="entrances-date-filter-container">
+            <form method="GET" action="{{ route('entrances.index') }}" class="entrances-date-filter-form">
+                <div class="entrances-date-input-group">
                     <label for="start_date">Fecha Inicio:</label>
                     <input type="text" name="start_date" placeholder="dd/mm/aaaa" class="form-control datepicker" required>
                 </div>
                 
-                <div class="date-input-group">
+                <div class="entrances-date-input-group">
                     <label for="end_date">Fecha Fin:</label>
                     <input type="text" name="end_date" placeholder="dd/mm/aaaa" class="form-control datepicker" required>
                 </div>
                 
-                <div class="date-input-group">
-                    <button type="submit" name="download" value="between_dates_pdf" class="btn btn-danger">
+                <div class="entrances-date-input-group">
+                    <button type="submit" name="download" value="between_dates_pdf" class="entrances-btn entrances-btn-danger">
                         <i class="fas fa-file-pdf"></i> PDF
                     </button>
-                    <button type="submit" name="download" value="between_dates_excel" class="btn btn-success">
+                    <button type="submit" name="download" value="between_dates_excel" class="entrances-btn entrances-btn-success">
                         <i class="fas fa-file-excel"></i> Excel
                     </button>
-                    <button type="button" id="clear-dates" class="btn btn-secondary">
+                    <button type="button" id="clear-dates" class="entrances-btn entrances-btn-secondary">
                         <i class="fas fa-eraser"></i> Limpiar
                     </button>
                 </div>
             </form>
         </div>
         
-        <div class="table-container">
+        <div class="entrances-table-container">
             @if(isset($entrances) && count($entrances) > 0)
-            <table class="custom-table">
+            <table class="entrances-table">
                 <thead>
                     <tr>
                         <th>Proyecto</th>
@@ -444,7 +100,7 @@
                         <td data-label="Responsable">{{ $entrance['responsible'] ?? 'N/A' }}</td>
                         <td data-label="Cantidad">{{ number_format($entrance['quantity'] ?? 'N/A', 0, '.', ',') }}</td>
                         <td data-label="Precio">{{ $entrance['price'] != 0 ? number_format($entrance['price'], 2, '.', ',') : 'N/A' }}</td>
-                        <td data-label="Gastado" class="amount-highlight">
+                        <td data-label="Gastado" class="entrances-amount-highlight">
                             {{ $entrance['price'] != 0 ? number_format(($entrance['price'] ?? 0) * ($entrance['quantity'] ?? 0), 2, '.', ',') : 'N/A' }}
                         </td>
                         <td data-label="Ubicación">{{ $entrance['product']['location'] ?? 'N/A' }}</td>
@@ -457,20 +113,19 @@
                 </tbody>
             </table>
             
-            <div class="pagination-container">
-                <div class="pagination-info">
+            <div class="entrances-pagination-container">
+                <div class="entrances-pagination-info">
                     Página {{ $currentPage }} de {{ $lastPage }}
                 </div>
                 
-                <div class="pagination">
+                <div class="entrances-pagination">
                     @if($currentPage > 1)
-                        <a href="{{ route('entrances.index', ['page' => 1, 'query' => request('query')]) }}" class="btn btn-primary btn-custom-size">
+                        <a href="{{ route('entrances.index', ['page' => 1, 'query' => request('query')]) }}" class="entrances-btn entrances-btn-primary entrances-btn-custom-size">
                             <i class="fas fa-angle-double-left"></i>
                         </a>
-                        <a href="{{ route('entrances.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="btn btn-primary btn-custom-size">Anterior</a>
+                        <a href="{{ route('entrances.index', ['page' => $currentPage - 1, 'query' => request('query')]) }}" class="entrances-btn entrances-btn-primary entrances-btn-custom-size">Anterior</a>
                     @endif
                     
-                    <!-- Mostrar páginas cercanas -->
                     @php
                         $showPages = 2;
                         $startPage = max(1, $currentPage - $showPages);
@@ -479,22 +134,21 @@
                     
                     @for($i = $startPage; $i <= $endPage; $i++)
                         @if($i == $currentPage)
-                            <span class="btn btn-primary active btn-custom-size">{{ $i }}</span>
+                            <span class="entrances-btn entrances-btn-primary active entrances-btn-custom-size">{{ $i }}</span>
                         @else
-                            <a href="{{ route('entrances.index', ['page' => $i, 'query' => request('query')]) }}" class="btn btn-outline-primary btn-custom-size">{{ $i }}</a>
+                            <a href="{{ route('entrances.index', ['page' => $i, 'query' => request('query')]) }}" class="entrances-btn entrances-btn-outline-primary entrances-btn-custom-size">{{ $i }}</a>
                         @endif
                     @endfor
                     
-                    <!-- Saltar a página específica -->
                     <form method="GET" action="{{ route('entrances.index') }}" class="d-inline-flex ml-2">
                         <input type="hidden" name="query" value="{{ request('query') }}">
-                        <input type="number" name="page" min="1" max="{{ $lastPage }}" class="form-control page-input" placeholder="Ir a">
-                        <button type="submit" class="btn btn-info btn-custom-size ml-1">Ir</button>
+                        <input type="number" name="page" min="1" max="{{ $lastPage }}" class="form-control entrances-page-input" placeholder="Ir a">
+                        <button type="submit" class="entrances-btn entrances-btn-info entrances-btn-custom-size ml-1">Ir</button>
                     </form>
                     
                     @if($currentPage < $lastPage)
-                        <a href="{{ route('entrances.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="btn btn-primary btn-custom-size">Siguiente</a>
-                        <a href="{{ route('entrances.index', ['page' => $lastPage, 'query' => request('query')]) }}" class="btn btn-primary btn-custom-size">
+                        <a href="{{ route('entrances.index', ['page' => $currentPage + 1, 'query' => request('query')]) }}" class="entrances-btn entrances-btn-primary entrances-btn-custom-size">Siguiente</a>
+                        <a href="{{ route('entrances.index', ['page' => $lastPage, 'query' => request('query')]) }}" class="entrances-btn entrances-btn-primary entrances-btn-custom-size">
                             <i class="fas fa-angle-double-right"></i>
                         </a>
                     @endif
@@ -511,43 +165,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.es.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            $.fn.datepicker.dates['es'] = {
-                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
-                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
-                today: "Hoy",
-                clear: "Borrar",
-                format: "dd/mm/yyyy",
-                titleFormat: "MM yyyy",
-                weekStart: 1
-            };
-
-            $('input[name="start_date"], input[name="end_date"]').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight: true,
-                language: 'es'
-            });
-
-            $('#clear-dates').on('click', function() {
-                $('input[name="start_date"], input[name="end_date"]').val('');
-            });
-            
-            // Validación del campo de salto de página
-            $('.page-input').on('change', function() {
-                const maxPage = {{ $lastPage }};
-                if (this.value > maxPage) {
-                    this.value = maxPage;
-                } else if (this.value < 1) {
-                    this.value = 1;
-                }
-            });
-        });
-    </script>
+    <script src="{{ asset('js/entrances.js') }}"></script>
 </body>
 </html>
 @endsection

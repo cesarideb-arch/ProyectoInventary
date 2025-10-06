@@ -118,10 +118,10 @@ class ProjectController extends Controller {
             'company_name' => 'required|string|max:50',
             'rfc' => 'nullable|string',
             'address' => 'required|string|max:100',
+            'ubicacion' => 'nullable|string|max:100', // NUEVO CAMPO
             'phone_number' => 'required|string|max:50',
             'email' => 'required|string|max:50|email',
             'client_name' => 'required|string|max:100',
-            // Agregar otras validaciones si es necesario
         ]);
 
         // URL base de la API
@@ -183,10 +183,10 @@ class ProjectController extends Controller {
             'company_name' => 'string|max:50',
             'rfc' => 'nullable|string',
             'address' => 'string|max:100',
+            'ubicacion' => 'nullable|string|max:100', // NUEVO CAMPO
             'phone_number' => 'string|max:50',
             'email' => 'string|max:50|email',
             'client_name' => 'string|max:100',
-            // Agregar otras validaciones si es necesario
         ]);
 
         // Configurar los datos del formulario
@@ -214,6 +214,10 @@ class ProjectController extends Controller {
             [
                 'name' => 'address',
                 'contents' => $validatedData['address'],
+            ],
+            [
+                'name' => 'ubicacion',
+                'contents' => $validatedData['ubicacion'] ?? null, // NUEVO CAMPO
             ],
             [
                 'name' => 'phone_number',

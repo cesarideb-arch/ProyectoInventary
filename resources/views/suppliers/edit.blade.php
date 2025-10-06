@@ -113,21 +113,6 @@
                 <div class="form-table">
                     <div class="form-row">
                         <div class="form-cell">
-                            <label class="form-label">Precio:</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">$</span>
-                                </div>
-                                <input type="text" id="price" name="price" value="{{ $supplier['price'] }}" required class="form-control @error('price') is-invalid @enderror">
-                                @error('price')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-cell">
                             <label class="form-label">Empresa:</label>
                             <input type="text" id="company" name="company" value="{{ $supplier['company'] }}" required class="form-control @error('company') is-invalid @enderror">
                             @error('company')
@@ -181,11 +166,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        function formatPrice(input) {
-            var value = input.value.replace(/,/g, '');
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        }
-
         function toggleInputDisable(checkboxId, inputId) {
             var checkbox = document.getElementById(checkboxId);
             var input = document.getElementById(inputId);
@@ -214,7 +194,7 @@
             toggleInputDisable('noAddressCheck', 'address');
 
             document.querySelector('form').addEventListener('submit', function(event) {
-                var requiredInputs = [ 'price', 'company', 'phone'];
+                var requiredInputs = ['company', 'phone'];
                 var allValid = true;
 
                 for (var i = 0; i < requiredInputs.length; i++) {
@@ -241,19 +221,12 @@
                     allValid = false;
                 }
 
-                var priceInput = document.getElementById('price');
-                priceInput.value = priceInput.value.replace(/,/g, '');
-
                 if (!allValid) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
 
                 this.classList.add('was-validated');
-            });
-
-            document.getElementById('price').addEventListener('input', function() {
-                formatPrice(this);
             });
 
             document.querySelectorAll('.form-control').forEach(input => {

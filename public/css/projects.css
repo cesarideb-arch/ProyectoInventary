@@ -1,0 +1,323 @@
+/* resources/css/projects.css */
+.projects-container {
+    overflow-x: hidden;
+    background-color: #f5f7f9;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.projects-content {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.projects-title {
+    color: #000000ff;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.projects-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+.projects-btn-primary {
+    background: #000000ff;
+    color: white;
+}
+
+.projects-btn-danger {
+    background: #e53e3e;
+    color: white;
+}
+
+.projects-btn-success {
+    background: #38a169;
+    color: white;
+}
+
+.projects-btn-info {
+    background: #000000ff;
+    color: white;
+}
+
+.projects-btn-outline-primary {
+    border: 1px solid #000000ff;
+    color: #000000ff;
+    background: transparent;
+}
+
+.projects-btn:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.projects-btn-custom-size {
+    padding: 8px 16px;
+}
+
+.projects-search-container {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.projects-input-group {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.projects-form-control {
+    border: 1px solid #cbd5e0;
+    padding: 10px 15px;
+    height: auto;
+    font-size: 14px;
+}
+
+.projects-input-group-append .projects-btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #000000ff;
+    color: white;
+}
+
+.projects-table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.projects-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.projects-table thead {
+    background-color: #000000ff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.projects-table th {
+    padding: 12px 15px;
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    border-bottom: 2px solid #000000ff;
+    position: sticky;
+    top: 0;
+    background-color: #000000ff;
+    z-index: 11;
+}
+
+.projects-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.projects-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.projects-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.projects-table tbody tr:hover {
+    background-color: #ebf8ff;
+}
+
+.projects-table-action-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.projects-table-btn-edit {
+    background: #000000ff;
+    color: white;
+}
+
+.projects-table-btn-delete {
+    background: #e53e3e;
+    color: white;
+}
+
+.projects-table-btn-edit:hover, 
+.projects-table-btn-delete:hover {
+    opacity: 0.85;
+}
+
+.projects-action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.projects-pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.projects-pagination-info {
+    font-size: 14px;
+    color: #000000ff;
+}
+
+.projects-pagination {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.projects-pagination span {
+    margin: 0 5px;
+}
+
+.projects-pagination a {
+    margin: 0 3px;
+}
+
+.projects-pagination .active {
+    font-weight: bold;
+    background: #000000ff;
+    color: white;
+}
+
+.projects-page-input {
+    width: 50px;
+    display: inline-block;
+    margin: 0 5px;
+    text-align: center;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.projects-export-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .projects-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .projects-export-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .projects-pagination-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .projects-pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .projects-table-container {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .projects-table-container {
+        overflow-x: auto;
+        max-height: none;
+    }
+    
+    .projects-table thead {
+        display: none;
+    }
+    
+    .projects-table tr {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+    }
+    
+    .projects-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+        text-align: right;
+    }
+    
+    .projects-table td:last-child {
+        border-bottom: none;
+    }
+    
+    .projects-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+        color: #2d3748;
+        min-width: 100px;
+        text-align: left;
+    }
+    
+    .projects-action-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .projects-btn-group-horizontal {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
