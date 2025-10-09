@@ -25,7 +25,7 @@ use App\Http\Controllers\DatabaseController;
 */
 
 Route::get('/', function () {
-    return view('/welcome');
+    return view('/login');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
