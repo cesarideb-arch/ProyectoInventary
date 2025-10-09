@@ -4,7 +4,7 @@
         "buildCommand": "composer install --no-dev --optimize-autoloader && npm install && npm run build && php artisan key:generate"
     },
     "deploy": {
-        "startCommand": "php artisan config:clear && php artisan cache:clear && php -S 0.0.0.0:$PORT public/index.php",
+        "startCommand": "php artisan config:clear && php artisan cache:clear && php artisan route:clear && php artisan view:clear && exec php -S 0.0.0.0:$PORT public/index.php",
         "restartPolicy": "always"
     }
 }
