@@ -10,7 +10,7 @@ return [
         'http://localhost:8000',
         'http://localhost:80',
         'https://attractive-balance-production.up.railway.app',
-        'https://proyectoinventary-production-5036.up.railway.app'
+        'https://proyectoinventary-production-2098.up.railway.app'
     ],
 
     'allowed_origins_patterns' => [],
