@@ -1,79 +1,19 @@
+@extends('layouts.app')
+
+@section('title', 'Crear producto')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Producto</title>
+    <title>Crear Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 50px;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #343a40;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-        .image-preview-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            flex-direction: column;
-        }
-        #imagePreview, #currentImage {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            margin-top: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-        .select2-container--default .select2-selection--single {
-            height: 38px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 36px;
-        }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 36px;
-        }
-        .form-check-label {
-            color: initial;
-        }
-        .is-invalid .select2-selection {
-            border-color: #dc3545;
-        }
-        .is-valid .select2-selection {
-            border-color: #28a745;
-        }
-        .checkbox-group {
-            margin-top: -10px;
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{{ asset('css/forms.css') }}" rel="stylesheet">
+<div class="container employee-form-container">
+   
 </head>
 <body>
     <div class="container">
@@ -512,3 +452,4 @@
     </script>
 </body>
 </html>
+@endsection

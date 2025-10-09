@@ -1,103 +1,157 @@
-/* ======================
-   Estilos generales
-   ====================== */
+/* ============================
+   FORMULARIOS UNIFICADOS - DISEÑO ELEGANTE
+   ============================ */
 
 .employee-form-container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 25px;
-  margin-top: 25px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%);
+  border-radius: 12px;
+  padding: 35px;
+  margin: 40px auto;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-width: 950px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Título del formulario */
+.employee-form-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* ====== TÍTULO PRINCIPAL ====== */
 .form-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333333;
-  margin-bottom: 15px;
-  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(90deg, #000000, #2c2c2c);
+  padding: 18px 30px;
+  border-radius: 8px 8px 0 0;
+  margin: -35px -35px 25px -35px;
+  box-shadow: inset 0 -2px 5px rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.5px;
 }
 
-/* Encabezados de secciones */
-.form-section-title {
-  font-size: 1.2rem;
+/* ====== ETIQUETAS ====== */
+.form-label {
   font-weight: 600;
-  color: #444444;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 4px;
+  color: #222222;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
 }
 
-/* Contenedor de campos en grid */
-.form-table,
-.form-fields-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-/* Cada celda de campo */
-.form-cell {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Label */
-.form-label,
-.field-label {
-  font-weight: 500;
-  color: #333333;
-  margin-bottom: 5px;
-}
-
-/* Input, textarea y select */
+/* ====== CAMPOS DE ENTRADA ====== */
 .form-control {
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 8px 10px;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  padding: 10px 12px;
   font-size: 0.95rem;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
 }
 
-/* Textarea alto fijo */
+.form-control:hover {
+  border-color: #000000;
+}
+
+.form-control:focus {
+  border-color: #000000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+/* ====== TEXTAREA ====== */
 textarea.form-control {
   resize: vertical;
+  min-height: 110px;
 }
 
-/* Checkbox con su texto */
-.checkbox-group {
-  margin-top: 5px;
+/* ====== GRID DE CAMPOS ====== */
+.form-fields-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
 }
 
-.form-check-label {
-  font-size: 0.9rem;
-  color: #555555;
+/* ====== BOTONES ====== */
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 30px;
 }
 
-/* Botón guardar/agregar */
+.btn-primary,
 .btn-agregar {
-  background-color: #007bff;
-  color: #fff;
-  font-weight: 600;
-  padding: 8px 18px;
-  border-radius: 4px;
+  background: linear-gradient(90deg, #000000, #333333);
   border: none;
-  transition: background-color 0.2s ease-in-out;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 25px;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
+.btn-primary:hover,
 .btn-agregar:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #333333, #000000);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
-/* Ajuste del botón cancelar */
 .btn-secondary {
-  padding: 8px 18px;
+  background: linear-gradient(90deg, #6c757d, #5a6268);
+  color: #ffffff;
+  font-weight: 500;
+  padding: 10px 25px;
+  border-radius: 6px;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s ease;
 }
 
-/* Responsivo */
+.btn-secondary:hover {
+  background: linear-gradient(90deg, #5a6268, #6c757d);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ====== LÍNEAS DIVISORIAS ====== */
+.section-divider {
+  height: 1px;
+  background-color: #e5e5e5;
+  margin: 25px 0;
+}
+
+/* ====== PLACEHOLDERS ====== */
+::placeholder {
+  color: #999999;
+  font-style: italic;
+}
+
+/* ====== RESPONSIVO ====== */
 @media (max-width: 768px) {
+  .employee-form-container {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
   .form-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .form-fields-container {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
   }
 }

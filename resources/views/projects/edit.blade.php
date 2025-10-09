@@ -1,93 +1,18 @@
+@extends('layouts.app')
+
+@section('title', 'Crear producto')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Proyecto</title>
+    <title>Crear Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        .employee-form-container {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-        .form-title {
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-weight: bold;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            text-align: center;
-        }
-        .form-section {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        .form-section-title {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        .form-table {
-            display: table;
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 15px;
-        }
-        .form-row {
-            display: table-row;
-        }
-        .form-cell {
-            display: table-cell;
-            padding: 10px 15px;
-            vertical-align: top;
-        }
-        .form-label {
-            font-weight: 500;
-            color: #2c3e50;
-            margin-bottom: 5px;
-        }
-        .btn-agregar {
-            background-color: #3498db;
-            border-color: #3498db;
-            font-weight: 500;
-            padding: 8px 25px;
-            border-radius: 5px;
-        }
-        .btn-agregar:hover {
-            background-color: #2980b9;
-            border-color: #2980b9;
-        }
-        .form-control:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-        }
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-        .checkbox-group .form-check-input {
-            margin-top: 0;
-        }
-        .checkbox-group label {
-            margin-left: 8px;
-            margin-bottom: 0;
-        }
-        @media (max-width: 768px) {
-            .form-table, .form-row, .form-cell {
-                display: block;
-            }
-            .form-cell {
-                padding: 8px 0;
-            }
-        }
+    <link href="{{ asset('css/forms.css') }}" rel="stylesheet">
+<div class="container employee-form-container">
     </style>
 </head>
 <body>
@@ -281,3 +206,4 @@
     </script>
 </body>
 </html>
+@endsection
