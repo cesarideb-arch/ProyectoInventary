@@ -24,8 +24,13 @@ use App\Http\Controllers\DatabaseController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/test-view', function () {
+    // Verifica si la vista existe
+    if (view()->exists('login.index')) {
+        return "✅ La vista login.index EXISTE";
+    } else {
+        return "❌ La vista login.index NO EXISTE";
+    }
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
