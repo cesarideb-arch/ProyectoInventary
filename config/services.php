@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // AGREGAR ESTA CONFIGURACIÓN PARA TU API
+    'api' => [
+        'base_url' => env('API_BASE_URL', 'http://apiinventario.idebmexico.com/api'),
+        'timeout' => 30,
+    ],
+
 ];

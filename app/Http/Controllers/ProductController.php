@@ -31,10 +31,10 @@ class ProductController extends Controller {
         // Si hay una consulta de búsqueda, agrega el parámetro de búsqueda a la URL de la API de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
     
         // Verifica si la solicitud fue exitosa
@@ -108,10 +108,10 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::withToken($token)->get($productApiUrl);
+        $productResponse = Http::withToken($token)->withOptions(['verify' => false])->get($productApiUrl);
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
+        $projectsResponse = Http::withToken($token)->withOptions(['verify' => false])->get($projectsApiUrl);
 
         if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
@@ -151,7 +151,7 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
         // dd($validatedData);
 
         // Verificar si la solicitud fue exitosa
@@ -187,7 +187,7 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -225,7 +225,7 @@ class ProductController extends Controller {
 
 
         // Realizar una solicitud HTTP POST a tu segunda API con los datos validados del formulario
-        $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -253,10 +253,10 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
     
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::withToken($token)->get($productApiUrl);
+        $productResponse = Http::withToken($token)->withOptions(['verify' => false])->get($productApiUrl);
     
         // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
+        $projectsResponse = Http::withToken($token)->withOptions(['verify' => false])->get($projectsApiUrl);
     
         if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
@@ -287,10 +287,10 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::withToken($token)->get($productApiUrl);
+        $productResponse = Http::withToken($token)->withOptions(['verify' => false])->get($productApiUrl);
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos de los proyectos
-        $projectsResponse = Http::withToken($token)->get($projectsApiUrl);
+        $projectsResponse = Http::withToken($token)->withOptions(['verify' => false])->get($projectsApiUrl);
 
         if ($productResponse->successful() && $projectsResponse->successful()) {
             // Decodifica la respuesta JSON del producto en un array asociativo
@@ -320,7 +320,7 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP GET a la API
-        $response = Http::withToken($token)->get($apiUrl)->json();
+        $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl)->json();
 
         $suppliers = $response['suppliers'];
         $categories = $response['categories'];
@@ -368,7 +368,7 @@ class ProductController extends Controller {
             $imageName = $file->getClientOriginalName();
 
             // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
-            $response = Http::withToken($token)->attach(
+            $response = Http::withToken($token)->withOptions(['verify' => false])->attach(
                 'profile_image',
                 $imageContents,
                 $imageName
@@ -378,7 +378,7 @@ class ProductController extends Controller {
             unset($validatedData['profile_image']);
 
             // Realizar una solicitud HTTP POST a tu API sin el campo de imagen
-            $response = Http::withToken($token)->post($apiUrl, $validatedData);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
         }
 
         // Verificar si la solicitud fue exitosa
@@ -409,7 +409,7 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP GET a la API
-        $response = Http::withToken($token)->get($apiUrl)->json();
+        $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl)->json();
 
         $suppliers = $response['suppliers'];
         $categories = $response['categories'];
@@ -418,7 +418,7 @@ class ProductController extends Controller {
         $productApiUrl = $baseApiUrl . '/api/products/' . $id;
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del producto
-        $productResponse = Http::withToken($token)->get($productApiUrl);
+        $productResponse = Http::withToken($token)->withOptions(['verify' => false])->get($productApiUrl);
 
         // Verifica si la solicitud fue exitosa
         if ($productResponse->successful()) {
@@ -543,6 +543,7 @@ class ProductController extends Controller {
                     'Accept' => 'application/json',
                 ],
                 'multipart' => $formParams,
+                'verify' => false,
             ]);
 
             // Verificar si la solicitud fue exitosa
@@ -571,7 +572,7 @@ class ProductController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP DELETE a la API
-        $response = Http::withToken($token)->delete($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {

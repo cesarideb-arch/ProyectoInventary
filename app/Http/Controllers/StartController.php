@@ -36,7 +36,7 @@ class StartController extends Controller {
         // Crear promesas para cada solicitud
         $promises = [];
         foreach ($apiUrls as $key => $url) {
-            $promises[$key] = Http::withToken($token)->async()->get($url);
+            $promises[$key] = Http::withToken($token)->withOptions(['verify' => false])->async()->get($url);
         }
 
         // Esperar a que todas las promesas se resuelvan

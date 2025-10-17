@@ -36,6 +36,7 @@ class CategoryController extends Controller
             if ($searchQuery) {
                 $apiUrl = $baseApiUrl . '/api/searchCategory';
                 $response = Http::withToken($token)
+                    ->withOptions(['verify' => false])
                     ->get($apiUrl, [
                         'search' => $searchQuery,
                         'page' => $page,
@@ -44,6 +45,7 @@ class CategoryController extends Controller
             } else {
                 $apiUrl = $baseApiUrl . '/api/categories';
                 $response = Http::withToken($token)
+                    ->withOptions(['verify' => false])
                     ->get($apiUrl, [
                         'page' => $page,
                         'per_page' => $perPage
@@ -123,6 +125,7 @@ class CategoryController extends Controller
 
         try {
             $response = Http::withToken($token)
+                ->withOptions(['verify' => false])
                 ->timeout(30)
                 ->post($apiUrl, $validatedData);
 
@@ -164,7 +167,9 @@ class CategoryController extends Controller
         }
 
         try {
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)
+                ->withOptions(['verify' => false])
+                ->get($apiUrl);
 
             if ($response->successful()) {
                 $category = $response->json();
@@ -214,6 +219,7 @@ class CategoryController extends Controller
 
         try {
             $response = Http::withToken($token)
+                ->withOptions(['verify' => false])
                 ->timeout(30)
                 ->put($apiUrl, $validatedData);
 
@@ -260,6 +266,7 @@ class CategoryController extends Controller
 
         try {
             $response = Http::withToken($token)
+                ->withOptions(['verify' => false])
                 ->timeout(30)
                 ->delete($apiUrl);
 

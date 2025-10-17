@@ -20,7 +20,7 @@ class LoginController extends Controller {
         $loginUrl = $baseApiUrl . '/api/login';
 
         // Haz la solicitud POST al endpoint de login
-        $response = Http::post($loginUrl, [
+        $response = Http::withOptions(['verify' => false])->post($loginUrl, [
             'email' => $request->email,
             'password' => $request->password,
         ]);

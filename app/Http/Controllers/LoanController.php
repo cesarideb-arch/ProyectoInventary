@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-
-use App\Exports\LoansExport; // Add this line to import the LoansExport class
+use App\Exports\LoansExport;
 
 class LoanController extends Controller {
 
@@ -37,10 +36,10 @@ class LoanController extends Controller {
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
     
         // Verifica si la solicitud fue exitosa
@@ -63,7 +62,7 @@ class LoanController extends Controller {
             }
     
             // Obtener el conteo de préstamos del mes actual
-            $monthLoanResponse = Http::withToken($token)->get($apiGetLoanCountMonthNumberUrl);
+            $monthLoanResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetLoanCountMonthNumberUrl);
             $monthDataNumber = $monthLoanResponse->successful() ? $monthLoanResponse->json() : ['count' => 0];
     
             // Si el parámetro 'download' está presente, generar el archivo correspondiente
@@ -90,7 +89,7 @@ class LoanController extends Controller {
                         return redirect()->back()->with('error', 'Error al generar el PDF');
                     }
                 } elseif ($downloadType === 'month_pdf') {
-                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthLoanUrl);
+                    $monthResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetCountMonthLoanUrl);
     
                     if ($monthResponse->successful()) {
                         $monthData = $monthResponse->json();
@@ -117,7 +116,7 @@ class LoanController extends Controller {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos del mes de la API');
                     }
                 } elseif ($downloadType === 'finished_pdf') {
-                    $finishedResponse = Http::withToken($token)->get($apiGetFinished);
+                    $finishedResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetFinished);
     
                     if ($finishedResponse->successful()) {
                         $finishedData = $finishedResponse->json();
@@ -144,7 +143,7 @@ class LoanController extends Controller {
                         return redirect()->back()->with('error', 'Error al obtener los préstamos finalizados de la API');
                     }
                 } elseif ($downloadType === 'started_pdf') {
-                    $startedResponse = Http::withToken($token)->get($apiGetStarted);
+                    $startedResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetStarted);
     
                     if ($startedResponse->successful()) {
                         $startedData = $startedResponse->json();
@@ -174,7 +173,7 @@ class LoanController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenLoan, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetweenLoan, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);
@@ -207,7 +206,7 @@ class LoanController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenLoan, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetweenLoan, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);
@@ -245,7 +244,7 @@ class LoanController extends Controller {
         $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del préstamo
-        $response = Http::withToken($token)->get($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
@@ -266,7 +265,7 @@ class LoanController extends Controller {
         $token = $request->session()->get('token');
 
         // Incluye las observaciones en la solicitud
-        $response = Http::withToken($token)->put($apiUrl, [
+        $response = Http::withToken($token)->withOptions(['verify' => false])->put($apiUrl, [
             'observations' => $request->input('observations')
         ]);
 
@@ -289,7 +288,7 @@ class LoanController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP DELETE a la API para eliminar el préstamo
-        $response = Http::withToken($token)->delete($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {

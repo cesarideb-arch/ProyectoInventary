@@ -26,10 +26,10 @@ class EntranceController extends Controller {
     
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
     
         if ($response->successful()) {
@@ -46,7 +46,7 @@ class EntranceController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
     
-            $monthCountResponse = Http::withToken($token)->get($apiGetEntrancesCountMonthNumber);
+            $monthCountResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetEntrancesCountMonthNumber);
             $monthData = $monthCountResponse->successful() ? $monthCountResponse->json() : ['count' => 0];
     
             if ($request->has('download')) {
@@ -72,7 +72,7 @@ class EntranceController extends Controller {
                         return redirect()->back()->with('error', 'Error al generar el PDF');
                     }
                 } elseif ($downloadType === 'month_pdf') {
-                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthEntranceUrl);
+                    $monthResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetCountMonthEntranceUrl);
     
                     if ($monthResponse->successful()) {
                         $monthData = $monthResponse->json();
@@ -102,7 +102,7 @@ class EntranceController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetween, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetween, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);
@@ -135,7 +135,7 @@ class EntranceController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetween, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetween, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);

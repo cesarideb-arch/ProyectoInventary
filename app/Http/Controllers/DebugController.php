@@ -19,6 +19,7 @@ class DebugController extends Controller
         // Test simple connection
         try {
             $response = Http::withToken($token)
+                ->withOptions(['verify' => false])
                 ->timeout(10)
                 ->get($baseApiUrl . '/api/users');
                 

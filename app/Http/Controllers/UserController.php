@@ -33,10 +33,10 @@ class UserController extends Controller {
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
 
         // Verifica si la solicitud fue exitosa
@@ -97,7 +97,7 @@ class UserController extends Controller {
 
         // Realizar una solicitud HTTP POST a tu API con los datos validados del formulario
         try {
-            $response = Http::withToken($token)->post($apiUrl, $validatedData);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
 
             // Verificar si la solicitud fue exitosa
             if ($response->successful()) {
@@ -135,7 +135,7 @@ class UserController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP GET a tu API para obtener los datos del usuario
-        $response = Http::withToken($token)->get($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -215,6 +215,7 @@ class UserController extends Controller {
                     'Accept' => 'application/json',
                 ],
                 'multipart' => $formParams,
+                'verify' => false,
             ]);
     
             // Verificar si la solicitud fue exitosa
@@ -278,6 +279,7 @@ class UserController extends Controller {
                     'Accept' => 'application/json',
                 ],
                 'multipart' => $formParams,
+                'verify' => false,
             ]);
 
             // Verificar si la solicitud fue exitosa

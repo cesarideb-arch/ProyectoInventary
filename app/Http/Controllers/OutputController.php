@@ -22,10 +22,10 @@ class OutputController extends Controller {
     
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
     
         if ($response->successful()) {
@@ -42,7 +42,7 @@ class OutputController extends Controller {
                 $lastPage = ceil($total / $perPage);
             }
     
-            $monthCountResponse = Http::withToken($token)->get($apiGetOutputsCountMonthNumber);
+            $monthCountResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetOutputsCountMonthNumber);
             $monthData = $monthCountResponse->successful() ? $monthCountResponse->json() : ['count' => 0];
     
             if ($request->has('download')) {
@@ -68,7 +68,7 @@ class OutputController extends Controller {
                         return redirect()->back()->with('error', 'Error al generar el PDF');
                     }
                 } elseif ($downloadType === 'month_pdf') {
-                    $monthResponse = Http::withToken($token)->get($apiGetCountMonthOutputUrl);
+                    $monthResponse = Http::withToken($token)->withOptions(['verify' => false])->get($apiGetCountMonthOutputUrl);
     
                     if ($monthResponse->successful()) {
                         $monthData = $monthResponse->json();
@@ -98,7 +98,7 @@ class OutputController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenOutput, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetweenOutput, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);
@@ -131,7 +131,7 @@ class OutputController extends Controller {
                     $start_date = $request->input('start_date');
                     $end_date = $request->input('end_date');
     
-                    $dateRangeResponse = Http::withToken($token)->post($apiPostBetweenOutput, [
+                    $dateRangeResponse = Http::withToken($token)->withOptions(['verify' => false])->post($apiPostBetweenOutput, [
                         'start_date' => $start_date,
                         'end_date' => $end_date
                     ]);
@@ -155,4 +155,4 @@ class OutputController extends Controller {
     
         return redirect()->back()->with('error', 'Error al obtener las salidas de la API');
     }
-}    
+}

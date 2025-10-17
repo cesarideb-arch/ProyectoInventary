@@ -13,6 +13,7 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DatabaseController;
+use App\Http\Controllers\TestController;
 
 /*|--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +36,8 @@ Route::middleware('auth.api')->post('/logout', [LoginController::class, 'logout'
 Route::middleware('auth.api')->get('/Start', [StartController::class, 'index'])->name('start.index');
 Route::middleware('auth.api')->get('/start/get-data', [StartController::class, 'getData'])->name('start.getData');
 
+Route::get('/test-api', [TestController::class, 'testConnection'])->name('test.api');
+Route::get('/test', [TestController::class, 'testView'])->name('test.view');
 
 // Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');

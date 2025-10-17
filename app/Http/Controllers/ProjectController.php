@@ -34,10 +34,10 @@ class ProjectController extends Controller {
         // Si hay un término de búsqueda, usar la URL de búsqueda
         if ($searchQuery) {
             $apiSearchUrl .= '?search=' . urlencode($searchQuery) . '&page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiSearchUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiSearchUrl);
         } else {
             $apiUrl .= '?page=' . $page . '&per_page=' . $perPage;
-            $response = Http::withToken($token)->get($apiUrl);
+            $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
         }
     
         // Verifica si la solicitud fue exitosa
@@ -134,7 +134,7 @@ class ProjectController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP POST a la API con los datos validados del formulario
-        $response = Http::withToken($token)->post($apiUrl, $validatedData);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->post($apiUrl, $validatedData);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
@@ -160,7 +160,7 @@ class ProjectController extends Controller {
         $token = $request->session()->get('token');
 
         // Realiza una solicitud HTTP GET a la API para obtener los datos del proyecto
-        $response = Http::withToken($token)->get($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->get($apiUrl);
 
         // Verifica si la solicitud fue exitosa
         if ($response->successful()) {
@@ -253,6 +253,7 @@ class ProjectController extends Controller {
                     'Accept' => 'application/json',
                 ],
                 'multipart' => $formParams,
+                'verify' => false,
             ]);
 
             // Verificar si la solicitud fue exitosa
@@ -280,7 +281,7 @@ class ProjectController extends Controller {
         $token = $request->session()->get('token');
 
         // Realizar una solicitud HTTP DELETE a la API para eliminar el proyecto
-        $response = Http::withToken($token)->delete($apiUrl);
+        $response = Http::withToken($token)->withOptions(['verify' => false])->delete($apiUrl);
 
         // Verificar si la solicitud fue exitosa
         if ($response->successful()) {
