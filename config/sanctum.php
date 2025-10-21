@@ -17,12 +17,7 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-<<<<<<< HEAD
-         'http://apiinventario.idebmexico.com',
-=======
-         'http://apiinventary.idebmexico.com',
->>>>>>> 14c8757bde128861298c1a461ab462b356f217fc
-'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
+        'https://apiinventario.idebmexico.com,localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,::1',
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
