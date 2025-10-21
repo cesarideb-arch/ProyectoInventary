@@ -30,10 +30,6 @@ return [
 
     'env' => env('APP_ENV', 'production'),
     'backend_api' => env('BACKEND_API', 'https://apiinventario.idebmexico.com'),
-<<<<<<< HEAD
-=======
-
->>>>>>> 14c8757bde128861298c1a461ab462b356f217fc
 
     /*
     |--------------------------------------------------------------------------
@@ -59,11 +55,7 @@ return [
     |
     */
 
-<<<<<<< HEAD
     'url' => env('APP_URL', 'https://proyectoinventario.idebmexico.com'),
-=======
-    'url' => env('APP_URL', 'http://apiinventary.idebmexico.com'),
->>>>>>> 14c8757bde128861298c1a461ab462b356f217fc
 
     'asset_url' => env('ASSET_URL'),
 
