@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'ProyectoInventario'),
 
     /*
     |--------------------------------------------------------------------------
@@ -29,8 +29,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-    'backend_api' => env('BACKEND_API', 'http://default-ip:8000'),
-
+    'backend_api' => env('BACKEND_API', 'https://apiinventario.idebmexico.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://proyectoinventario.idebmexico.com'),
 
     'asset_url' => env('ASSET_URL'),
 
@@ -213,12 +212,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,\
-
-
-
+        // 'ExampleClass' => App\Example\ExampleClass::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-    'Pdf' => Barryvdh\DomPDF\Facade\Pdf::class,
+        'Pdf' => Barryvdh\DomPDF\Facade\Pdf::class,
     ])->toArray(),
 
 ];

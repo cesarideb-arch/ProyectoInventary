@@ -22,7 +22,7 @@ def update_env_file(ip):
         with open(env_file, 'w') as file:
             for line in lines:
                 if line.startswith('BACKEND_API'):
-                    file.write(f'BACKEND_API="http://{ip}:8000"\n')
+                    file.write(f'BACKEND_API="http://apiinventary.idebmexico.com"\n')
                 else:
                     file.write(line)
         print(f"Archivo .env actualizado con la IP: {ip}")

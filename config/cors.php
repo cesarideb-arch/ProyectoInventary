@@ -1,18 +1,17 @@
 <?php
-// ARCHIVO: config/cors.php EN TU FRONTEND
+// ARCHIVO: config/cors.php EN TU FRONTEND (proyectoinventario.idebmexico.com)
 
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+
+    'paths' => ['*'], // ⬅️ El frontend normalmente no recibe peticiones CORS
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://apiinventario.idebmexico.com', // Tu backend
+        'https://apiinventario.idebmexico.com', // ⬅️ Esto NO es necesario aquí
     ],
 
-    'allowed_origins_patterns' => [
-        'https://.*\.idebmexico\.com',
-    ],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 
@@ -20,5 +19,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => true, // Cambiar a true
+    'supports_credentials' => false, // ⬅️ Normalmente false en frontend
+
 ];
